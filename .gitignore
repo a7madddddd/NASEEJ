@@ -364,3 +364,5 @@ FodyWeavers.xsd
 /Naseej_Project/appsettings.json
 /Naseej_Project/appsettings.json
 /Naseej_Project/appsettings.json
+/Naseej_Project/Models/MyDbContext.cs
+/.gitignore
