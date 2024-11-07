@@ -248,15 +248,33 @@
 
                                 <!-- Image Upload -->
                                 <div class="mb-3">
-                                    <label for="formFile" class="form-label">Profile Image</label>
+                                    <label for="formFile" class="form-label"> Image</label>
                                     <input class="form-control bg-dark" type="file" id="formFile" name="imageFile">
                                 </div>
 
                                 <!-- Submit Button -->
-                                <button type="submit" class="btn btn-primary">Sign Up</button>
+                                <button type="submit" class="btn btn-primary">Add Admin</button>
                             </form>
                         </div>
                     </div>
+
+
+                    <!-- start delete admins form  -->
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Delete Admin</h6>
+                            <form id="deleteAdminForm">
+                                <div class="mb-3">
+                                    <label for="adminDropdown" class="form-label">Select Admin to Delete</label>
+                                    <select id="adminDropdown" class="form-select">
+                                        <option value="">-- Select an Admin --</option>
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-danger" id="deleteButton">Delete Selected Admin</button>
+                            </form>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -265,12 +283,7 @@
 
 
 
-
-
-
-
-
-
+           
 
             <!-- Footer Start -->
             <div class="container-fluid pt-4 px-4">

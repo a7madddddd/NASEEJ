@@ -118,3 +118,54 @@ document.getElementById("addAdminForm").addEventListener("submit", function (eve
 
 
 
+// start function get all empolyee in form 
+// Populate the dropdown on page load
+document.addEventListener('DOMContentLoaded', () => {
+    populateAdminDropdown();
+});
+
+function populateAdminDropdown() {
+    fetch("http://localhost:25025/api/Empolyees")
+        .then(response => response.json())
+        .then(data => {
+            const adminDropdown = document.getElementById('adminDropdown');
+            adminDropdown.innerHTML = '<option value="">-- Select an Admin --</option>';  // Clear existing options
+
+            // Populate dropdown with admin data
+            data.forEach(admin => {
+                const option = document.createElement('option');
+                option.value = admin.employeeId;  // Assuming 'employeeId' is the unique identifier
+                option.textContent = `${admin.fullName} (${admin.email})`;
+                adminDropdown.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching admin list:', error);
+            alert('Failed to load admins.');
+        });
+}
+
+// Delete selected admin
+document.getElementById('deleteButton').addEventListener('click', () => {
+    const adminId = document.getElementById('adminDropdown').value;
+
+    if (!adminId) {
+        alert('Please select an admin to delete');
+        return;
+    }
+
+    fetch(`http://localhost:25025/api/Empolyees/${adminId}`, {
+        method: 'DELETE'
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to delete admin');
+            }
+            alert('Admin deleted successfully!');
+            populateAdminDropdown();  // Refresh the dropdown after deletion
+        })
+        .catch(error => {
+            console.error('Error deleting admin:', error);
+            alert('There was an error deleting the admin.');
+        });
+});

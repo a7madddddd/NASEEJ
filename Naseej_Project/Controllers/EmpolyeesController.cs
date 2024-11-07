@@ -26,6 +26,7 @@ namespace Naseej_Project.Controllers
             return await _db.Employees
                 .Select(e => new EmpolyeesDTO
                 {
+                    EmployeeId = e.EmployeeId,
                     FullName = e.FullName,
                     Email = e.Email,
                     Image = e.Image,
