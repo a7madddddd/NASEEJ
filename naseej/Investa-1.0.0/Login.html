@@ -130,33 +130,64 @@
 
 
 
-<div class="loginContainer">
     <!-- login form start -->
-    <div class="main">
-        <input type="checkbox" id="chk" aria-hidden="true">
+    <div class="loginContainer">
+        <div class="main">
+            <input type="checkbox" id="chk" aria-hidden="true">
+            <div class="signup">
+                <form>
+                    <label for="chk" aria-hidden="true">Sign up</label>
+                    <!-- Row for phone number -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="firstName" placeholder="First name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="lastName" placeholder="Last Name" required>
+                        </div>
+                        <div class="col-6">
+                            <input type="tel" class="form-control" name="phone" placeholder="Phone Number" required>
+                        </div>
+                        <div class="col-6">
+                            <input type="number" class="form-control" name="age" placeholder="Age" required>
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control" name="nationality" placeholder="Nationality"
+                                required>
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control" name="degree" placeholder="Educational level "
+                                required>
+                        </div>
+                        <div class="col-6">
+                            <input type="governorate" class="form-control" name="governorate" placeholder="Governorate"
+                                required>
+                        </div>
+                        <div class="col-6">
+                            <input type="password" class="form-control" name="password" placeholder="Password" required>
+                        </div>
+                    </div>
 
-        <div class="signup">
-            <form>
-                <label for="chk" aria-hidden="true">Sign up</label>
-                <input type="text" name="txt" placeholder="User name" required="">
-                <input type="email" name="email" placeholder="Email" required="">
-                <input type="number" name="broj" placeholder="BrojTelefona" required="">
-                <input type="password" name="pswd" placeholder="Password" required="">
-                <button>Sign up</button>
-            </form>
-        </div>
-
-        <div class="login">
-            <form>
-                <label for="chk" aria-hidden="true">Login</label>
-                <input type="email" name="email" placeholder="Email" required="">
-                <input type="password" name="pswd" placeholder="Password" required="">
-                <button>Login</button>
-            </form>
+                    <button class="btn btn-success w-10">Sign up</button>
+                </form>
+            </div>
+            <div class="login mt-5">
+                <form>
+                    <label for="chk" aria-hidden="true">Login</label>
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <input type="email" class="form-control" name="email" placeholder="Email" required>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="password" class="form-control" name="password" placeholder="Password" required>
+                        </div>
+                    </div>
+                    <button class="btn btn-success w-10">Login</button>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-
+<!-- login form end here -->
 
 
 
@@ -280,7 +311,7 @@
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="lib/lightbox/js/lightbox.min.js"></script>
 
-    <script src="js/Login.js"></script>
+    <script src="js/LoginApi.js"></script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 </body>
