@@ -42,6 +42,8 @@ if (app.Environment.IsDevelopment())
 // Enable CORS before authentication/authorization
 app.UseCors("AllowAllOrigins");
 
+app.UseStaticFiles();  // Enables serving static files from wwwroot
+
 app.UseAuthorization();
 
 app.MapControllers();
