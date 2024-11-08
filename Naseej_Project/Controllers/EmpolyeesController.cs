@@ -127,7 +127,7 @@ namespace Naseej_Project.Controllers
         // PUT: api/Employees/5
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEmployee(int id, [FromForm] EmpolyeesDTO employeesDto, IFormFile imageFile)
+        public async Task<IActionResult> UpdateEmployee(int id, [FromForm] EmpolyeesDTO employeesDto, [FromForm] IFormFile? imageFile = null)
         {
             var employee = await _db.Employees.FindAsync(id);
 
@@ -136,10 +136,21 @@ namespace Naseej_Project.Controllers
                 return NotFound();
             }
 
-            employee.FullName = employeesDto.FullName;
-            employee.Email = employeesDto.Email;
-            employee.PasswordHash = employeesDto.PasswordHash;
+            // Update only if fields are provided
+            if (!string.IsNullOrWhiteSpace(employeesDto.FullName))
+            {
+                employee.FullName = employeesDto.FullName;
+            }
+            if (!string.IsNullOrWhiteSpace(employeesDto.Email))
+            {
+                employee.Email = employeesDto.Email;
+            }
+            if (!string.IsNullOrWhiteSpace(employeesDto.PasswordHash))
+            {
+                employee.PasswordHash = employeesDto.PasswordHash;
+            }
 
+            // Update image if a new one is provided
             if (imageFile != null && imageFile.Length > 0)
             {
                 var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "EmployeeImages");
@@ -175,11 +186,17 @@ namespace Naseej_Project.Controllers
                 return NotFound();
             }
 
-            // Return a JSON response with a success message
             return Ok(new { message = "Employee updated successfully" });
         }
 
 
+
+
+        /// <summary>
+        /// /////////
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // DELETE: api/Employees/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmployee(int id)
