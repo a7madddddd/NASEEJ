@@ -27,7 +27,8 @@ async function getContactDetails() {
     }
 }
 
-// Handle form submission
+
+
 // Handle form submission
 async function handleSubmit(event) {
     event.preventDefault();

@@ -86,7 +86,7 @@ namespace Naseej_Project.Controllers
         public async Task<IActionResult> PostMessageToEmail([FromForm] ContactUsDto contactUsDto)
         {
             var contact = new ContactU
-            {
+            {   Name = contactUsDto.Name,
                 Message = contactUsDto.Message,
                 Subject = contactUsDto.Subject,
                 Email = contactUsDto.Email,
