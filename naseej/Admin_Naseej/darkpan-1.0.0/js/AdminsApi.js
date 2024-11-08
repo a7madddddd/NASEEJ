@@ -141,6 +141,7 @@ document.getElementById("addAdminForm").addEventListener("submit", async functio
 
 // start function get all empolyee in form 
 // Populate the dropdown on page load
+// Populate the dropdown on page load
 document.addEventListener('DOMContentLoaded', () => {
     populateAdminDropdown();
 });
@@ -152,12 +153,14 @@ function populateAdminDropdown() {
             const adminDropdown = document.getElementById('adminDropdown');
             adminDropdown.innerHTML = '<option value="">-- Select an Admin --</option>';  // Clear existing options
 
-            // Populate dropdown with admin data
+            // Populate dropdown with admin data, excluding super admins
             data.forEach(admin => {
-                const option = document.createElement('option');
-                option.value = admin.employeeId;  // Assuming 'employeeId' is the unique identifier
-                option.textContent = `${admin.fullName} (${admin.email})`;
-                adminDropdown.appendChild(option);
+                if (!admin.isAdmin) {  // Only add non-super admins
+                    const option = document.createElement('option');
+                    option.value = admin.employeeId;  // Assuming 'employeeId' is the unique identifier
+                    option.textContent = `${admin.fullName} (${admin.email})`;
+                    adminDropdown.appendChild(option);
+                }
             });
         })
         .catch(error => {
