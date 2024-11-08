@@ -63,8 +63,7 @@ async function handleLogin(event) {
         // Show success message
         showMessage('success-message', 'Login successful! Redirecting...', true);
 
-        // Store user data in localStorage
-        localStorage.setItem('userData', JSON.stringify(data));
+       
 
         // Wait for 1 second to show the success message before redirecting
         await new Promise(resolve => setTimeout(resolve, 1000));
