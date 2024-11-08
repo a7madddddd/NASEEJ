@@ -22,6 +22,10 @@ namespace Naseej_Project.Controllers
 
         ///////////////////////////////////////////////////////////////////
 
+        /// <summary>
+        /// //////
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("GetAllMessage")]
         public IActionResult GetAllMessage()
         {
@@ -86,6 +90,7 @@ namespace Naseej_Project.Controllers
                 Message = contactUsDto.Message,
                 Subject = contactUsDto.Subject,
                 Email = contactUsDto.Email,
+                MessageReply = contactUsDto.MessageReply
             };
 
             _db.ContactUs.Add(contact);
@@ -101,19 +106,16 @@ namespace Naseej_Project.Controllers
 
                 // Send email to the user
                 var userEmailSubject = "Thank you for contacting us!";
-                var userEmailBody = $"Dear {contactUsDto.Name},<br><br>Thank you for reaching out. We have received your message:<br><br>{contactUsDto.Message}<br><br>We will get back to you shortly.";
+                var userEmailBody = $"Dear {contactUsDto.Name},<br><br>Thank you for reaching out. We have received your message:<br><br>{contactUsDto.MessageReply}<br><br>We will get back to you shortly.";
                 await _emailService.SendEmailAsync(contactUsDto.Email, userEmailSubject, userEmailBody);
 
-                return Ok(new { Message = "Contact message sent successfully and emails delivered!" });
+                return Ok(new { MessageReply = "Contact message sent successfully and emails delivered!" });
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { Message = $"Message saved, but failed to send email: {ex.Message}" });
             }
         }
-
-
-
     }
   }
 
