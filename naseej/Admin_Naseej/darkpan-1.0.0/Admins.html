@@ -219,9 +219,9 @@
 
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                    <div class="col-sm-12 col-xl-6">
+                    <div class="col-sm-12 col-xl-4">
                         <div class="bg-secondary rounded h-100 p-4">
-                            <h6 class="mb-4">Add Admin</h6>
+                            <h6 class="mb-4">Add Admins</h6>
                             <form id="addAdminForm" enctype="multipart/form-data" method="POST"
                                 action="http://localhost:25025/api/Empolyees">
                                 <!-- Adjust action URL based on your controller -->
@@ -258,11 +258,51 @@
                         </div>
                     </div>
 
+                    <!-- start edit admins form  -->
+                    <div class="col-sm-12 col-xl-4">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Edit Employee</h6>
+                    
+                            <!-- Employee Selection Dropdown -->
+                            <div class="mb-3">
+                                <label for="employeeDropdown" class="form-label">Select Employee</label>
+                                <select id="employeeDropdown" class="form-select" required>
+                                    <option value="">Select an Employee</option>
+                                </select>
+                            </div>
+                    
+                            <!-- Form for Editing Employee Details -->
+                            <form id="EditEmployeeForm">
+                                <div class="mb-3">
+                                    <label for="EditEmployeeName" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="EditEmployeeName" name="FullName" required>
+                                </div>
+                    
+                                <div class="mb-3">
+                                    <label for="EditEmployeeEmail1" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="EditEmployeeEmail1" name="Email" required>
+                                </div>
+                    
+                                <div class="mb-3">
+                                    <label for="EditEmployeePassword" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="EditEmployeePassword" name="Password">
+                                </div>
+                    
+                                <div class="mb-3">
+                                    <label for="EditEmployeeFormFile" class="form-label">Image</label>
+                                    <input class="form-control bg-dark" type="file" id="EditEmployeeFormFile" name="imageFile">
+                                </div>
+                    
+                                <button type="submit" class="btn btn-primary">Edit</button>
+                            </form>
+                        </div>
+                    </div>
+
 
                     <!-- start delete admins form  -->
-                    <div class="col-sm-12 col-xl-6">
+                    <div class="col-sm-12 col-xl-4">
                         <div class="bg-secondary rounded h-100 p-4">
-                            <h6 class="mb-4">Delete Admin</h6>
+                            <h6 class="mb-4">Delete Admins</h6>
                             <form id="deleteAdminForm">
                                 <div class="mb-3">
                                     <label for="adminDropdown" class="form-label">Select Admin to Delete</label>
