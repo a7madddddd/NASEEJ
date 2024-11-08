@@ -309,9 +309,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     });
 
-
-
-
 });
 
 // end edit admins function
