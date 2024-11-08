@@ -282,12 +282,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     return response.text().then(text => Promise.reject(text));
                 }
 
-                // Check if the response has JSON content-type
                 const contentType = response.headers.get("content-type");
                 if (contentType && contentType.includes("application/json")) {
-                    return response.json(); // Parse JSON if content is JSON
+                    return response.json();
                 } else {
-                    return {}; // Return empty object if no JSON content
+                    return {};  // Handle empty or non-JSON response
                 }
             })
             .then(data => {
@@ -309,6 +308,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             });
     });
+
 
 
 

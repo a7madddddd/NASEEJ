@@ -142,11 +142,10 @@ namespace Naseej_Project.Controllers
 
             if (imageFile != null && imageFile.Length > 0)
             {
-                // Define the directory path for storing images
                 var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "EmployeeImages");
                 Directory.CreateDirectory(uploadsFolderPath);
 
-                // Delete the old image file if it exists
+                // Delete the old image if it exists
                 if (!string.IsNullOrEmpty(employee.Image))
                 {
                     var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", employee.Image);
@@ -156,17 +155,14 @@ namespace Naseej_Project.Controllers
                     }
                 }
 
-                // Generate a unique file name for the new image
                 var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
                 var filePath = Path.Combine(uploadsFolderPath, uniqueFileName);
 
-                // Save the new image file
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     await imageFile.CopyToAsync(fileStream);
                 }
 
-                // Store the relative path to the new image in the database
                 employee.Image = Path.Combine("EmployeeImages", uniqueFileName);
             }
 
@@ -179,7 +175,8 @@ namespace Naseej_Project.Controllers
                 return NotFound();
             }
 
-            return NoContent();
+            // Return a JSON response with a success message
+            return Ok(new { message = "Employee updated successfully" });
         }
 
 
