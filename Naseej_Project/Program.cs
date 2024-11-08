@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Naseej_Project.DTOs;
 using Naseej_Project.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,10 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
+
+builder.Services.AddScoped<IEmailService, EmailService>(); // yousef add this for sending email
+builder.Services.AddScoped<EmailServices>();
+builder.Services.AddTransient<EmailServices>();
 
 var app = builder.Build();
 

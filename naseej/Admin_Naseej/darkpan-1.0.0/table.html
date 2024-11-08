@@ -394,49 +394,25 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <div class="bg-secondary rounded h-100 p-4">
+                        <div class="bg-secondary rounded h-100 p-4" id="Contact">
                             <h6 class="mb-4">Responsive Table</h6>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">First Name</th>
-                                            <th scope="col">Last Name</th>
+                                            <th scope="col">id</th>
+                                            <th scope="col">Name</th>
                                             <th scope="col">Email</th>
-                                            <th scope="col">Country</th>
-                                            <th scope="col">ZIP</th>
-                                            <th scope="col">Status</th>
+                                            <th scope="col">Subject</th>
+                                            <th scope="col">Message</th>
+                                            <th scope="col">Action</th>
+
+                                            
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>John</td>
-                                            <td>Doe</td>
-                                            <td>jhon@email.com</td>
-                                            <td>USA</td>
-                                            <td>123</td>
-                                            <td>Member</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>mark@email.com</td>
-                                            <td>UK</td>
-                                            <td>456</td>
-                                            <td>Member</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>jacob@email.com</td>
-                                            <td>AU</td>
-                                            <td>789</td>
-                                            <td>Member</td>
-                                        </tr>
+                                    <tbody id="Contact">
+                                    
+                                    
                                     </tbody>
                                 </table>
                             </div>
@@ -484,6 +460,42 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+    <script>
+
+        async function contactGet() {
+            const url = 'http://localhost:25025/api/Contact/GetAllMessage';
+            let response = await fetch(url);
+            let data = await response.json();
+            console.log('Contacts loaded:', data); 
+                  
+            let contactTable = document.getElementById('Contact');
+            data.forEach(element => {
+                console.log('Processing contact:', element); 
+                contactTable.innerHTML += `
+                
+
+                        <tr>
+                            <th scope="row">${element.contactId}</th>
+                            <td>${element.name}</td>
+                            <td>${element.email}</td>
+                            <td>${element.subject}</td>
+                            <td>${element.message}</td>
+                            <button class="btn btn-primary" 
+			                onclick="redirectToReply(${element.contactId})"> Reply</button>
+                        </tr>
+                `
+            });
+                  }
+                  
+                  function redirectToReply(contactId) {
+            console.log('Redirecting to reply page with contact ID:', contactId); 
+            localStorage.setItem('selectedContactId', contactId);
+            window.location.href = 'ReplyAdmin.html';
+                  }
+                  
+                  contactGet();
+    </script>
 </body>
 
 </html>
