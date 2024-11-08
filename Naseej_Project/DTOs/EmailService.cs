@@ -15,7 +15,7 @@ namespace Naseej_Project.DTOs
             using (var client = new SmtpClient())
             {
                 await client.ConnectAsync("smtp.gmail.com", 465, true);
-                await client.AuthenticateAsync("techlearnhub.contact@gmail.com", "lyrlogeztsxclank");
+                await client.AuthenticateAsync("ahmadonizata@gmail.com\r\n", "smoj cmlr tebi xxhy\r\n");
                 await client.SendAsync(emailMessage); // Pass the MimeMessage object here
                 await client.DisconnectAsync(true);
             }
