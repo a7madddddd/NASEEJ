@@ -31,7 +31,6 @@ namespace Naseej_Project.Controllers
                     Email = e.Email,
                     Image = e.Image,
                     PasswordHash = e.PasswordHash,
-                    PasswordSalt = e.PasswordSalt,
                     IsAdmin = e.IsAdmin,
                 })
                 .ToListAsync();
@@ -54,7 +53,6 @@ namespace Naseej_Project.Controllers
                 Email = employee.Email,
                 Image = employee.Image,
                 PasswordHash = employee.PasswordHash,
-                PasswordSalt = employee.PasswordSalt
             };
         }
 
@@ -72,49 +70,47 @@ namespace Naseej_Project.Controllers
         {
             try
             {
-                employeesDto.IsAdmin = false;
+                if (string.IsNullOrWhiteSpace(employeesDto.PasswordHash))  // Changed from PasswordHash
+                {
+                    return BadRequest("Password is required.");
+                }
 
                 // Hash the password using BCrypt
-                var passwordHash = BCrypt.Net.BCrypt.HashPassword(employeesDto.PasswordHash);
-                employeesDto.PasswordHash = passwordHash;  // Update the passwordHash field with the hashed password
-
-                if (imageFile != null && imageFile.Length > 0)
-                {
-                    var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "EmployeeImages");
-                    Directory.CreateDirectory(uploadsFolderPath);  // Ensure the directory exists
-
-                    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
-                    var filePath = Path.Combine(uploadsFolderPath, uniqueFileName);
-
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await imageFile.CopyToAsync(fileStream);
-                    }
-
-                    employeesDto.Image = Path.Combine("EmployeeImages", uniqueFileName);  // Store the relative image path in the database
-                }
+                var passwordHash = BCrypt.Net.BCrypt.HashPassword(employeesDto.PasswordHash);  // Changed from PasswordHash
 
                 var employee = new Employee
                 {
                     FullName = employeesDto.FullName,
-                    Email = employeesDto.Email,
-                    PasswordHash = employeesDto.PasswordHash,  // The hashed password
-                    PasswordSalt = employeesDto.PasswordSalt,  // This can be omitted if you use BCrypt (as BCrypt includes the salt in the hash)
+                    Email = employeesDto.Email?.Trim().ToLower(),  // Normalize email
+                    PasswordHash = passwordHash,
                     Image = employeesDto.Image,
-                    IsAdmin = employeesDto.IsAdmin,
+                    IsAdmin = false,  // Set IsAdmin to false by default
                 };
+
+                if (imageFile != null && imageFile.Length > 0)
+                {
+                    var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "EmployeeImages");
+                    Directory.CreateDirectory(uploadsFolderPath);
+                    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                    var filePath = Path.Combine(uploadsFolderPath, uniqueFileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(fileStream);
+                    }
+                    employee.Image = Path.Combine("EmployeeImages", uniqueFileName);
+                }
 
                 _db.Employees.Add(employee);
                 await _db.SaveChangesAsync();
-
-                return CreatedAtAction(nameof(GetEmployee), new { id = employee.EmployeeId }, employeesDto);
+                return CreatedAtAction(nameof(GetEmployee), new { id = employee.EmployeeId }, employee);
             }
             catch (Exception ex)
             {
-                // Log the exception for further diagnosis
+                // Log the exception details
                 return StatusCode(500, "Internal server error occurred while creating admin.");
             }
         }
+
 
 
 
@@ -143,7 +139,6 @@ namespace Naseej_Project.Controllers
             employee.FullName = employeesDto.FullName;
             employee.Email = employeesDto.Email;
             employee.PasswordHash = employeesDto.PasswordHash;
-            employee.PasswordSalt = employeesDto.PasswordSalt;
 
             if (imageFile != null && imageFile.Length > 0)
             {
@@ -203,6 +198,19 @@ namespace Naseej_Project.Controllers
 
             return NoContent();
         }
+
+        /// <summary>
+        /// /////////////////
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        [HttpGet("CheckEmailExists")]
+        public async Task<ActionResult<bool>> CheckEmailExists([FromQuery] string email)
+        {
+            var emailExists = await _db.Employees.AnyAsync(e => e.Email == email.Trim().ToLower());
+            return Ok(emailExists);
+        }
+
     }
 }
 

@@ -59,52 +59,72 @@ fetch("http://localhost:25025/api/Empolyees")
 
 
 // function to add admins 
-document.getElementById("addAdminForm").addEventListener("submit", function (event) {
+document.getElementById("addAdminForm").addEventListener("submit", async function (event) {
     event.preventDefault();  // Prevent the form from submitting normally
 
-    // Create a FormData object to capture the form data
-    let formData = new FormData();
+    const email = document.getElementById("exampleInputEmail1").value.trim().toLowerCase();
+    
 
-    // Append form data from input fields
+    // Step 1: Check if the email exists
+    const emailExists = await fetch(`http://localhost:25025/api/Empolyees/CheckEmailExists?email=${encodeURIComponent(email)}`)
+        .then(response => response.json())
+        .catch(error => {
+            console.error("Error checking email:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'There was an error checking the email: ' + error,
+                confirmButtonText: 'Try Again'
+            });
+            return true;  // Return true to prevent form submission if there's an error
+        });
+
+    if (emailExists) {
+        // Show error if email already exists
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'An employee with this email already exists. Please use a different email.',
+            confirmButtonText: 'OK'
+        });
+        return;  // Exit the function if the email exists
+    }
+
+    // Step 2: Create a FormData object to capture the form data
+    let formData = new FormData();
     formData.append("FullName", document.getElementById("exampleInputName").value);
-    formData.append("Email", document.getElementById("exampleInputEmail1").value);
+    formData.append("Email", email);  // Use normalized email
     formData.append("PasswordHash", document.getElementById("exampleInputPassword1").value);
 
-    // Append the image file
+    // Step 3: Append the image file
     let imageFile = document.getElementById("formFile").files[0];
     if (imageFile) {
         formData.append("ImageFile", imageFile);
     }
 
-    // Send the form data using fetch API
+    // Step 4: Send the form data using fetch API
     fetch("http://localhost:25025/api/Empolyees", {
         method: "POST",
-        body: formData,  // The form data (including image) to send
+        body: formData,
     })
         .then(response => {
             if (!response.ok) {
-                return response.text().then(text => Promise.reject(text));  // Read and reject with the error message
+                return response.text().then(text => Promise.reject(text));
             }
             return response.json();
         })
         .then(data => {
             console.log("Admin added successfully:", data);
-
-            // SweetAlert success message
             Swal.fire({
                 icon: 'success',
                 title: 'Admin added successfully!',
                 text: 'The new admin has been added successfully.',
                 confirmButtonText: 'OK'
             });
-
-            // Clear the form after success
             document.getElementById("addAdminForm").reset();
         })
         .catch(error => {
             console.error("Error:", error);
-
-            // SweetAlert error message
             Swal.fire({
                 icon: 'error',
                 title: 'Error!',
@@ -113,6 +133,7 @@ document.getElementById("addAdminForm").addEventListener("submit", function (eve
             });
         });
 });
+
 // function end here 
 
 
@@ -141,31 +162,45 @@ function populateAdminDropdown() {
         })
         .catch(error => {
             console.error('Error fetching admin list:', error);
-            alert('Failed to load admins.');
+            Swal.fire('Error', 'Failed to load admins.', 'error');
         });
 }
 
-// Delete selected admin
+// Delete selected admin with SweetAlert confirmation
 document.getElementById('deleteButton').addEventListener('click', () => {
     const adminId = document.getElementById('adminDropdown').value;
 
     if (!adminId) {
-        alert('Please select an admin to delete');
+        Swal.fire('Warning', 'Please select an admin to delete', 'warning');
         return;
     }
 
-    fetch(`http://localhost:25025/api/Empolyees/${adminId}`, {
-        method: 'DELETE'
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to delete admin');
-            }
-            alert('Admin deleted successfully!');
-            populateAdminDropdown();  // Refresh the dropdown after deletion
-        })
-        .catch(error => {
-            console.error('Error deleting admin:', error);
-            alert('There was an error deleting the admin.');
-        });
+    // Show SweetAlert confirmation before deleting
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to undo this action!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Proceed with deletion if confirmed
+            fetch(`http://localhost:25025/api/Empolyees/${adminId}`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to delete admin');
+                    }
+                    Swal.fire('Deleted!', 'The admin has been deleted.', 'success');
+                    populateAdminDropdown();  // Refresh the dropdown after deletion
+                })
+                .catch(error => {
+                    console.error('Error deleting admin:', error);
+                    Swal.fire('Error', 'There was an error deleting the admin.', 'error');
+                });
+        }
+    });
 });
