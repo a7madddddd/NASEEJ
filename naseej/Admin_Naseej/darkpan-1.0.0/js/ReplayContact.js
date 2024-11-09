@@ -23,11 +23,14 @@ async function getContactDetails() {
         form.addEventListener('submit', handleSubmit);
     } catch (error) {
         console.error('Error fetching contact details:', error);
-        alert('Failed to load contact details. Please try again.');
+        await Swal.fire({
+            title: 'Error',
+            text: 'Failed to load contact details. Please try again.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
     }
 }
-
-
 
 // Handle form submission
 async function handleSubmit(event) {
@@ -38,7 +41,12 @@ async function handleSubmit(event) {
     const subject = document.getElementById('subject').value;
 
     if (!replyMessage.trim()) {
-        alert('Please enter a reply message');
+        await Swal.fire({
+            title: 'Warning',
+            text: 'Please enter a reply message',
+            icon: 'warning',
+            confirmButtonText: 'OK'
+        });
         return;
     }
 
@@ -63,13 +71,22 @@ async function handleSubmit(event) {
 
         // Clear the form and confirm success
         document.getElementById('replayMessage').value = '';
-        alert('Reply sent successfully!');
+        await Swal.fire({
+            title: 'Success',
+            text: 'Reply sent successfully!',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
     } catch (error) {
         console.error('Error sending reply:', error);
-        alert('Failed to send reply. Please try again.');
+        await Swal.fire({
+            title: 'Error',
+            text: 'Failed to send reply. Please try again.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
     }
 }
-
 
 // Call the function when the page loads
 document.addEventListener('DOMContentLoaded', getContactDetails);
