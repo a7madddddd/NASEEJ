@@ -29,6 +29,11 @@
 
         <!-- Template Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
+
+            <!-- sweet alert css -->
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
     </head>
 
     <body>
@@ -332,6 +337,12 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 
+    <!-- contact  Javascript -->
+    <script src="js/Contact.js"></script>
+
+    <!-- sweet alert Javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
     document.getElementById('contact-form').addEventListener('submit', async function(event) {
         event.preventDefault(); 
@@ -355,17 +366,33 @@
         
             if (response.ok) {
                 const result = await response.json();
-                alert('Message sent successfully!');
+                await Swal.fire({
+                    title: 'Success!',
+                    text: 'Message sent successfully!',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
                 window.location.reload();
             } else {
-                alert('Failed to send message.');
+                await Swal.fire({
+                    title: 'Error!',
+                    text: 'Failed to send message.',
+                    icon: 'error',
+                    confirmButtonText: 'Try Again'
+                });
                 console.error('Failed response:', response);
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Error sending message.');
+            await Swal.fire({
+                title: 'Error!',
+                text: 'Error sending message.',
+                icon: 'error',
+                confirmButtonText: 'Try Again'
+            });
         }
-        });
+    });
+    
         
         
 </script>

@@ -10,7 +10,6 @@
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
-    <link href="../../Admin_Naseej/darkpan-1.0.0/css/ReplyAdmin.css" rel="stylesheet">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,7 +30,6 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -78,15 +76,15 @@
                     </div>
                     <a href="widget.html" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Widgets</a>
                     <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
-                    <a href="table.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Tables</a>
+                    <a href="table.html" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Tables</a>
                     <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Charts</a>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
                                 class="far fa-file-alt me-2"></i>Pages</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="signin.html" class="dropdown-item">Sign In</a>
                             <a href="signup.html" class="dropdown-item">Sign Up</a>
-                            <a href="404.html" class="dropdown-item active">404 Error</a>
+                            <a href="404.html" class="dropdown-item">404 Error</a>
                             <a href="blank.html" class="dropdown-item">Blank Page</a>
                         </div>
                     </div>
@@ -193,70 +191,76 @@
             <!-- Navbar End -->
 
 
+                <!-- Table Start -->
+
+                <div class="container-fluid pt-4 px-4">
+                            <div class="row g-4">
+                                <div class="col-sm-12 col-xl-6">
+                                    <div class="bg-secondary rounded h-100 p-4" id="Contact">
+                                        <h6 class="mb-4">Basic Table</h6>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                        <th scope="col">id</th>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Email</th>
+                                                        <th scope="col">Subject</th>
+                                                        <th scope="col">Message</th>
+                                                        <th scope="col">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="Contact">
 
 
-            <!-- Page Content -->
-            <div class="col-sm-12 col-xl-6">
-                <div class="bg-secondary rounded h-100 p-4">
-                    <h6 class="mb-4">Reply Message</h6>
-                    <form id="Reply-form">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
 
-                    <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="email" name="email" disabled>
-                        <label for="floatingInput">Email address</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="subject" name="subject" disabled>
-                        <label for="floatingPassword">Subject</label>
-                    </div>
-                   
-                    <div class="form-floating">
-                        <textarea class="form-control"  id="replayMessage" rows="4" name="messageReply" style="height: 150px;"></textarea>
-                        <label for="floatingTextarea">Reply Message</label>
-                    </div>
-                    <button type="submit" class="btn btn-outline-success m-2">Send Reply</button>
+                    <!-- <div class="col-12">
+                        <div class="bg-secondary rounded h-100 p-4" id="Contact">
+                            <h6 class="mb-4">Responsive Table</h6>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">id</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Subject</th>
+                                            <th scope="col">Message</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="Contact">
 
-                    </form>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div> -->
                 </div>
             </div>
+            <!-- Table End -->
 
 
-
-
-
-
-
-
-            <!-- <div class="form-container">
-                <br><br><br>
-
-                <h2 class="form-title">Reply Message</h2>
-
-                <form id="Reply-form">
-                    <div class="input-group">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" disabled>
+            <!-- Footer Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary rounded-top p-4">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 text-center text-sm-start">
+                            &copy; <a href="#">Your Site Name</a>, All Right Reserved.
+                        </div>
+                        <div class="col-12 col-sm-6 text-center text-sm-end">
+                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                            Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                            <br>Distributed By: <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                        </div>
                     </div>
-
-                    <div class="input-group">
-                        <label for="subject" class="form-label">Subject</label>
-                        <input type="text" class="form-control" id="subject" name="subject" disabled>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="replayMessage" class="form-label">Reply Message</label>
-                        <textarea class="form-control" id="replayMessage" rows="4" name="messageReply"
-                            placeholder="Write your message here..."></textarea>
-                    </div>
-
-                    <button type="submit" class="submit-btn">Send Message</button>
-                </form>
-
-
-            </div> -->
-            <!-- Page Content -->
-
-
+                </div>
+            </div>
+            <!-- Footer End -->
         </div>
         <!-- Content End -->
 
@@ -276,10 +280,12 @@
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
-    <!-- my js -->
-    <script src="js/ReplayContact.js"></script>
+    <!-- my js  -->
+    <script src="js/ContactApi.js"></script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+
 </body>
 
 </html>
