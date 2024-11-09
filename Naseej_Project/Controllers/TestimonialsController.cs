@@ -35,47 +35,107 @@ namespace Naseej_Project.Controllers
         [HttpGet("GetTestimonial/{id}")]
         public IActionResult GetTestimonial(int id)
         {
-            var Testimonialmessage = _db.Testimonials.FirstOrDefault(m => m.UserId == id);
+            var Testimonialmessage = _db.Testimonials.FirstOrDefault(m => m.Id == id);
 
-            if (Testimonialmessage == null)
-            {
-                return NotFound(new { Message = "Message not found" });
-            }
 
-            var messageDto = new TestimonialDTO
-            {
-                Email = Testimonialmessage.Email,
-                Firstname = Testimonialmessage.Firstname,
-                Lastname = Testimonialmessage.Lastname,
-                TheTestimonials = Testimonialmessage.TheTestimonials,
-
-            };
 
             return Ok(Testimonialmessage);
         }
 
         //////////////////////////////////////////////////////
 
-        [HttpPost("PostTestimonial")]
-        public IActionResult PostMessage([FromForm] TestimonialDTO TestimonialsDto)
+        [HttpPost("AddTestimonial/{id}")]
+        public IActionResult Addtestimonial(int id, [FromBody] TestimonialDTO addtestimonialDTO)
+        {
+            if (id == null || id == 0)
+            {
+                return BadRequest("The id is null or 0 here");
+            }
+
+            var user = _db.Users.FirstOrDefault(u => u.UserId == id);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var addtestimonial = new Testimonial
+            {
+                UserId = id,
+                Firstname = user.FirstName,
+                Lastname = user.LastName,
+                Email = user.Email,
+                TheTestimonials = addtestimonialDTO.TheTestimonials
+            };
+            _db.Testimonials.Add(addtestimonial);
+            _db.SaveChanges();
+            return Ok();
+        }
+        [HttpGet("GetUserById")]
+
+        public IActionResult GetUserById(int id)
         {
 
+            var user = _db.Users.Where(x => x.UserId == id);
 
-            var Testimonials = new Testimonial
-            {
-                Firstname = TestimonialsDto.Firstname,
-                Lastname = TestimonialsDto.Lastname,
-                Email = TestimonialsDto.Email,
-                TheTestimonials = TestimonialsDto.TheTestimonials,
-
-            };
-
-            _db.Testimonials.Add(Testimonials);
-            _db.SaveChanges();
-
-            return Ok(new { Message = " message sent successfully !" });
+            return Ok(user);
         }
 
+        /// /////////////////////////////////////////////////
 
+        [HttpGet("GetTestimonialIsAccept")]
+
+        public IActionResult getTestimonialIsAccept()
+        {
+
+            var Testimonial = _db.Testimonials.Where(x => x.Isaccepted == true);
+
+            return Ok(Testimonial);
+
+        }
+
+        /////////////////////////////////////////////////
+
+        [HttpPut("AcceptTestimonial/{id}")]
+        public IActionResult AcceptTestimonial(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest("You can not use 0 or negative value for id");
+            }
+
+            var testimonial = _db.Testimonials.FirstOrDefault(u => u.Id == id);
+
+            if (testimonial == null)
+            {
+                return NotFound();
+            }
+
+            testimonial.Isaccepted = true;
+            _db.Testimonials.Update(testimonial);
+            _db.SaveChanges();
+
+            return Ok();
+        }
+
+        /////////////////////////////////////////////////
+        
+       
+        [HttpDelete("DeleteTestimonial/{id}")]
+        public IActionResult DeleteTestimonial(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest("You can not use 0 or negative value for id");
+            }
+
+            var testmonial = _db.Testimonials.FirstOrDefault(u => u.Id == id);
+            if (testmonial == null)
+            {
+                return NotFound();
+            }
+            _db.Testimonials.Remove(testmonial);
+            _db.SaveChanges();
+            return Ok();
+        }
     }
 }

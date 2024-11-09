@@ -8,6 +8,7 @@
         <meta content="" name="keywords">
         <meta content="" name="description">
 
+
         <!-- Google Web Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,6 +30,8 @@
 
         <!-- Template Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
+        
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
 
     <body>
@@ -175,34 +178,26 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.3s">
-                        <form id="contact-form">
-                            <div class="row g-3">
-                                <div class="col-lg-12 col-xl-6">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="name" name="" placeholder="Your Name">
-                                        <label for="name">Your Name</label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-xl-6">
-                                    <div class="form-floating">
-                                        <input type="email" class="form-control" id="email" name="" placeholder="Your Email">
-                                        <label for="email">Your Email</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <textarea class="form-control" placeholder="Leave a message here" id="message" name="" style="height: 160px"></textarea>
-                                        <label for="message">Message</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" onclick="SendMessage()">Send Message</button>
-                                </div>
+                    <div class="container-xxl py-5">
+                        <div class="container">
+                            <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                                <h2 class="display-6 mb-4">Submit Your Testimonial</h2>
                             </div>
-                        </form>
+                            <form class="wow fadeInUp" data-wow-delay="0.1s">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <textarea class="form-control" id="testimonialtext" name="message" rows="5"
+                                            placeholder="Your Testimonial" required></textarea>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <button type="button" onclick="Addtestimonial()"
+                                            class="btn btn-primary py-3 px-5">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
+                
                 </div>
             </div>
         </div>
@@ -379,6 +374,11 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+
+
+
+    <script src="js/Testimonials.js"></script>
     </body>
 
 </html>
