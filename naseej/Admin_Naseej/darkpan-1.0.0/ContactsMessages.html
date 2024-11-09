@@ -27,6 +27,7 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
@@ -191,58 +192,75 @@
             <!-- Navbar End -->
 
 
-                <!-- Table Start -->
+            <!-- Table Start -->
 
-                <div class="container-fluid pt-4 px-4">
-                            <div class="row g-4">
-                                <div class="col-sm-12 col-xl-12">
-                                    <div class="bg-secondary rounded h-100 p-4" id="Contact">
-                                        <h6 class="mb-4">Basic Table</h6>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                        <th scope="col">id</th>
-                                                        <th scope="col">Name</th>
-                                                        <th scope="col">Email</th>
-                                                        <th scope="col">Subject</th>
-                                                        <th scope="col">Message</th>
-                                                        <th scope="col">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="Contact">
-
-
-                                            </tbody>
-                                        </table>
-                                    </div>
+            <!-- Table Start -->
+            <!-- Modal for Replying to Messages -->
+            <div class="modal fade" id="replyModal" tabindex="-1" aria-labelledby="replyModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="replyModalLabel">Reply to Message</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="Reply-form">
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" id="email" name="email" disabled>
+                                    <label for="floatingInput">Email address</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="subject" name="subject" disabled>
+                                    <label for="floatingPassword">Subject</label>
                                 </div>
 
-                    <!-- <div class="col-12">
-                        <div class="bg-secondary rounded h-100 p-4" id="Contact">
-                            <h6 class="mb-4">Responsive Table</h6>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">id</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Email</th>
-                                            <th scope="col">Subject</th>
-                                            <th scope="col">Message</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="Contact">
-
-
-                                    </tbody>
-                                </table>
-                            </div>
+                                <div class="form-floating">
+                                    <textarea class="form-control" id="replayMessage" rows="4" name="messageReply"
+                                        ></textarea>
+                                    <label for="floatingTextarea">Reply Message</label>
+                                </div>
+                                <button type="submit" class="btn btn-outline-success m-2">Send Reply</button>
+                            </form>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
             </div>
+
+            <!-- Your Table for Displaying Contact Messages -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-12">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Basic Table</h6>
+                            <table class="table" id="contactTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Subject</th>
+                                        <th scope="col">Message</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Rows will be dynamically inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Table End -->
+
+
+
+
+
+
+
+
 
 
             <!-- Footer Start -->
@@ -279,7 +297,7 @@
     <script src="lib/tempusdominus/js/moment.min.js"></script>
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- my js  -->
     <script src="js/ContactApi.js"></script>
     <!-- Template Javascript -->
