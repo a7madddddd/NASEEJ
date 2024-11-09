@@ -18,10 +18,13 @@ namespace Naseej_Project.Controllers
     {
 
         private readonly MyDbContext _db;
+        private readonly IConfiguration _configuration;
 
-        public loginController(MyDbContext db)
+        public loginController(MyDbContext db, IConfiguration configuration)
         {
             _db = db;
+            _configuration = configuration;
+
         }
 
 

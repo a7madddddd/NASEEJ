@@ -80,8 +80,8 @@ async function loginUser() {
     const formData = new FormData(form);
 
     const data = {
-        email: formData.get('email'),      // Use 'email' instead of 'phoneNumber'
-        passwordHash: formData.get('password')  // Ensure 'password' matches the backend property name
+        email: formData.get('email'),
+        passwordHash: formData.get('password')
     };
 
     try {
@@ -93,17 +93,24 @@ async function loginUser() {
 
         if (response.ok) {
             const result = await response.json();
-            // Show success message using SweetAlert
+
+            // Store JWT token in sessionStorage
+            if (result.Token) {
+                sessionStorage.setItem('jwtToken', result.Token);
+            }
+
+            // Show success message
             Swal.fire({
                 icon: 'success',
                 title: 'Login Successful',
                 text: 'You have successfully logged in!',
                 confirmButtonText: 'OK'
+            }).then(() => {
+                // Redirect or load user dashboard
+                window.location.href = 'index.html';
             });
-            console.log("User ID:", result.UserId); // Log UserId, or handle it as needed
         } else {
             const error = await response.json();
-            // Show error message using SweetAlert
             Swal.fire({
                 icon: 'error',
                 title: 'Login Failed',
@@ -113,7 +120,6 @@ async function loginUser() {
         }
     } catch (error) {
         console.error("Error logging in:", error);
-        // Show error message for unexpected issues
         Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -122,3 +128,5 @@ async function loginUser() {
         });
     }
 }
+
+
