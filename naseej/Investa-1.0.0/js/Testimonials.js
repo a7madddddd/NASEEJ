@@ -150,76 +150,96 @@ function testTokenParsing() {
 
 
 
-
-
-// Function to fetch and display testimonials
 async function fetchAndDisplayTestimonials() {
   try {
-      const response = await fetch('http://localhost:25025/api/Testimonials/GetAllTestimonials');
-      const testimonials = await response.json();
-      
-      // Filter accepted testimonials
-      const acceptedTestimonials = testimonials.filter(testimonial => testimonial.isaccepted);
-      
-      // Get the carousel container
-      const carouselContainer = document.querySelector('.testimonial-carousel');
-      
-      // Clear existing testimonials
-      carouselContainer.innerHTML = '';
-      
-      // Create and append testimonial items
-      acceptedTestimonials.forEach((testimonial, index) => {
-          const testimonialHTML = `
-              <div class="testimonial-item bg-white rounded p-4 wow fadeInUp" data-wow-delay="${0.3 + (index * 0.2)}s">
-                  <div class="d-flex row">
-                      <div><i class="fas fa-quote-left fa-3x text-dark me-3"></i></div>
-                      <p class="mt-4">${testimonial.theTestimonials}</p>
-                  </div>
-                  <div class="d-flex justify-content-end">
-                      <div class="my-auto text-end">
-                          <h5>${testimonial.firstname} ${testimonial.lastname}</h5>
-                          <p class="mb-0">${testimonial.email}</p>
-                      </div>
-                      <div class="bg-white rounded-circle ms-3">
-                          <img src="../WhatsApp_Image_2024-11-06_at_17.51.49_8309486c.jpg"
-                              class="rounded-circle p-2"
-                              style="width: 80px; height: 80px; border: 1px solid; border-color: var(--bs-primary);"
-                              alt="${testimonial.firstname}">
-                      </div>
-                  </div>
-              </div>
-          `;
-          carouselContainer.insertAdjacentHTML('beforeend', testimonialHTML);
-      });
+    const response = await fetch('http://localhost:25025/api/Testimonials/GetAllTestimonials');
+    const testimonials = await response.json();
 
-      // Reinitialize Owl Carousel with modified settings
-      $('.testimonial-carousel').owlCarousel({
-          loop: true,
-          margin: 25,
-          dots: true,
-          autoplay: true,
-          smartSpeed: 1000,
-          autoplayTimeout: 4000,
-          autoplayHoverPause: true,
-          items: 1,
-          responsive: {
-              0: {
-                  items: 1
-              },
-              576: {
-                  items: 1
-              },
-              768: {
-                  items: 1
-              },
-              992: {
-                  items: 1
-              }
-          }
-      });
+    // Filter only accepted testimonials
+    const acceptedTestimonials = testimonials.filter(t => t.isaccepted);
+
+    // Container structure with carousel placeholder
+    const containerHTML = `
+      <div class="container-fluid testimonial bg-light py-5">
+        <div class="container py-5">
+          <div class="row g-4 align-items-center">
+            <div class="col-xl-4 wow fadeInLeft" data-wow-delay="0.1s">
+              <div class="h-100 rounded">
+                <h4 class="text-primary">Our Feedbacks</h4>
+                <h1 class="display-4 mb-4">Clients are Talking</h1>
+                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum atque soluta unde itaque.</p>
+                <a class="btn btn-primary rounded-pill text-white py-3 px-5" href="#">Read All Reviews <i class="fas fa-arrow-right ms-2"></i></a>
+              </div>
+            </div>
+            <div class="col-xl-8">
+              <div class="testimonial-carousel owl-carousel wow fadeInUp" data-wow-delay="0.1s">
+                <!-- Testimonial items will be injected here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Insert the container structure into the #test container
+    const testContainer = document.getElementById('test');
+    if (testContainer) {
+      testContainer.innerHTML = containerHTML;
+    } else {
+      console.error("Container with ID 'test' not found.");
+      return;
+    }
+
+    // Select the carousel container where testimonials will be added
+    const carouselContainer = testContainer.querySelector('.testimonial-carousel');
+
+    // Create and append testimonial items inside the carousel
+    acceptedTestimonials.forEach((testimonial, index) => {
+      const testimonialItemHTML = `
+        <div class="testimonial-item bg-white rounded p-4 wow fadeInUp" data-wow-delay="${0.3 + (index * 0.2)}s">
+          <div class="d-flex">
+            <div><i class="fas fa-quote-left fa-3x text-dark me-3"></i></div>
+            <p class="mt-4">${testimonial.theTestimonials}</p>
+          </div>
+          <div class="d-flex justify-content-end">
+            <div class="my-auto text-end">
+              <h5>${testimonial.firstname} ${testimonial.lastname}</h5>
+              <p class="mb-0">${testimonial.email}</p>
+            </div>
+            <div class="bg-white rounded-circle ms-3">
+              <img src="../WhatsApp_Image_2024-11-06_at_17.51.49_8309486c.jpg"
+                   class="rounded-circle p-2"
+                   style="width: 80px; height: 80px; border: 1px solid; border-color: var(--bs-primary);"
+                   alt="${testimonial.firstname}">
+            </div>
+          </div>
+        </div>
+      `;
+      carouselContainer.insertAdjacentHTML('beforeend', testimonialItemHTML);
+    });
+
+    // Initialize Owl Carousel with two items displayed
+    $('.testimonial-carousel').owlCarousel({
+      loop: true,
+      margin: 25,
+      dots: true,
+      autoplay: true,
+      smartSpeed: 1000,
+      autoplayTimeout: 4000,
+      autoplayHoverPause: true,
+      items: 2,  // Display two items at a time
+      animateOut: 'fadeOut',
+      animateIn: 'fadeIn',
+      responsive: {
+        0: { items: 1 },
+        576: { items: 1 },
+        768: { items: 2 },
+        992: { items: 2 }
+      }
+    });
 
   } catch (error) {
-      console.error('Error fetching testimonials:', error);
+    console.error('Error fetching testimonials:', error);
   }
 }
 
