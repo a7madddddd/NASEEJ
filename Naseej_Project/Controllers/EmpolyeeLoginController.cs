@@ -24,7 +24,7 @@ namespace Naseej_Project.Controllers
             _logger = logger;
             _db = db;
         }
-        
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] EmpolyeeLoginDto EmpolyeesDTO)
         {
@@ -77,7 +77,9 @@ namespace Naseej_Project.Controllers
                     EmployeeId = employee.EmployeeId,
                     Email = employee.Email,
                     FullName = employee.FullName,
-                    IsAdmin = employee.IsAdmin
+                    IsAdmin = employee.IsAdmin,
+                    Image = employee.Image, // Add image path to payload
+
                 });
 
             }
@@ -103,12 +105,13 @@ namespace Naseej_Project.Controllers
 
             var claims = new[]
             {
-        new Claim(JwtRegisteredClaimNames.Sub, employee.EmployeeId.ToString()),
-        new Claim(JwtRegisteredClaimNames.Email, employee.Email),
-        new Claim("fullName", employee.FullName),
-        new Claim("isAdmin", employee.IsAdmin.ToString()),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-    };
+                    new Claim(JwtRegisteredClaimNames.Sub, employee.EmployeeId.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Email, employee.Email),
+                    new Claim("fullName", employee.FullName),
+                    new Claim("isAdmin", employee.IsAdmin.ToString()),
+                    new Claim("image", employee.Image) ,// Add the image path as a claim
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                };
 
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],

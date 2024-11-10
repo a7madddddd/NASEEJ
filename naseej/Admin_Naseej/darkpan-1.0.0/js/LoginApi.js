@@ -64,7 +64,7 @@ async function handleLogin(event) {
         if (data.isAdmin) {
             window.location.href = 'index.html';
         } else {
-            window.location.href = 'user-dashboard.html';
+            window.location.href = 'Users.html';
         }
 
     } catch (error) {
