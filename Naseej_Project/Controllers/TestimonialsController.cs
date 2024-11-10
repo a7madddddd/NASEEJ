@@ -110,16 +110,22 @@ namespace Naseej_Project.Controllers
                 return NotFound();
             }
 
-            testimonial.Isaccepted = true;
+            if (testimonial.Isaccepted == true)
+            {
+                return Conflict("This testimonial is already accepted."); // Return a conflict if already accepted
+            }
+
+            testimonial.Isaccepted = true; // Mark as accepted
             _db.Testimonials.Update(testimonial);
             _db.SaveChanges();
 
             return Ok();
         }
 
+
         /////////////////////////////////////////////////
-        
-       
+
+
         [HttpDelete("DeleteTestimonial/{id}")]
         public IActionResult DeleteTestimonial(int id)
         {
@@ -137,5 +143,29 @@ namespace Naseej_Project.Controllers
             _db.SaveChanges();
             return Ok();
         }
+
+
+
+
+
+        /// <summary>
+        /// ///////
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetTestimonialAdmin")]
+        public IActionResult GetTestimonialAdmin()
+        {
+            var AdminTestimonials = _db.Testimonials
+                .Select(t => new {
+                    t.Id,
+                    t.Firstname,
+                    t.Lastname,
+                    t.Email,
+                    t.TheTestimonials,
+                }).ToList();
+
+            return Ok(AdminTestimonials);
+        }
+
     }
 }
