@@ -152,4 +152,76 @@ function testTokenParsing() {
 
 
 
+// Function to fetch and display testimonials
+async function fetchAndDisplayTestimonials() {
+  try {
+      const response = await fetch('http://localhost:25025/api/Testimonials/GetAllTestimonials');
+      const testimonials = await response.json();
+      
+      // Filter accepted testimonials
+      const acceptedTestimonials = testimonials.filter(testimonial => testimonial.isaccepted);
+      
+      // Get the carousel container
+      const carouselContainer = document.querySelector('.testimonial-carousel');
+      
+      // Clear existing testimonials
+      carouselContainer.innerHTML = '';
+      
+      // Create and append testimonial items
+      acceptedTestimonials.forEach((testimonial, index) => {
+          const testimonialHTML = `
+              <div class="testimonial-item bg-white rounded p-4 wow fadeInUp" data-wow-delay="${0.3 + (index * 0.2)}s">
+                  <div class="d-flex row">
+                      <div><i class="fas fa-quote-left fa-3x text-dark me-3"></i></div>
+                      <p class="mt-4">${testimonial.theTestimonials}</p>
+                  </div>
+                  <div class="d-flex justify-content-end">
+                      <div class="my-auto text-end">
+                          <h5>${testimonial.firstname} ${testimonial.lastname}</h5>
+                          <p class="mb-0">${testimonial.email}</p>
+                      </div>
+                      <div class="bg-white rounded-circle ms-3">
+                          <img src="../WhatsApp_Image_2024-11-06_at_17.51.49_8309486c.jpg"
+                              class="rounded-circle p-2"
+                              style="width: 80px; height: 80px; border: 1px solid; border-color: var(--bs-primary);"
+                              alt="${testimonial.firstname}">
+                      </div>
+                  </div>
+              </div>
+          `;
+          carouselContainer.insertAdjacentHTML('beforeend', testimonialHTML);
+      });
 
+      // Reinitialize Owl Carousel with modified settings
+      $('.testimonial-carousel').owlCarousel({
+          loop: true,
+          margin: 25,
+          dots: true,
+          autoplay: true,
+          smartSpeed: 1000,
+          autoplayTimeout: 4000,
+          autoplayHoverPause: true,
+          items: 1,
+          responsive: {
+              0: {
+                  items: 1
+              },
+              576: {
+                  items: 1
+              },
+              768: {
+                  items: 1
+              },
+              992: {
+                  items: 1
+              }
+          }
+      });
+
+  } catch (error) {
+      console.error('Error fetching testimonials:', error);
+  }
+}
+
+// Call the function when the document is ready
+document.addEventListener('DOMContentLoaded', fetchAndDisplayTestimonials);
