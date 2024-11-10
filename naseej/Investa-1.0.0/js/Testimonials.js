@@ -1,112 +1,217 @@
-async function populateUserData() {
-  // Retrieve the JWT token from sessionStorage
-  const token = sessionStorage.getItem("jwtToken");
+// Function to get claims from token
+function getClaimsFromToken(token) {
+  try {
+    const decodedToken = jwt_decode(token);
+    return {
+      // Map standard .NET ClaimTypes to their full URIs
+      userId: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"],
+      email: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"],
+      firstName: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname"],
+      lastName: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"]
+    };
+  } catch (error) {
+    console.error("Error decoding token:", error);
+    throw new Error("Invalid token format");
+  }
+}
 
+// Function to handle form submission
+async function handleTestimonialSubmit(event) {
+  event.preventDefault();
+
+  const token = sessionStorage.getItem("jwtToken");
   if (!token) {
-    console.error("JWT token not found in session storage.");
+    await Swal.fire({
+      icon: 'warning',
+      title: 'Authentication Required',
+      text: 'Please log in to submit a testimonial'
+    });
     return;
   }
 
   try {
-    // Decode the JWT to get the userId
-    const decodedToken = jwt_decode(token);
-    const userId = decodedToken.UserId;  // Assuming 'userId' is stored in the JWT
+    const claims = getClaimsFromToken(token);
 
-    // Fetch user data from the API using the userId
-    const response = await fetch(`http://localhost:25025/api/Users/${userId}`, {
-      method: "GET",
+    // Create testimonial data object
+    const testimonialData = {
+      userId: parseInt(claims.userId), // Convert to number since it comes as string
+      firstname: claims.firstName,
+      lastname: claims.lastName,
+      email: claims.email,
+      theTestimonials: document.getElementById('theTestimonials').value.trim()
+    };
+
+    // Validate message
+    if (!testimonialData.theTestimonials) {
+      await Swal.fire({
+        icon: 'warning',
+        title: 'Empty Message',
+        text: 'Please enter your testimonial message'
+      });
+      return;
+    }
+
+    // Submit testimonial
+    const response = await fetch(`http://localhost:25025/api/Testimonials/AddTestimonial/${claims.userId}`, {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}` // Pass JWT in the Authorization header
-      }
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(testimonialData)
     });
 
-    if (response.ok) {
-      // Parse the JSON response
-      const userData = await response.json();
-
-      // Populate the form fields with user data and disable them
-      document.getElementById("firstname").value = userData.firstName;
-      document.getElementById("firstname").disabled = true;
-
-      document.getElementById("lastname").value = userData.lastName;
-      document.getElementById("lastname").disabled = true;
-
-      document.getElementById("email").value = userData.email;
-      document.getElementById("email").disabled = true;
-    } else {
-      console.error("Failed to fetch user data:", response.statusText);
+    if (!response.ok) {
+      throw new Error('Failed to submit testimonial');
     }
+
+    // Show success message
+    await Swal.fire({
+      icon: 'success',
+      title: 'Success!',
+      text: 'Your testimonial has been submitted successfully'
+    });
+
+    // Clear the message field
+    document.getElementById('theTestimonials').value = '';
+
   } catch (error) {
-    console.error("Error fetching user data:", error);
+    console.error('Error:', error);
+    await Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Failed to submit testimonial. Please try again.'
+    });
   }
 }
 
-// Call the function on page load
-document.addEventListener("DOMContentLoaded", populateUserData);
-
-async function sendMessage(event) {
-  event.preventDefault();  // Prevent the default form submission behavior
-
-  // Get the JWT token from sessionStorage
-  let token = sessionStorage.getItem("jwtToken");
-
-  // Check if the user is logged in
+// Function to populate form with user data from token
+function populateUserDataFromToken() {
+  const token = sessionStorage.getItem("jwtToken");
   if (!token) {
-    await Swal.fire({
-      icon: "warning",
-      title: "Login Required",
-      text: "You need to be logged in to send a message.",
-    });
+    console.error("No token found");
     return;
   }
 
-  // Decode the JWT to get the userId
-  const decodedToken = jwt_decode(token);
-  const userId = decodedToken.UserId;  // Assuming 'userId' is in the token
+  try {
+    const claims = getClaimsFromToken(token);
 
-  // Get the user data and message from the form inputs
-  const firstName = document.getElementById("firstname").value;
-  const lastName = document.getElementById("lastname").value;
-  const email = document.getElementById("email").value;
-  const message = document.getElementById("theTestimonials").value;
+    // Populate and disable form fields
+    document.getElementById('firstname').value = claims.firstName;
+    document.getElementById('firstname').disabled = true;
 
-  // Prepare the data object
-  let url = `http://localhost:25025/api/Testimonials/AddTestimonial/${userId}`;
-  let data = {
-    firstName,
-    lastName,
-    email,
-    message
-  };
+    document.getElementById('lastname').value = claims.lastName;
+    document.getElementById('lastname').disabled = true;
 
-  // Send the POST request with the token in the Authorization header
-  let response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`  // Pass the JWT token in the Authorization header
-    },
-    body: JSON.stringify(data),
-  });
+    document.getElementById('email').value = claims.email;
+    document.getElementById('email').disabled = true;
 
-  // Check the response and display appropriate alerts
-  if (response.ok) {
-    await Swal.fire({
-      icon: "success",
-      title: "Message Sent",
-      text: "Your message has been sent successfully.",
-    });
-    // Clear the message input field
-    document.getElementById("theTestimonials").value = "";
-  } else {
-    await Swal.fire({
-      icon: "error",
-      title: "Submission Failed",
-      text: "Failed to send your message.",
+  } catch (error) {
+    console.error("Error populating form:", error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Failed to load user information'
     });
   }
 }
 
-// Bind the function to the form submission
-document.getElementById("contact-form").addEventListener("submit", sendMessage);
+// Initialize everything when document loads
+document.addEventListener('DOMContentLoaded', () => {
+  populateUserDataFromToken();
+
+  const form = document.getElementById('testimonialForm');
+  if (form) {
+    form.addEventListener('submit', handleTestimonialSubmit);
+  }
+});
+
+// Test function to verify token parsing
+function testTokenParsing() {
+  const token = sessionStorage.getItem("jwtToken");
+  if (token) {
+    try {
+      const claims = getClaimsFromToken(token);
+      console.log("Parsed claims:", {
+        userId: claims.userId,
+        email: claims.email,
+        firstName: claims.firstName,
+        lastName: claims.lastName
+      });
+    } catch (error) {
+      console.error("Token parsing test failed:", error);
+    }
+  } else {
+    console.log("No token found in sessionStorage");
+  }
+}
+
+
+
+
+
+
+
+
+
+async function loadTestimonials() {
+  try {
+    const response = await fetch('http://localhost:25025/api/Testimonials/GetAllTestimonials');
+    console.log('Response Status:', response.status);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch testimonials. Status: ${response.status}`);
+    }
+
+    const testimonials = await response.json();
+    console.log('Testimonials:', testimonials);
+
+    // Filter only accepted testimonials
+    const acceptedTestimonials = testimonials.filter(t => t.isaccepted);
+    const testimonialContainer = document.querySelector('.testimonial-carousel');
+    testimonialContainer.innerHTML = '';
+
+    acceptedTestimonials.forEach(testimonial => {
+      const testimonialItem = document.createElement('div');
+      testimonialItem.classList.add('testimonial-item', 'bg-white', 'rounded', 'p-4', 'wow', 'fadeInUp');
+      testimonialItem.setAttribute('data-wow-delay', '0.3s');
+
+      testimonialItem.innerHTML = `
+        <div class="d-flex">
+          <div><i class="fas fa-quote-left fa-3x text-dark me-3"></i></div>
+          <p class="mt-4">${testimonial.theTestimonials}</p>
+        </div>
+        <div class="d-flex justify-content-end">
+          <div class="my-auto text-end">
+            <h5>${testimonial.firstname} ${testimonial.lastname}</h5>
+            <p class="mb-0">${testimonial.email}</p>
+          </div>
+          <div class="bg-white rounded-circle ms-3">
+            <img src="${testimonial.imageUrl || '../WhatsApp_Image_2024-11-06_at_17.51.49_8309486c.jpg'}"
+              class="rounded-circle p-2" style="width: 80px; height: 80px; border: 1px solid; border-color: var(--bs-primary);" alt="Client Image">
+          </div>
+        </div>
+      `;
+      testimonialContainer.appendChild(testimonialItem);
+    });
+
+    // Initialize Owl Carousel
+    $('.testimonial-carousel').owlCarousel({
+      loop: true,
+      margin: 10,
+      nav: false,
+      items: 2,
+      autoplay: true,
+      autoplayTimeout: 5000,
+      dots: true,
+      animateOut: 'fadeOut',
+      animateIn: 'fadeIn'
+    });
+
+  } catch (error) {
+    console.error('Error loading testimonials:', error);
+    alert("An error occurred while loading testimonials. Please check the console for details.");
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadTestimonials);

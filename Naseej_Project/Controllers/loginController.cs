@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Naseej_Project.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Naseej_Project.Controllers
 {
@@ -106,21 +108,65 @@ namespace Naseej_Project.Controllers
         {
             if (string.IsNullOrEmpty(loginDto.Email) || string.IsNullOrEmpty(loginDto.PasswordHash))
             {
-                return BadRequest(new { message = "Email Address and password are required." }); // Return JSON object instead of a string
+                return BadRequest(new { message = "Email Address and password are required." });
             }
 
             var user = _db.Users.FirstOrDefault(u => u.Email == loginDto.Email);
             if (user == null)
             {
-                return Unauthorized(new { message = "Invalid Email Address or password." }); // Return JSON object instead of a string
+                return Unauthorized(new { message = "Invalid Email Address or password." });
             }
 
             if (!BCrypt.Net.BCrypt.Verify(loginDto.PasswordHash, user.PasswordHash))
             {
-                return Unauthorized(new { message = "Invalid Email Address or password." }); // Return JSON object instead of a string
+                return Unauthorized(new { message = "Invalid Email Address or password." });
             }
 
-            return Ok(new { Message = "Login successful", UserId = user.UserId, FirstName = user.FirstName });
+            
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.GivenName, user.FirstName ?? ""),
+                new Claim(ClaimTypes.Surname, user.LastName ?? "")
+            };
+
+            
+            var token = GenerateJwtToken(claims);
+
+            
+            return Ok(new
+            {
+                Message = "Login successful",
+                Token = token,
+                UserId = user.UserId,
+                FirstName = user.FirstName
+            });
+        }
+
+        private string GenerateJwtToken(Claim[] claims)
+        {
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddHours(6),
+                signingCredentials: credentials
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        [Authorize]
+        [HttpGet("protected-endpoint")]
+        public IActionResult ProtectedEndpoint()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return Ok(new { UserId = userId, Message = "You accessed a protected endpoint" });
         }
     }
 }
+

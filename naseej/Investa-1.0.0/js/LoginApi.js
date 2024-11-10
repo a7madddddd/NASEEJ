@@ -73,8 +73,6 @@ async function registerUser() {
 
 
 
-
-// login function here 
 async function loginUser() {
     const form = document.getElementById('loginForm');
     const formData = new FormData(form);
@@ -85,32 +83,43 @@ async function loginUser() {
     };
 
     try {
+        console.log('Sending login request with data:', data); // Debug log
+
         const response = await fetch('http://localhost:25025/api/login/Login', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'  // Add this line
+            },
             body: JSON.stringify(data)
         });
 
+        console.log('Raw response:', response); // Debug log
+
         if (response.ok) {
             const result = await response.json();
+            console.log('Login response:', result); // Debug log
 
-            // Store JWT token in sessionStorage
-            if (result.Token) {
-                sessionStorage.setItem('jwtToken', result.Token);
+            // Check if token exists and is not undefined
+            if (result.token) {  // Note: might be 'token' instead of 'Token'
+                sessionStorage.setItem('jwtToken', result.token);
+                console.log('Token stored:', result.token); // Debug log
+                console.log('SessionStorage after storing:', sessionStorage.getItem('jwtToken')); // Verify storage
+            } else {
+                console.log('No token found in response'); // Debug log
             }
 
-            // Show success message
             Swal.fire({
                 icon: 'success',
                 title: 'Login Successful',
                 text: 'You have successfully logged in!',
                 confirmButtonText: 'OK'
             }).then(() => {
-                // Redirect or load user dashboard
                 window.location.href = 'index.html';
             });
         } else {
             const error = await response.json();
+            console.log('Error response:', error); // Debug log
             Swal.fire({
                 icon: 'error',
                 title: 'Login Failed',
@@ -128,5 +137,4 @@ async function loginUser() {
         });
     }
 }
-
 
