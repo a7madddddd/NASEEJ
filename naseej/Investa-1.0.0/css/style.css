@@ -1,4 +1,3 @@
-
 /*** Spinner Start ***/
 /*** Spinner ***/
 #spinner {
@@ -13,6 +12,7 @@
     visibility: visible;
     opacity: 1;
 }
+
 /*** Spinner End ***/
 
 .back-to-top {
@@ -113,6 +113,7 @@
     background: var(--bs-white) !important;
     color: var(--bs-dark) !important;
 }
+
 /*** Topbar Start ***/
 .topbar {
     padding: 2px 10px 2px 20px;
@@ -121,9 +122,10 @@
 
 @media (max-width: 768px) {
     .topbar {
-        display: none;    
+        display: none;
     }
 }
+
 /*** Topbar End ***/
 
 /*** Navbar ***/
@@ -156,6 +158,7 @@
     top: 0;
     left: 0;
 }
+
 .navbar .navbar-nav .nav-item::after {
     bottom: 0;
     right: 0;
@@ -237,6 +240,7 @@
 #searchModal .modal-content {
     background: rgba(250, 250, 250, .6);
 }
+
 /*** Navbar End ***/
 
 /*** Carousel Header Start ***/
@@ -301,10 +305,21 @@
 }
 
 @keyframes RotateMoveCircle {
-    0% {top: -400px;}
-    50%   {right: -200px;}
-    75%   {top: -200px;}
-    100%  {top: -400px;}
+    0% {
+        top: -400px;
+    }
+
+    50% {
+        right: -200px;
+    }
+
+    75% {
+        top: -200px;
+    }
+
+    100% {
+        top: -400px;
+    }
 }
 
 .header-carousel .header-carousel-item-img-1::after,
@@ -323,9 +338,17 @@
 }
 
 @keyframes RotateMoveRight {
-    0%   {left: 0px;}
-    50%   {left: 70px;}
-    100%  {left: 0px;}
+    0% {
+        left: 0px;
+    }
+
+    50% {
+        left: 70px;
+    }
+
+    100% {
+        left: 0px;
+    }
 }
 
 .header-carousel .header-carousel-item::before {
@@ -343,9 +366,17 @@
 }
 
 @keyframes RotateMoveLeft {
-    0%   {left: -240px;}
-    50%   {left: -300px;}
-    100%  {left: -240px;}
+    0% {
+        left: -240px;
+    }
+
+    50% {
+        left: -300px;
+    }
+
+    100% {
+        left: -240px;
+    }
 }
 
 .header-carousel .header-carousel-item::after {
@@ -378,6 +409,7 @@
         margin-left: 0 !important;
         padding: 0 10px;
     }
+
     .header-carousel-item img {
         height: 700px;
         object-fit: cover;
@@ -392,6 +424,7 @@
         left: 65%;
     }
 }
+
 /*** Header Carousel End ***/
 
 /*** Single Page Hero Header Start ***/
@@ -439,10 +472,21 @@
 }
 
 @keyframes RotateMoveCircle {
-    0% {top: -200px;}
-    50%   {right: -100px;}
-    75%   {top: -100px;}
-    100%  {top: -200px;}
+    0% {
+        top: -200px;
+    }
+
+    50% {
+        right: -100px;
+    }
+
+    75% {
+        top: -100px;
+    }
+
+    100% {
+        top: -200px;
+    }
 }
 
 
@@ -459,6 +503,7 @@
     animation: RotateMoveRight 5s linear infinite;
     z-index: 2 !important;
 }
+
 /*** Single Page Hero Header End ***/
 
 
@@ -476,6 +521,7 @@
     left: 0;
     background: var(--bs-primary);
 }
+
 /*** About End ***/
 
 /*** Service Start ***/
@@ -558,6 +604,7 @@
 .service .service-item:hover .service-content .service-content-inner a.h4:hover {
     color: var(--bs-primary) !important;
 }
+
 /*** Service End ***/
 
 /*** Project Start ***/
@@ -604,8 +651,8 @@
     position: relative;
     width: 75%;
     height: 100%;
-    bottom: 50%; 
-    left: 50%; 
+    bottom: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
     box-shadow: 0 0 45px rgba(0, 0, 0, 0.08);
 }
@@ -668,6 +715,7 @@
     border-radius: 40px;
     border: 8px solid var(--bs-primary);
 }
+
 /*** Project End ***/
 
 /*** Blog Start ***/
@@ -850,6 +898,7 @@
 .team .team-item:hover .team-content .team-content-inner h4 {
     color: var(--bs-dark) !important;
 }
+
 /*** Team End ***/
 
 /*** Testimonial Start ***/
@@ -880,6 +929,7 @@
     width: 40px;
     background: var(--bs-primary);
 }
+
 /*** Testimonial End ***/
 
 /*** FAQ'S Start ***/
@@ -916,6 +966,7 @@
 .footer {
     background: var(--bs-dark);
 }
+
 .footer .footer-item a {
     line-height: 35px;
     color: var(--bs-body);
@@ -946,6 +997,7 @@
 .footer .footer-item-post .footer-btn a:hover {
     color: var(--bs-dark);
 }
+
 /*** Footer End ***/
 
 /*** copyright Start ***/
@@ -953,4 +1005,26 @@
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     background: var(--bs-dark) !important;
 }
+
 /*** copyright end ***/
+/* /////////////////////////////////////// */
+.testimonial-item p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+    /* Ensures text will wrap to a new line */
+}
+
+.testimonial-item {
+
+    width: 100% !important;
+    height: 37vh !important;
+}
+
+.testimonial_paragraph {
+    height: 10vh;
+    /* Adjust this value as needed */
+    overflow: hidden;
+    /* Optional: hides overflowed text */
+}

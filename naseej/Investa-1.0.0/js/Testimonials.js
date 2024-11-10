@@ -199,7 +199,7 @@ async function fetchAndDisplayTestimonials() {
         <div class="testimonial-item bg-white rounded p-4 wow fadeInUp" data-wow-delay="${0.3 + (index * 0.2)}s">
           <div class="d-flex">
             <div><i class="fas fa-quote-left fa-3x text-dark me-3"></i></div>
-            <p class="mt-4">${testimonial.theTestimonials}</p>
+            <p class="mt-4 testimonial_paragraph">${testimonial.theTestimonials}</p>
           </div>
           <div class="d-flex justify-content-end">
             <div class="my-auto text-end">
