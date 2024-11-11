@@ -312,7 +312,7 @@
 
 
 .super-admin-view .admin-only {
-    display: block;
+    display: inline-table;
 }
 
 .admin-view .admin-only {
