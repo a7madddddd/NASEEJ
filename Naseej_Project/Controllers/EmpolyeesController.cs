@@ -147,7 +147,8 @@ namespace Naseej_Project.Controllers
             }
             if (!string.IsNullOrWhiteSpace(employeesDto.PasswordHash))
             {
-                employee.PasswordHash = employeesDto.PasswordHash;
+                // Hash the new password before storing it
+                employee.PasswordHash = BCrypt.Net.BCrypt.HashPassword(employeesDto.PasswordHash);
             }
 
             // Update image if a new one is provided

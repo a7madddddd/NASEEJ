@@ -223,7 +223,7 @@
                         <div class="bg-secondary rounded h-100 p-4">
                             <h6 class="mb-4">Add Admins</h6>
                             <form id="addAdminForm" enctype="multipart/form-data" method="POST"
-                                action="http://localhost:25025/api/Empolyees">
+                                action="http://localhost:25025/api/Empolyees" class="admin-only">
                                 <!-- Adjust action URL based on your controller -->
                                 <!-- Full Name -->
                                 <div class="mb-3">
@@ -264,15 +264,18 @@
                             <h6 class="mb-4">Edit Admins</h6>
 
                             <!-- Employee Selection Dropdown -->
-                            <div class="mb-3">
-                                <label for="employeeDropdown" class="form-label">Select Admin to Edit</label>
-                                <select id="employeeDropdown" class="form-select" required>
-                                    <option value="">Select an Employee</option>
-                                </select>
-                            </div>
+                            
 
                             <!-- Form for Editing Employee Details -->
-                            <form id="EditEmployeeForm">
+                            <form id="EditEmployeeForm" class="admin-only">
+                                <div class="mb-3">
+                                    <label for="employeeDropdown" class="form-label">Select Admin to Edit</label>
+                                    <select id="employeeDropdown" class="form-select" required>
+                                        <option value="">Select an Admin</option>
+                                    </select>
+                                </div>
+
+
                                 <div class="mb-3">
                                     <label for="EditEmployeeName" class="form-label">Full Name</label>
                                     <input type="text" class="form-control" id="EditEmployeeName" name="FullName"
@@ -288,7 +291,7 @@
                                 <div class="mb-3">
                                     <label for="EditEmployeePassword" class="form-label">Password</label>
                                     <input type="password" class="form-control" id="EditEmployeePassword"
-                                        name="Password">
+                                        name="PasswordHash">
                                 </div>
 
                                 <div class="mb-3">
@@ -297,7 +300,7 @@
                                         name="imageFile">
                                 </div>
 
-                                <button type="submit" class="btn btn-primary">Edit</button>
+                                <button type="submit" class="btn btn-primary ">Edit Admin</button>
                             </form>
                         </div>
                     </div>
@@ -307,14 +310,14 @@
                     <div class="col-sm-12 col-xl-4">
                         <div class="bg-secondary rounded h-100 p-4">
                             <h6 class="mb-4">Delete Admins</h6>
-                            <form id="deleteAdminForm">
+                            <form id="deleteAdminForm" class="admin-only">
                                 <div class="mb-3">
                                     <label for="adminDropdown" class="form-label">Select Admin to Delete</label>
-                                    <select id="adminDropdown" class="form-select">
+                                    <select id="adminDropdown" class="form-select ">
                                         <option value="">-- Select an Admin --</option>
                                     </select>
                                 </div>
-                                <button type="button" class="btn btn-danger" id="deleteButton">Delete Selected
+                                <button type="button" class="btn btn-danger " id="deleteButton">Delete 
                                     Admin</button>
                             </form>
                         </div>

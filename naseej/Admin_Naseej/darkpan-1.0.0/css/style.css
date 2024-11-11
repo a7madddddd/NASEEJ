@@ -305,4 +305,16 @@
     height: 1rem;
     border-width: 0.15em;
 }
+
 /* end */
+
+
+
+
+.super-admin-view .admin-only {
+    display: block;
+}
+
+.admin-view .admin-only {
+    display: none;
+}
