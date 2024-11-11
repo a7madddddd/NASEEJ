@@ -90,3 +90,62 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 });
+
+
+
+
+
+
+
+
+
+
+
+// Function to fetch messages and update the existing HTML structure
+async function fetchMessages() {
+    try {
+        // Fetch the contact messages from the API
+        const response = await fetch('http://localhost:25025/api/Contact/GetAllMessage');
+        const messages = await response.json();
+
+        // Select the existing dropdown menu container
+        const dropdownMenu = document.querySelector(".dropdown-menu");
+
+        // Remove all message items except the "See all messages" link
+        const allMessagesLink = dropdownMenu.lastElementChild;
+        dropdownMenu.innerHTML = '';
+        dropdownMenu.appendChild(allMessagesLink);  // Re-append the "See all messages" link
+
+        // Slice to get only the last 3 messages
+        const lastThreeMessages = messages.slice(-3);
+
+        // Insert each message dynamically
+        lastThreeMessages.forEach(message => {
+            const messageItem = document.createElement("a");
+            messageItem.className = "dropdown-item";
+            messageItem.href = "ContactsMessages.html";
+            messageItem.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <img class="rounded-circle" src="../../WhatsApp_Image_2024-11-06_at_17.51.49_8309486c.jpg" alt="" style="width: 40px; height: 40px;">
+                    <div class="ms-2">
+                        <h6 class="fw-normal mb-0">${message.name} sent you a message</h6>
+                        <small>${message.message}</small>
+                    </div>
+                </div>
+            `;
+            dropdownMenu.insertBefore(messageItem, allMessagesLink);
+
+            // Add divider line after each message, except for the last one
+            const divider = document.createElement("hr");
+            divider.className = "dropdown-divider";
+            dropdownMenu.insertBefore(divider, allMessagesLink);
+        });
+
+    } catch (error) {
+        console.error('Error fetching messages:', error);
+    }
+}
+
+
+// Call the function to fetch messages when the page loads
+document.addEventListener("DOMContentLoaded", fetchMessages);
