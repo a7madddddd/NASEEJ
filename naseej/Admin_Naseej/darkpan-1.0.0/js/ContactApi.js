@@ -35,7 +35,7 @@ async function fetchDataAndPopulateTable() {
             // Create the 'Reply' button
             const replyCell = document.createElement('td');
             const replyButton = document.createElement('button');
-            replyButton.classList.add('btn', 'btn-primary'); // Bootstrap styling
+            replyButton.classList.add('btn', 'btn-primary', 'admin-only'); // Bootstrap styling
             replyButton.textContent = 'Reply';
 
             // Attach event listener to the button

@@ -26,8 +26,8 @@ async function loadTestimonials() {
                 <td>${displayedText}</td> <!-- Display first 20 characters -->
                 <td>
                     <button class="btn btn-info btn-sm" onclick="viewDetails(${testimonial.id})">Details</button>
-                    <button class="btn btn-success btn-sm" onclick="acceptTestimonial(${testimonial.id})">Accept</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteTestimonial(${testimonial.id})">Delete</button>
+                    <button class=" admin-only btn btn-success btn-sm " onclick="acceptTestimonial(${testimonial.id})">Accept</button>
+                    <button class=" admin-only btn btn-danger btn-sm " onclick="deleteTestimonial(${testimonial.id})">Delete</button>
                 </td>
             `;
             tableBody.appendChild(row);
@@ -115,7 +115,7 @@ async function acceptTestimonial(id) {
             }
         }
     } catch (error) {
-        Swal.fire('Error', 'This Testimonial has already been accepted before', 'error');
+        Swal.fire('warning', 'This Testimonial has already been accepted before', 'warning');
         console.error(error);
     }
 }

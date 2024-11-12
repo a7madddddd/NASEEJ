@@ -1,3 +1,5 @@
+
+
 // start display all admins function here 
 
 fetch("http://localhost:25025/api/Empolyees")
@@ -67,11 +69,12 @@ fetch("http://localhost:25025/api/Empolyees")
 
 // function to add admins 
 document.getElementById("addAdminForm").addEventListener("submit", async function (event) {
-    event.preventDefault();  // Prevent the form from submitting normally
+    event.preventDefault();
 
-    const email = document.getElementById("exampleInputEmail1").value.trim().toLowerCase();
     
 
+    const email = document.getElementById("exampleInputEmail1").value.trim().toLowerCase();
+    // Rest of your existing add admin code...
     // Step 1: Check if the email exists
     const emailExists = await fetch(`http://localhost:25025/api/Empolyees/CheckEmailExists?email=${encodeURIComponent(email)}`)
         .then(response => response.json())
@@ -153,75 +156,46 @@ document.getElementById("addAdminForm").addEventListener("submit", async functio
 
 
 
-
-// start function get all empolyee in form 
-// Populate the dropdown on page load
 // Populate the dropdown on page load
 document.addEventListener('DOMContentLoaded', () => {
-    populateAdminDropdown();
+    populateEmployeeDropdowns();
 });
 
-function populateAdminDropdown() {
+// Populate both dropdowns with employees
+function populateEmployeeDropdowns() {
     fetch("http://localhost:25025/api/Empolyees")
         .then(response => response.json())
         .then(data => {
-            const adminDropdown = document.getElementById('adminDropdown');
-            adminDropdown.innerHTML = '<option value="">-- Select an Admin --</option>';  // Clear existing options
+            const editDropdown = document.getElementById('employeeDropdown');
+            const deleteDropdown = document.getElementById('adminDropdown');
 
-            // Populate dropdown with admin data, excluding super admins
-            data.forEach(admin => {
-                if (!admin.isAdmin) {  // Only add non-super admins
-                    const option = document.createElement('option');
-                    option.value = admin.employeeId;  // Assuming 'employeeId' is the unique identifier
-                    option.textContent = `${admin.fullName} (${admin.email})`;
-                    adminDropdown.appendChild(option);
-                }
+            if (!editDropdown || !deleteDropdown) {
+                console.error('Dropdown elements not found');
+                return;
+            }
+
+            editDropdown.innerHTML = '<option value="">Select an Admin</option>';
+            deleteDropdown.innerHTML = '<option value="">-- Select an Admin --</option>';
+
+            data.forEach(employee => {
+                const optionEdit = document.createElement('option');
+                const optionDelete = document.createElement('option');
+
+                optionEdit.value = employee.employeeId;
+                optionEdit.textContent = `${employee.fullName} (${employee.email})`;
+
+                optionDelete.value = employee.employeeId;
+                optionDelete.textContent = `${employee.fullName} (${employee.email})`;
+
+                editDropdown.appendChild(optionEdit);
+                deleteDropdown.appendChild(optionDelete);
             });
         })
         .catch(error => {
-            console.error('Error fetching admin list:', error);
-            Swal.fire('Error', 'Failed to load admins.', 'error');
+            console.error('Error fetching employee data:', error);
         });
 }
 
-// Delete selected admin with SweetAlert confirmation
-document.getElementById('deleteButton').addEventListener('click', () => {
-    const adminId = document.getElementById('adminDropdown').value;
-
-    if (!adminId) {
-        Swal.fire('Warning', 'Please select an admin to delete', 'warning');
-        return;
-    }
-
-    // Show SweetAlert confirmation before deleting
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to undo this action!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Proceed with deletion if confirmed
-            fetch(`http://localhost:25025/api/Empolyees/${adminId}`, {
-                method: 'DELETE'
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to delete admin');
-                    }
-                    Swal.fire('Deleted!', 'The admin has been deleted.', 'success');
-                    populateAdminDropdown();  // Refresh the dropdown after deletion
-                })
-                .catch(error => {
-                    console.error('Error deleting admin:', error);
-                    Swal.fire('Error', 'There was an error deleting the admin.', 'error');
-                });
-        }
-    });
-});
 
 
 
@@ -235,18 +209,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const employeeDropdown = document.getElementById("employeeDropdown");
     const form = document.getElementById("EditEmployeeForm");
 
-    // Fetch the list of employees for the dropdown
-    fetch("http://localhost:25025/api/Empolyees")
-        .then(response => response.json())
-        .then(employees => {
-            employees.forEach(employee => {
-                const option = document.createElement("option");
-                option.value = employee.employeeId; // assuming 'employeeId' is the ID property
-                option.textContent = `${employee.fullName} (${employee.email})`;
-                employeeDropdown.appendChild(option);
-            });
-        })
-        .catch(error => console.error("Error fetching employee list:", error));
 
     // Handle employee selection to populate form fields
     employeeDropdown.addEventListener("change", function () {
@@ -312,3 +274,70 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // end edit admins function
+
+
+
+
+
+
+
+
+
+// Handle Delete Button Click
+document.getElementById('deleteButton').addEventListener('click', async () => {
+    const employeeId = document.getElementById('adminDropdown').value;
+
+    if (!employeeId) {
+        Swal.fire('Warning', 'Please select an Admin to delete', 'warning');
+        return;
+    }
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to undo this action!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            try {
+                await fetch(`http://localhost:25025/api/Empolyees/${employeeId}`, {
+                    method: 'DELETE'
+                });
+                Swal.fire('Deleted!', 'The employee has been deleted.', 'success');
+                populateEmployeeDropdowns(); // Refresh dropdowns
+            } catch (error) {
+                console.error('Error deleting Admin:', error);
+                Swal.fire('Error', 'Failed to delete the Admin.', 'error');
+            }
+        }
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
