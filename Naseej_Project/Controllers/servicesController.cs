@@ -36,7 +36,7 @@ namespace Naseej_Project.Controllers
             if (product.ServiceImage != null && product.ServiceImage.Length > 0)
             {
                 // المسار المخصص الذي تريد حفظ الملف فيه
-                var customFolderPath = @"C:\Users\almom\OneDrive\سطح المكتب\Naseej\Naseej\naseej\Admin_Naseej\darkpan-1.0.0\Uploads";
+                var customFolderPath = @"C:\Users\almom\OneDrive\سطح المكتب\nnnnnn\Naseej\naseej\Admin_Naseej\darkpan-1.0.0\Uploads";
 
                 // التأكد من وجود المجلد، وإذا لم يكن موجودًا يتم إنشاؤه
                 if (!Directory.Exists(customFolderPath))
@@ -77,7 +77,7 @@ namespace Naseej_Project.Controllers
             }
 
             // تحديد المسار لحفظ الصور
-            var uploadImageFolder = @"C:\Users\almom\OneDrive\سطح المكتب\Naseej\Naseej\naseej\Admin_Naseej\darkpan-1.0.0\Uploads";
+            var uploadImageFolder = @"C:\Users\almom\OneDrive\سطح المكتب\nnnnnn\Naseej\naseej\Admin_Naseej\darkpan-1.0.0\Uploads";
 
             // التأكد من وجود المجلد، وإن لم يكن موجودًا يتم إنشاؤه
             if (!Directory.Exists(uploadImageFolder))
