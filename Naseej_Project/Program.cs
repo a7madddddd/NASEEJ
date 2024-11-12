@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Naseej_Project.Models;
 
 var builder = WebApplication.CreateBuilder(args);
