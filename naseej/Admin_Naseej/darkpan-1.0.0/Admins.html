@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>DarkPan - Bootstrap 5 Admin Template</title>
+    <title>Naseej - For sustainable services</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -48,7 +48,7 @@
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-secondary navbar-dark">
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
-                    <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>DarkPan</h3>
+                    <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>Naseej</h3>
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
                     <div class="position-relative">
@@ -219,11 +219,11 @@
 
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                    <div class="col-sm-12 col-xl-6">
+                    <div class="col-sm-12 col-xl-4">
                         <div class="bg-secondary rounded h-100 p-4">
-                            <h6 class="mb-4">Add Admin</h6>
+                            <h6 class="mb-4">Add Admins</h6>
                             <form id="addAdminForm" enctype="multipart/form-data" method="POST"
-                                action="http://localhost:25025/api/Empolyees">
+                                action="http://localhost:25025/api/Empolyees" class="admin-only">
                                 <!-- Adjust action URL based on your controller -->
                                 <!-- Full Name -->
                                 <div class="mb-3">
@@ -258,19 +258,67 @@
                         </div>
                     </div>
 
+                    <!-- start edit admins form  -->
+                    <div class="col-sm-12 col-xl-4">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Edit Admins</h6>
+
+                            <!-- Employee Selection Dropdown -->
+                            
+
+                            <!-- Form for Editing Employee Details -->
+                            <form id="EditEmployeeForm" class="admin-only">
+                                <div class="mb-3">
+                                    <label for="employeeDropdown" class="form-label">Select Admin to Edit</label>
+                                    <select id="employeeDropdown" class="form-select" required>
+                                        <option value="">Select an Admin</option>
+                                    </select>
+                                </div>
+
+
+                                <div class="mb-3">
+                                    <label for="EditEmployeeName" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="EditEmployeeName" name="FullName"
+                                        required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="EditEmployeeEmail1" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="EditEmployeeEmail1" name="Email"
+                                        required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="EditEmployeePassword" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="EditEmployeePassword"
+                                        name="PasswordHash">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="EditEmployeeFormFile" class="form-label">Image</label>
+                                    <input class="form-control bg-dark" type="file" id="EditEmployeeFormFile"
+                                        name="imageFile">
+                                </div>
+
+                                <button type="submit" class="btn btn-primary ">Edit Admin</button>
+                            </form>
+                        </div>
+                    </div>
+
 
                     <!-- start delete admins form  -->
-                    <div class="col-sm-12 col-xl-6">
+                    <div class="col-sm-12 col-xl-4">
                         <div class="bg-secondary rounded h-100 p-4">
-                            <h6 class="mb-4">Delete Admin</h6>
-                            <form id="deleteAdminForm">
+                            <h6 class="mb-4">Delete Admins</h6>
+                            <form id="deleteAdminForm" class="admin-only">
                                 <div class="mb-3">
                                     <label for="adminDropdown" class="form-label">Select Admin to Delete</label>
-                                    <select id="adminDropdown" class="form-select">
+                                    <select id="adminDropdown" class="form-select ">
                                         <option value="">-- Select an Admin --</option>
                                     </select>
                                 </div>
-                                <button type="button" class="btn btn-danger" id="deleteButton">Delete Selected Admin</button>
+                                <button type="button" class="btn btn-danger " id="deleteButton">Delete 
+                                    Admin</button>
                             </form>
                         </div>
                     </div>
@@ -283,7 +331,7 @@
 
 
 
-           
+
 
             <!-- Footer Start -->
             <div class="container-fluid pt-4 px-4">
@@ -325,6 +373,8 @@
     <!-- my js -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/AdminsApi.js"></script>
+    <script src="js/Shared.js"></script>
+
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 </body>

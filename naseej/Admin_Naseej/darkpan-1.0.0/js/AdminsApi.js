@@ -1,3 +1,5 @@
+
+
 // start display all admins function here 
 
 fetch("http://localhost:25025/api/Empolyees")
@@ -58,13 +60,21 @@ fetch("http://localhost:25025/api/Empolyees")
 
 
 
+
+
+
+
+
+
+
 // function to add admins 
 document.getElementById("addAdminForm").addEventListener("submit", async function (event) {
-    event.preventDefault();  // Prevent the form from submitting normally
+    event.preventDefault();
 
-    const email = document.getElementById("exampleInputEmail1").value.trim().toLowerCase();
     
 
+    const email = document.getElementById("exampleInputEmail1").value.trim().toLowerCase();
+    // Rest of your existing add admin code...
     // Step 1: Check if the email exists
     const emailExists = await fetch(`http://localhost:25025/api/Empolyees/CheckEmailExists?email=${encodeURIComponent(email)}`)
         .then(response => response.json())
@@ -139,43 +149,149 @@ document.getElementById("addAdminForm").addEventListener("submit", async functio
 
 
 
-// start function get all empolyee in form 
+
+
+
+
+
+
+
 // Populate the dropdown on page load
 document.addEventListener('DOMContentLoaded', () => {
-    populateAdminDropdown();
+    populateEmployeeDropdowns();
 });
 
-function populateAdminDropdown() {
+// Populate both dropdowns with employees
+function populateEmployeeDropdowns() {
     fetch("http://localhost:25025/api/Empolyees")
         .then(response => response.json())
         .then(data => {
-            const adminDropdown = document.getElementById('adminDropdown');
-            adminDropdown.innerHTML = '<option value="">-- Select an Admin --</option>';  // Clear existing options
+            const editDropdown = document.getElementById('employeeDropdown');
+            const deleteDropdown = document.getElementById('adminDropdown');
 
-            // Populate dropdown with admin data
-            data.forEach(admin => {
-                const option = document.createElement('option');
-                option.value = admin.employeeId;  // Assuming 'employeeId' is the unique identifier
-                option.textContent = `${admin.fullName} (${admin.email})`;
-                adminDropdown.appendChild(option);
+            if (!editDropdown || !deleteDropdown) {
+                console.error('Dropdown elements not found');
+                return;
+            }
+
+            editDropdown.innerHTML = '<option value="">Select an Admin</option>';
+            deleteDropdown.innerHTML = '<option value="">-- Select an Admin --</option>';
+
+            data.forEach(employee => {
+                const optionEdit = document.createElement('option');
+                const optionDelete = document.createElement('option');
+
+                optionEdit.value = employee.employeeId;
+                optionEdit.textContent = `${employee.fullName} (${employee.email})`;
+
+                optionDelete.value = employee.employeeId;
+                optionDelete.textContent = `${employee.fullName} (${employee.email})`;
+
+                editDropdown.appendChild(optionEdit);
+                deleteDropdown.appendChild(optionDelete);
             });
         })
         .catch(error => {
-            console.error('Error fetching admin list:', error);
-            Swal.fire('Error', 'Failed to load admins.', 'error');
+            console.error('Error fetching employee data:', error);
         });
 }
 
-// Delete selected admin with SweetAlert confirmation
-document.getElementById('deleteButton').addEventListener('click', () => {
-    const adminId = document.getElementById('adminDropdown').value;
 
-    if (!adminId) {
-        Swal.fire('Warning', 'Please select an admin to delete', 'warning');
+
+
+
+
+
+
+
+// start edit admins function
+document.addEventListener("DOMContentLoaded", function () {
+    const employeeDropdown = document.getElementById("employeeDropdown");
+    const form = document.getElementById("EditEmployeeForm");
+
+
+    // Handle employee selection to populate form fields
+    employeeDropdown.addEventListener("change", function () {
+        const selectedEmployeeId = employeeDropdown.value;
+        if (!selectedEmployeeId) return; // Do nothing if no employee is selected
+
+        fetch(`http://localhost:25025/api/Empolyees/${selectedEmployeeId}`)
+            .then(response => response.json())
+            .then(employee => {
+                // Populate form fields with employee details
+                document.getElementById("EditEmployeeName").value = employee.fullName;
+                document.getElementById("EditEmployeeEmail1").value = employee.email;
+                // Do not pre-fill password for security reasons
+            })
+            .catch(error => console.error("Error fetching employee details:", error));
+    });
+
+    // Form submission logic (to handle updates)
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const formData = new FormData(form);
+
+        // Append selected employee ID to form data for the update endpoint
+        const selectedEmployeeId = employeeDropdown.value;
+        if (!selectedEmployeeId) return alert("Please select an employee to edit.");
+
+        fetch(`http://localhost:25025/api/Empolyees/${selectedEmployeeId}`, {
+            method: "PUT",
+            body: formData,
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => Promise.reject(text));
+                }
+
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    return response.json();
+                } else {
+                    return {};  // Handle empty or non-JSON response
+                }
+            })
+            .then(data => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Employee updated successfully!',
+                    text: 'The employee details have been updated.',
+                    confirmButtonText: 'OK'
+                });
+                form.reset();
+            })
+            .catch(error => {
+                console.error("Error updating employee:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: `There was an error with the update: ${error}`,
+                    confirmButtonText: 'Try Again'
+                });
+            });
+    });
+
+});
+
+// end edit admins function
+
+
+
+
+
+
+
+
+
+// Handle Delete Button Click
+document.getElementById('deleteButton').addEventListener('click', async () => {
+    const employeeId = document.getElementById('adminDropdown').value;
+
+    if (!employeeId) {
+        Swal.fire('Warning', 'Please select an Admin to delete', 'warning');
         return;
     }
 
-    // Show SweetAlert confirmation before deleting
     Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to undo this action!",
@@ -184,23 +300,44 @@ document.getElementById('deleteButton').addEventListener('click', () => {
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
         confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
+    }).then(async (result) => {
         if (result.isConfirmed) {
-            // Proceed with deletion if confirmed
-            fetch(`http://localhost:25025/api/Empolyees/${adminId}`, {
-                method: 'DELETE'
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to delete admin');
-                    }
-                    Swal.fire('Deleted!', 'The admin has been deleted.', 'success');
-                    populateAdminDropdown();  // Refresh the dropdown after deletion
-                })
-                .catch(error => {
-                    console.error('Error deleting admin:', error);
-                    Swal.fire('Error', 'There was an error deleting the admin.', 'error');
+            try {
+                await fetch(`http://localhost:25025/api/Empolyees/${employeeId}`, {
+                    method: 'DELETE'
                 });
+                Swal.fire('Deleted!', 'The employee has been deleted.', 'success');
+                populateEmployeeDropdowns(); // Refresh dropdowns
+            } catch (error) {
+                console.error('Error deleting Admin:', error);
+                Swal.fire('Error', 'Failed to delete the Admin.', 'error');
+            }
         }
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

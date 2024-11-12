@@ -3,7 +3,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Investa - Investment Website Template</title>
+    <title>Naseej - For sustainable services</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -29,6 +29,11 @@
 
         <!-- Template Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
+
+            <!-- sweet alert css -->
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
     </head>
 
     <body>
@@ -150,7 +155,7 @@
                             <div class="pb-5">
                                 <h4 class="text-primary">Contact Us</h4>
                                 <h1 class="display-4 mb-4">Get In Touch With Us</h1>
-                                <p class="mb-0">The contact form is currently inactive. Get a functional and working contact form with Ajax & PHP in a few minutes. Just copy and paste the files, add a little code and you're done. <a class="text-primary fw-bold" href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
+                                <p class="mb-0">The contact form is currently inactive. Get a functional and working contact form with Ajax & PHP in a few minutes. Just copy and paste the files, add a little code and you're done.</p>
                             </div>
                             <div class="d-flex align-items-center mb-4">
                                 <div class="bg-primary btn-lg-square rounded-circle p-4"><i class="fa fa-home text-white"></i></div>
@@ -176,46 +181,35 @@
                         </div>
                     </div>
                     <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.3s">
-                        <form>
+                        <form id="contact-form">
                             <div class="row g-3">
                                 <div class="col-lg-12 col-xl-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="name" placeholder="Your Name">
+                                        <input type="text" class="form-control" id="name" name="" placeholder="Your Name">
                                         <label for="name">Your Name</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-xl-6">
                                     <div class="form-floating">
-                                        <input type="email" class="form-control" id="email" placeholder="Your Email">
+                                        <input type="email" class="form-control" id="email" name="" placeholder="Your Email">
                                         <label for="email">Your Email</label>
                                     </div>
                                 </div>
-                                <div class="col-lg-12 col-xl-6">
-                                    <div class="form-floating">
-                                        <input type="phone" class="form-control" id="phone" placeholder="Phone">
-                                        <label for="phone">Your Phone</label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-xl-6">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="project" placeholder="Project">
-                                        <label for="project">Your Project</label>
-                                    </div>
-                                </div>
+                            
                                 <div class="col-12">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="subject" placeholder="Subject">
+                                        <input type="text" class="form-control" id="subject" name="" placeholder="Subject">
                                         <label for="subject">Subject</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
-                                        <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 160px"></textarea>
+                                        <textarea class="form-control" placeholder="Leave a message here" id="message" name="" style="height: 160px"></textarea>
                                         <label for="message">Message</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3">Send Message</button>
+                                    <button class="btn btn-primary w-100 py-3" onclick="SendMessage()">Send Message</button>
                                 </div>
                             </div>
                         </form>
@@ -342,6 +336,66 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+    <!-- contact  Javascript -->
+    <script src="js/Contact.js"></script>
+
+    <!-- sweet alert Javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.getElementById('contact-form').addEventListener('submit', async function(event) {
+        event.preventDefault(); 
+        
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const subject = document.getElementById('subject').value;
+        const message = document.getElementById('message').value;
+        
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('subject', subject);
+        formData.append('message', message);
+        
+        try {
+            const response = await fetch('http://localhost:25025/api/Contact/PostMessage', {
+                method: 'POST',
+                body: formData
+            });
+        
+            if (response.ok) {
+                const result = await response.json();
+                await Swal.fire({
+                    title: 'Success!',
+                    text: 'Message sent successfully!',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+                window.location.reload();
+            } else {
+                await Swal.fire({
+                    title: 'Error!',
+                    text: 'Failed to send message.',
+                    icon: 'error',
+                    confirmButtonText: 'Try Again'
+                });
+                console.error('Failed response:', response);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            await Swal.fire({
+                title: 'Error!',
+                text: 'Error sending message.',
+                icon: 'error',
+                confirmButtonText: 'Try Again'
+            });
+        }
+    });
+    
+        
+        
+</script>
     </body>
 
 </html>

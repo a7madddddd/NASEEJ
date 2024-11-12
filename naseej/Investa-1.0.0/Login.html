@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Naseej - Sustainable services</title>
+    <title>Naseej - For sustainable services</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -52,32 +52,43 @@
         </div>
     </div>
     <!-- Spinner End -->
-
-
+    
+    
     <!-- Topbar Start -->
     <div class="container-fluid topbar px-0 d-none d-lg-block">
         <div class="container px-0">
             <div class="row gx-0 align-items-center" style="height: 45px;">
                 <div class="col-lg-8 text-center text-lg-start mb-lg-0">
                     <div class="d-flex flex-wrap">
-                        <a href="#" class="text-muted me-4"><i class="fas fa-map-marker-alt text-primary me-2"></i>Find
-                            A
-                            Location</a>
-                        <a href="#" class="text-muted me-4"><i
-                                class="fas fa-phone-alt text-primary me-2"></i>+01234567890</a>
-                        <a href="#" class="text-muted me-0"><i
-                                class="fas fa-envelope text-primary me-2"></i>Example@gmail.com</a>
+                        <!-- Location Link -->
+                        <a href="https://maps.app.goo.gl/tNJF9eHuZexexCsy7" target="_blank" class="text-muted me-4">
+                            <i class="fas fa-map-marker-alt text-primary me-2"></i>Find A Location
+                        </a>
+    
+                        <!-- Phone Link -->
+                        <a href="tel:+270786831111" class="text-muted me-4">
+                            <i class="fas fa-phone-alt text-primary me-2"></i>07 8683 1111
+                        </a>
+    
+                        <!-- Email Link -->
+                        <a href="mailto:naseej.jordan@gmail.com" class="text-muted me-0">
+                            <i class="fas fa-envelope text-primary me-2"></i>naseej.jordan@gmail.com
+                        </a>
                     </div>
                 </div>
                 <div class="col-lg-4 text-center text-lg-end">
                     <div class="d-flex align-items-center justify-content-end">
-                        <a href="#" class="btn btn-primary btn-square rounded-circle nav-fill me-3"><i
+                        <a href="https://www.facebook.com/NASEEJ.JO/"
+                            class="btn btn-primary btn-square rounded-circle nav-fill me-3"><i
                                 class="fab fa-facebook-f text-white"></i></a>
-                        <a href="#" class="btn btn-primary btn-square rounded-circle nav-fill me-3"><i
-                                class="fab fa-twitter text-white"></i></a>
-                        <a href="#" class="btn btn-primary btn-square rounded-circle nav-fill me-3"><i
+                        <a href="https://api.whatsapp.com/send/?phone=962786831111&text&type=phone_number&app_absent=0"
+                            class="btn btn-primary btn-square rounded-circle nav-fill me-3"><i
+                                class="fab fa-whatsapp text-white"></i></a>
+                        <a href="https://www.instagram.com/naseej.jo1/#"
+                            class="btn btn-primary btn-square rounded-circle nav-fill me-3"><i
                                 class="fab fa-instagram text-white"></i></a>
-                        <a href="#" class="btn btn-primary btn-square rounded-circle nav-fill me-0"><i
+                        <a href="https://www.linkedin.com/in/naseej/"
+                            class="btn btn-primary btn-square rounded-circle nav-fill me-0"><i
                                 class="fab fa-linkedin-in text-white"></i></a>
                     </div>
                 </div>
@@ -85,8 +96,8 @@
         </div>
     </div>
     <!-- Topbar End -->
-
-
+    
+    
     <!-- Navbar & Hero Start -->
     <div class="container-fluid sticky-top px-0">
         <div class="position-absolute bg-dark" style="left: 0; top: 0; width: 100%; height: 100%;">
@@ -94,8 +105,9 @@
         <div class="container px-0">
             <nav class="navbar navbar-expand-lg navbar-dark bg-white py-3 px-4">
                 <a href="index.html" class="navbar-brand p-0">
-                    <h1 class="text-primary m-0"><i class="fas fa-donate me-3"></i>Naseej</h1>
-                    <!-- <img src="img/logo.png" alt="Logo"> -->
+                    <h1 class="text-primary m-0"><img src="../WhatsApp_Image_2024-11-06_at_17.51.49_8309486c.jpg" alt=""
+                            width="70" height="55"></i> Naseej</h1>
+    
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars"></span>
@@ -103,9 +115,10 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0">
                         <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <a href="about.html" class="nav-item nav-link">About</a>
                         <a href="service.html" class="nav-item nav-link">Services</a>
                         <a href="project.html" class="nav-item nav-link">Projects</a>
+                        <a href="about.html" class="nav-item nav-link">About</a>
+                        <a href="contact.html" class="nav-item nav-link">Contact</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                             <div class="dropdown-menu m-0">
@@ -116,12 +129,11 @@
                                 <a href="404.html" class="dropdown-item">404 Page</a>
                             </div>
                         </div>
-                        <a href="contact.html" class="nav-item nav-link">Contact</a>
                     </div>
                     <div class="d-flex align-items-center flex-nowrap pt-xl-0">
                         <button class="btn btn-primary btn-md-square mx-2" data-bs-toggle="modal"
                             data-bs-target="#searchModal"><i class="fas fa-search"></i></button>
-                        <a href="#"
+                        <a id="loginLogoutBtn" href="Login.html"
                             class="btn btn-primary rounded-pill text-white py-2 px-4 ms-2 flex-wrap flex-sm-shrink-0">Login</a>
                     </div>
                 </div>
@@ -129,6 +141,26 @@
         </div>
     </div>
     <!-- Navbar & Hero End -->
+    
+    <!-- Modal Search Start -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content rounded-0">
+                <div class="modal-header">
+                    <h4 class="modal-title mb-0" id="exampleModalLabel">Search by keyword</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex align-items-center">
+                    <div class="input-group w-75 mx-auto d-flex">
+                        <input type="search" class="form-control p-3" placeholder="keywords"
+                            aria-describedby="search-icon-1">
+                        <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Search End -->
 
 
 
@@ -352,6 +384,26 @@
 
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        // Check if jwtToken exists in sessionStorage
+        const jwtToken = sessionStorage.getItem('jwtToken');
+
+        // Get the login/logout button element
+        const loginLogoutBtn = document.getElementById('loginLogoutBtn');
+
+        // If jwtToken exists, change button to "Logout"
+        if (jwtToken) {
+            loginLogoutBtn.textContent = 'Logout';
+            loginLogoutBtn.href = '#'; // Set href to '#' to prevent redirection when logged in
+            loginLogoutBtn.addEventListener('click', function () {
+                // Remove the token from sessionStorage and reload page on logout
+                sessionStorage.removeItem('jwtToken');
+                window.location.reload(); // Reload the page to reflect changes
+            });
+        }
+
+    </script>
 </body>
 
 </html>
