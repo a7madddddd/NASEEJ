@@ -162,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Populate both dropdowns with employees
+// Populate both dropdowns with employees, excluding admins from the delete dropdown
 function populateEmployeeDropdowns() {
     fetch("http://localhost:25025/api/Empolyees")
         .then(response => response.json())
@@ -174,6 +175,7 @@ function populateEmployeeDropdowns() {
                 return;
             }
 
+            // Reset the dropdowns
             editDropdown.innerHTML = '<option value="">Select an Admin</option>';
             deleteDropdown.innerHTML = '<option value="">-- Select an Admin --</option>';
 
@@ -181,21 +183,23 @@ function populateEmployeeDropdowns() {
                 const optionEdit = document.createElement('option');
                 const optionDelete = document.createElement('option');
 
+                // Set option values and text content for edit dropdown
                 optionEdit.value = employee.employeeId;
                 optionEdit.textContent = `${employee.fullName} (${employee.email})`;
-
-                optionDelete.value = employee.employeeId;
-                optionDelete.textContent = `${employee.fullName} (${employee.email})`;
-
                 editDropdown.appendChild(optionEdit);
-                deleteDropdown.appendChild(optionDelete);
+
+                // Only add to delete dropdown if employee is not an admin
+                if (!employee.isAdmin) {
+                    optionDelete.value = employee.employeeId;
+                    optionDelete.textContent = `${employee.fullName} (${employee.email})`;
+                    deleteDropdown.appendChild(optionDelete);
+                }
             });
         })
         .catch(error => {
             console.error('Error fetching employee data:', error);
         });
 }
-
 
 
 
