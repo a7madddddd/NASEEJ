@@ -13,7 +13,7 @@ async function fetchCardData() {
             <div class="col-xl-4 col-md-6 mb-4">
                 <div class="card service-card shadow h-100">
                     <!-- صورة الخدمة -->
-                    <img src="Uploads/${product.serviceImage}" class="card-img-top" alt="Service Image">
+                    <img src="http://localhost:25025/Uploads/${product.serviceImage}" class="card-img-top" alt="Service Image">
                     
                     <!-- محتوى البطاقة -->
                     <div class="card-body">
@@ -73,7 +73,7 @@ async function fetchCardData() {
     if (response.ok) {
       Swal.fire({
         title: "Success!",
-        text: "Registration completed successfully",
+        text: "services has been added successfully",
         icon: "success",
         confirmButtonText: "OK",
         timer: 3000,
@@ -87,7 +87,7 @@ async function fetchCardData() {
     } else {
       Swal.fire({
         title: "Error!",
-        text: "Registration failed",
+        text: "service has not been added ",
         icon: "error",
         confirmButtonText: "OK",
       });
@@ -146,7 +146,7 @@ async function fetchCardData() {
       document.getElementById("ServiceName").value = employee.serviceName;
       document.getElementById("ServiceDescription").value =
         employee.serviceDescription;
-      document.getElementById("batool").src = `Uploads/${employee.serviceImage}`;
+      document.getElementById("batool").src = `http://localhost:25025/Uploads/${employee.serviceImage}`;
     
       $("#editEmployeeModal").modal("show");
     }
@@ -169,7 +169,7 @@ async function fetchCardData() {
       if (response.ok) {
         await Swal.fire({
           title: "Success!",
-          text: "Employee updated successfully.",
+          text: "service updated successfully.",
           icon: "success",
         });
     
@@ -182,7 +182,7 @@ async function fetchCardData() {
         const errorMessage = await response.text();
         await Swal.fire({
           title: "Error!",
-          text: `Failed to update employee: ${errorMessage}`,
+          text: `Failed to update service: ${errorMessage}`,
           icon: "error",
         });
       }

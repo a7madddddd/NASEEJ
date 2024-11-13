@@ -35,29 +35,36 @@ namespace Naseej_Project.Controllers
             // التأكد من وجود ملف الصورة
             if (product.ServiceImage != null && product.ServiceImage.Length > 0)
             {
-                // المسار المخصص الذي تريد حفظ الملف فيه
-                var customFolderPath = @"C:\Users\almom\OneDrive\سطح المكتب\nnnnnn\Naseej\naseej\Admin_Naseej\darkpan-1.0.0\Uploads";
-
-                // التأكد من وجود المجلد، وإذا لم يكن موجودًا يتم إنشاؤه
-                if (!Directory.Exists(customFolderPath))
+                try
                 {
-                    Directory.CreateDirectory(customFolderPath);
+                    // تحديد مسار المجلد في wwwroot
+                    var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
+
+                    // التأكد من وجود المجلد، وإذا لم يكن موجودًا يتم إنشاؤه
+                    if (!Directory.Exists(uploadsFolderPath))
+                    {
+                        Directory.CreateDirectory(uploadsFolderPath);
+                    }
+
+                    // اسم الملف الفريد لتجنب التعارض
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(product.ServiceImage.FileName);
+
+                    // المسار الكامل للملف داخل wwwroot
+                    var filePath = Path.Combine(uploadsFolderPath, fileName);
+
+                    // حفظ الملف في المجلد المحدد
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        product.ServiceImage.CopyTo(stream);
+                    }
+
+                    // حفظ المسار النسبي للصورة في قاعدة البيانات
+                    service.ServiceImage = $"{fileName}";
                 }
-
-                // اسم الملف الفريد لتجنب التعارض
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(product.ServiceImage.FileName);
-
-                // المسار الكامل للملف
-                var filePath = Path.Combine(customFolderPath, fileName);
-
-                // حفظ الملف في المسار المحدد
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                catch (Exception ex)
                 {
-                    product.ServiceImage.CopyTo(stream);
+                    return StatusCode(500, $"خطأ أثناء رفع الصورة: {ex.Message}");
                 }
-
-                // حفظ اسم الملف فقط في قاعدة البيانات
-                service.ServiceImage = fileName;
             }
 
             // حفظ الخدمة في قاعدة البيانات
@@ -66,8 +73,10 @@ namespace Naseej_Project.Controllers
 
             return Ok(service);
         }
+
+
         [HttpPut("editservices/{id}")]
-        public IActionResult updatecategory(int id, [FromForm] addservicesDTO obj)
+        public IActionResult UpdateService(int id, [FromForm] addservicesDTO obj)
         {
             // البحث عن الخدمة في قاعدة البيانات
             var service = _Db.Services.Find(id);
@@ -76,40 +85,50 @@ namespace Naseej_Project.Controllers
                 return NotFound("Service not found.");
             }
 
-            // تحديد المسار لحفظ الصور
-            var uploadImageFolder = @"C:\Users\almom\OneDrive\سطح المكتب\nnnnnn\Naseej\naseej\Admin_Naseej\darkpan-1.0.0\Uploads";
-
-            // التأكد من وجود المجلد، وإن لم يكن موجودًا يتم إنشاؤه
-            if (!Directory.Exists(uploadImageFolder))
+            try
             {
-                Directory.CreateDirectory(uploadImageFolder);
-            }
+                // تحديث اسم الخدمة والوصف إذا تم تقديمهما
+                service.ServiceName = obj.ServiceName ?? service.ServiceName;
+                service.ServiceDescription = obj.ServiceDescription ?? service.ServiceDescription;
 
-            // حفظ الصورة إذا تم رفعها
-            if (obj.ServiceImage != null && obj.ServiceImage.Length > 0)
-            {
-                // إنشاء المسار الكامل للصورة
-                var imageFilePath = Path.Combine(uploadImageFolder, obj.ServiceImage.FileName);
+                // تحديد مسار المجلد لحفظ الصور في wwwroot
+                var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
 
-                // حفظ الصورة في المجلد المحدد
-                using (var stream = new FileStream(imageFilePath, FileMode.Create))
+                // التأكد من وجود المجلد، وإذا لم يكن موجودًا يتم إنشاؤه
+                if (!Directory.Exists(uploadsFolderPath))
                 {
-                    obj.ServiceImage.CopyTo(stream);
+                    Directory.CreateDirectory(uploadsFolderPath);
                 }
 
-                // تحديث اسم الصورة في قاعدة البيانات
-                service.ServiceImage = obj.ServiceImage.FileName;
+                // تحديث الصورة إذا تم رفعها
+                if (obj.ServiceImage != null && obj.ServiceImage.Length > 0)
+                {
+                    // اسم الملف الفريد لتجنب التعارض
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(obj.ServiceImage.FileName);
+
+                    // المسار الكامل للملف داخل wwwroot
+                    var filePath = Path.Combine(uploadsFolderPath, fileName);
+
+                    // حفظ الملف في المجلد المحدد
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        obj.ServiceImage.CopyTo(stream);
+                    }
+
+                    // حفظ المسار النسبي للصورة في قاعدة البيانات
+                    service.ServiceImage = $"{fileName}";
+                }
+
+                // حفظ التغييرات في قاعدة البيانات
+                _Db.Services.Update(service);
+                _Db.SaveChanges();
+
+                return Ok("Service updated successfully.");
             }
-
-            // تحديث اسم الخدمة والوصف إذا تم تقديمهما
-            service.ServiceName = obj.ServiceName ?? service.ServiceName;
-            service.ServiceDescription = obj.ServiceDescription ?? service.ServiceDescription;
-
-            // حفظ التغييرات في قاعدة البيانات
-            _Db.Services.Update(service);
-            _Db.SaveChanges();
-
-            return Ok("Service updated successfully.");
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error while updating the service: {ex.Message}");
+            }
         }
 
 
@@ -163,6 +182,23 @@ namespace Naseej_Project.Controllers
             return Ok(edit);
         }
 
+
+        [HttpGet("getservicesAccepted")]
+        public IActionResult getservices()
+        {
+            var sercice = _Db.Services.Where(x=>x.IsAccept== "Accept").ToList();
+            return Ok(sercice);
+        }
+
+
+
+        /////////////////////////////////request//////////
+
+        [HttpPost("addnewrequest")]
+        public IActionResult addnewrequest()
+        {
+            return Ok();
+        }
 
 
     }
