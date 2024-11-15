@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Naseej_Project.DTOs;
 using Naseej_Project.Models;
+using NuGet.Protocol.Core.Types;
 
 namespace Naseej_Project.Controllers
 {
@@ -29,7 +31,10 @@ namespace Naseej_Project.Controllers
                 ServiceName = product.ServiceName,
                 ServiceDescription = product.ServiceDescription,
                 EmployeeId = product.EmployeeId,
-                ServiceDate = DateTime.Now
+                ServiceDate = DateTime.Now,
+                Fromage=product.Fromage,
+                Toage=product.Toage,
+
             };
 
             // التأكد من وجود ملف الصورة
@@ -84,7 +89,7 @@ namespace Naseej_Project.Controllers
             {
                 return NotFound("Service not found.");
             }
-
+            
             try
             {
                 // تحديث اسم الخدمة والوصف إذا تم تقديمهما
@@ -195,10 +200,111 @@ namespace Naseej_Project.Controllers
         /////////////////////////////////request//////////
 
         [HttpPost("addnewrequest")]
-        public IActionResult addnewrequest()
+        public IActionResult addnewrequest([FromForm] NewRequestDTO DTO)
         {
+            var user = _Db.Users.FirstOrDefault(u => u.UserId == DTO.UserId);
+            var service = _Db.Services.FirstOrDefault(s => s.ServiceId == DTO.ServiceId);
+        
+            var request = new Request
+            {
+                UserId = DTO.UserId,
+                ServiceId = DTO.ServiceId,
+                RequestDate = DateTime.Now,
+                Description = DTO.Description,
+            };
+            
+            _Db.Requests.Add(request);
+            _Db.SaveChanges();
             return Ok();
         }
+
+
+        [HttpGet("getinfouserandservices/{userId}/{serviceId}")]
+        public IActionResult GetUserAndServiceInfo(int userId, int serviceId)
+        {
+            var user = _Db.Users.FirstOrDefault(u => u.UserId == userId);
+
+            var service = _Db.Services.FirstOrDefault(s => s.ServiceId == serviceId);
+
+
+            if (user.Age < service.Fromage || user.Age > service.Toage)
+            {
+                return BadRequest("User age is not within the allowed range for this service");
+            }
+            var result = new
+            {
+                User = new
+                {
+                    user.UserId,
+                Fullname= user.FirstName+" " + user.LastName,
+                    user.Email,
+                    user.Age,
+                    user.PhoneNumber,
+                },
+                Service = new
+                {
+                    service.ServiceId,
+                    service.ServiceName,
+                    service.ServiceDescription,
+                    service.Fromage,
+                    service.Toage
+                }
+            };
+
+            return Ok(result);
+        }
+
+
+
+        [HttpGet("GetAllRequest")]
+        public IActionResult GetAllRequest()
+        {
+            var requests = _Db.Requests
+                .Include(r => r.User)
+                .Include(r => r.Service)
+                .Select(r => new
+                {
+                    RequestId = r.RequestId,
+                    RequestDate = r.RequestDate,
+                    Description = r.Description,
+                    UserId = r.User.UserId,
+                    FullName = r.User.FirstName+" "+r.User.LastName,
+                    Email = r.User.Email,
+                    PhoneNumber = r.User.PhoneNumber,
+                    Age=r.User.Age,
+                    Nationality = r.User.Nationality,
+                    Degree=r.User.Degree,
+                    ServiceId = r.Service.ServiceId,
+                    ServiceName = r.Service.ServiceName,
+                    ServiceDescription = r.Service.ServiceDescription,
+                    fromage=r.Service.Fromage,
+                    toage=r.Service.Toage,
+                })
+                .ToList();
+
+            return Ok(requests);
+        }
+        [HttpDelete("deleteRequest/{id}")]
+        public IActionResult deleteRequest(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+            var Request = _Db.Requests.FirstOrDefault(c => c.RequestId == id);
+            if (Request == null)
+            {
+                return NotFound();
+            }
+
+            _Db.Requests.Remove(Request);
+            _Db.SaveChanges();
+            return NoContent();
+        }
+
+
+
+
 
 
     }

@@ -43,6 +43,13 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
+
+.info-section p {
+    margin: 2px 0; /* تقليل المسافات بين الفقرات */
+    font-size: 17px; /* تصغير حجم النص لتوفير مساحة */
+    line-height: 1.2; /* تقليل المسافة بين الأسطر */
+}
+
       .form-control:focus {
     border-color: #e01515; /* اللون الأزرق الفاتح، يمكن تغييره كما ترغب */
     background-color: white; /* اللون الخلفي للبشرة عند الفوكس */
@@ -140,12 +147,12 @@
             <a href="form.html" class="nav-item nav-link"
               ><i class="fa fa-keyboard me-2"></i>Forms</a
             >
-            <a href="table.html" class="nav-item nav-link active"
+            <a href="table.html" class="nav-item nav-link "
               ><i class="fa fa-table me-2"></i>Tables</a
             >
-            <a href="Request.html" class="nav-item nav-link "
-            ><i class="fa fa-table me-2"></i>Request</a
-          >
+            <a href="Request.html" class="nav-item nav-link active"
+              ><i class="fa fa-table me-2"></i>Request</a
+            >
             <a href="chart.html" class="nav-item nav-link"
               ><i class="fa fa-chart-bar me-2"></i>Charts</a
             >
@@ -309,210 +316,32 @@
         <!-- Navbar End -->
 
         <br />
-        <button
-          style="margin-left: 15px"
-          class="btn btn-primary mb-4"
-          data-bs-toggle="modal"
-          data-bs-target="#addServiceModal"
-        >
-          Add New Service
-        </button>
+    
         <!-- Table Start -->
-        <div class="container">
-          <div class="row" id="container"></div>
+        <div class="container-fluid pt-4 px-4">
+            <div class="col-sm-12 col-xl-12">
+                <div class="bg-secondary rounded h-100 p-4">
+                    <h6 class="mb-4">ٌRequest Table</h6>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Reason for Joining</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="container">
+                            <!-- Rows will be inserted here by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <!-- Table End -->
-        <div
-          class="modal fade"
-          id="addServiceModal"
-          tabindex="-1"
-          aria-labelledby="addServiceModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="addServiceModalLabel">
-                  Add New Service
-                </h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">
-                <form id="addservice">
-                  <div class="mb-3">
-                    <label for="serviceName" class="form-label"
-                      >Service Name</label
-                    >
-                    <input
-                      name="ServiceName"
-                      type="text"
-                      class="form-control"
-                      id="serviceName"
-                      placeholder="Enter service name"
-                      required
-                    />
-                  </div>
-                  <div class="mb-3">
-                    <label for="img" class="form-label">Service Image</label>
-                    <input
-                      name="ServiceImage"
-                      type="file"
-                      class="form-control"
-                      id="img"
-                      placeholder="uplode image"
-                      required
-                    />
-                  </div>
-                  <div class="mb-3">
-                    <label for="serviceDescription" class="form-label"
-                      >Service Description</label
-                    >
-                    <textarea
-                      name="ServiceDescription"
-                      class="form-control"
-                      id="serviceDescription"
-                      rows="3"
-                      placeholder="Enter service description"
-                      required
-                    ></textarea>
-                  </div>
-                  <div class="mb-3">
-                    <input
-                      name="EmployeeId"
-                      type="hidden"
-                      class="form-control"
-                      id="EmployeeId"
-                      placeholder="Enter Employee id"
-                      readonly
+   
 
-                    />
-                  </div>
-                  <div class="mb-3 row">
-                    <div class="col-md-6">
-                      <label for="Fromage" class="form-label">From Age</label>
-                      <input
-                        name="Fromage"
-                        type="number"
-                        class="form-control"
-                        id="Fromage"
-                        placeholder="From Age"
-                      />
-                    </div>
-                    
-                    <div class="col-md-6">
-                      <label for="Toage" class="form-label">To Age</label>
-                      <input
-                        name="Toage"
-                        type="number"
-                        class="form-control"
-                        id="Toage"
-                        placeholder="To Age"
-                      />
-                    </div>
-                  </div>
-                  
-
-                  <div class="modal-footer">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                    <button
-                      type="submit"
-                      onclick="addservice()"
-                      class="btn btn-primary"
-                    >
-                      Add Service
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="modal fade"
-          id="editEmployeeModal"
-          tabindex="-1"
-          aria-labelledby="editEmployeeModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="editEmployeeModalLabel">
-                  Edit Employee
-                </h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">
-                <form id="serviceEditForm">
-                  <input type="hidden" id="editEmployeeId" />
-                  <div class="mb-3">
-                    <label for="email" class="form-label">Service Name</label>
-                    <input
-                      name="serviceName"
-                      type="text"
-                      class="form-control"
-                      id="ServiceName"
-                    />
-                  </div>
-                  <div class="mb-3">
-                    <label for="editLastName" class="form-label"
-                      >Service Description</label
-                    >
-                    <input
-                      name="serviceDescription"
-                      type="text"
-                      class="form-control"
-                      id="ServiceDescription"
-                    />
-                  </div>
-                  <div class="mb-3">
-                    <label for="img" class="form-label">img</label>
-                    <input
-                      name="ServiceImage"
-                      type="file"
-                      class="form-control"
-                      id="Img"
-                    />
-                  </div>
-                  <img src="" width="50" height="50" id="batool" />
-                  <div class="modal-footer">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-primary"
-                      onclick="updateservice()"
-                    >
-                      Save changes
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <!-- Footer Start -->
         <div class="container-fluid pt-4 px-4">
@@ -554,6 +383,6 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script src="js/Shared.js"></script>
-    <script src="js/services.js"></script>
+    <script src="js/request.js"></script>
   </body>
 </html>
