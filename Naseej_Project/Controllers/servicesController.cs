@@ -95,6 +95,8 @@ namespace Naseej_Project.Controllers
                 // تحديث اسم الخدمة والوصف إذا تم تقديمهما
                 service.ServiceName = obj.ServiceName ?? service.ServiceName;
                 service.ServiceDescription = obj.ServiceDescription ?? service.ServiceDescription;
+                service.Fromage=obj.Fromage ?? service.Fromage;
+                service.Toage = obj.Toage ?? service.Toage;
 
                 // تحديد مسار المجلد لحفظ الصور في wwwroot
                 var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
