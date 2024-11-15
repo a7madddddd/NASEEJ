@@ -196,30 +196,31 @@
 
             <!-- Table Start -->
             <!-- Modal for Replying to Messages -->
+            <!-- Reply to Message Modal Form -->
             <div class="modal fade" id="replyModal" tabindex="-1" aria-labelledby="replyModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content bg-secondary rounded p-4">
                         <div class="modal-header">
                             <h5 class="modal-title" id="replyModalLabel">Reply to Message</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form id="Reply-form">
-                                <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" id="email" name="email" disabled>
-                                    <label for="floatingInput">Email address</label>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email address</label>
+                                    <input type="email" class="form-control bg-dark " id="email" aria-describedby="emailHelp"
+                                        disabled>
                                 </div>
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="subject" name="subject" disabled>
-                                    <label for="floatingPassword">Subject</label>
+                                <div class="mb-3">
+                                    <label for="subject" class="form-label">Subject</label>
+                                    <input type="text" class="form-control bg-dark" id="subject" name="subject" disabled>
                                 </div>
-
-                                <div class="form-floating">
-                                    <textarea class="form-control" id="replayMessage" rows="4" name="messageReply"
-                                        ></textarea>
-                                    <label for="floatingTextarea">Reply Message</label>
+                                <div class="mb-3">
+                                    <label for="replayMessage" class="form-label">Reply Message</label>
+                                    <textarea class="form-control" id="replayMessage" rows="4"
+                                        name="messageReply"></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-outline-success m-2">Send Reply</button>
+                                <button type="submit" class="btn btn-primary">Send Reply</button>
                             </form>
                         </div>
                     </div>
@@ -302,7 +303,7 @@
     <script src="js/ContactApi.js"></script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-        <script src="js/Shared.js"></script>
+    <script src="js/Shared.js"></script>
 
 
 </body>
