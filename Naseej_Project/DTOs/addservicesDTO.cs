@@ -15,6 +15,9 @@ namespace Naseej_Project.DTOs
 
         public int? EmployeeId { get; set; }
         public string? IsAccept { get; set; }
+        public int? Fromage { get; set; }
+
+        public int? Toage { get; set; }
 
 
     }

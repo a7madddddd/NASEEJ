@@ -22,6 +22,7 @@
         <link href="lib/animate/animate.min.css" rel="stylesheet">
         <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
         <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
         <!-- Customized Bootstrap Stylesheet -->
@@ -347,179 +348,63 @@
 
 
 
-        <div
-        class="modal fade"
-        id="serviceModal"
-        tabindex="-1"
-        aria-labelledby="serviceModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-lg">
-          <!-- جعل المودال أكبر باستخدام modal-lg -->
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="serviceModalLabel">Service Form</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <form id="addorder">
-                <div class="row">
-                  <!-- First Name -->
-                  <input type="hidden" class="form-control" id="serviceId" />
-                  <div class="col-md-6 mb-3">
-                    <label for="FirstName" class="form-label">First Name</label>
-                    <input
-                      name="FirstName"
-                      type="text"
-                      class="form-control"
-                      id="FirstName"
-                      readonly
-                    />
-                  </div>
-  
-                  <!-- Last Name -->
-                  <div class="col-md-6 mb-3">
-                    <label for="LastName" class="form-label">Last Name</label>
-                    <input
-                      name="LastName"
-                      type="text"
-                      class="form-control"
-                      id="LastName"
-                      readonly
-                    />
-                  </div>
+        <div class="modal fade" id="serviceModal" tabindex="-1" aria-labelledby="serviceModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="serviceModalLabel">Service Form</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-  
-                <div class="row">
-                  <!-- Email -->
-                  <div class="col-md-6 mb-3">
-                    <label for="Email" class="form-label">Email</label>
-                    <input
-                      name="Email"
-                      type="email"
-                      class="form-control"
-                      id="Email"
-                      readonly
-                    />
-                  </div>
-  
-                  <!-- Phone Number -->
-                  <div class="col-md-6 mb-3">
-                    <label for="phonenumber" class="form-label"
-                      >Phone Number</label
-                    >
-                    <input
-                      name="PhoneNumber"
-                      type="tel"
-                      class="form-control"
-                      id="phonenumber"
-                      readonly
-                    />
-                  </div>
+                <div class="modal-body">
+                  <form id="addorder">
+                    <!-- Hidden Field for Service ID -->
+                    <input type="hidden" name="ServiceId" class="form-control" id="serviceId" />
+                    <input type="hidden" name="UserId" class="form-control" id="Userid" />
+
+          
+                    <!-- Full Name and Phone Number -->
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="FirstName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="FullName" readonly />
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label for="phonenumber" class="form-label">Phone Number</label>
+                        <input  type="tel" class="form-control" id="phonenumber" readonly />
+                      </div>
+                    </div>
+          
+                    <!-- Email and Service Name -->
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="Email" class="form-label">Email</label>
+                        <input  type="email" class="form-control" id="Email" readonly />
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label for="serviceName" class="form-label">Service Name</label>
+                        <input  type="text" class="form-control" id="serviceName" readonly />
+                      </div>
+                    </div>
+          
+                    <!-- Description -->
+                    <div class="row">
+                      <div class="col-md-12 mb-3">
+                        <label for="Description" class="form-label">Description</label>
+                        <textarea name="Description" class="form-control" id="Description" rows="3" placeholder="Enter your description"></textarea>
+                                              </div>
+                    </div>
+          
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" onclick="addorder()" class="btn btn-primary">Submit</button>
+                    </div>
+                  </form>
                 </div>
-  
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="serviceName" class="form-label"
-                      >Service Name</label
-                    >
-                    <input
-                      name="ServiceName"
-                      type="text"
-                      class="form-control"
-                      id="serviceName"
-                      readonly
-                    />
-                  </div>
-                  <!-- Company Name -->
-  
-                  <!-- Address -->
-                  <div class="col-md-6 mb-3">
-                    <label for="Address" class="form-label">Address</label>
-                    <input
-                      name="Address"
-                      type="text"
-                      class="form-control"
-                      id="Address"
-                    />
-                  </div>
-                </div>
-  
-                <div class="row">
-                  <!-- Service Name -->
-                  <div class="col-md-6 mb-3">
-                    <label for="Companyname" class="form-label"
-                      >Company Name</label
-                    >
-                    <input
-                      name="CompanyName"
-                      type="text"
-                      class="form-control"
-                      id="Companyname"
-                    />
-                  </div>
-  
-                  <!-- Project Details -->
-  
-                  <div class="col-md-6 mb-3">
-                    <label for="serviceName" class="form-label"
-                      >Date for meeting</label
-                    >
-                    <input
-                      name="ServiceName"
-                      type="datetime-local"
-                      class="form-control"
-                      id="date"
-                    />
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="img" class="form-label">Upload Image</label>
-                    <input type="file" class="form-control" id="img" name="Img" />
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="projectDetails" class="form-label"
-                      >More Details for Your Project</label
-                    >
-                    <textarea
-                      name="ProjectDetails"
-                      id="projectDetails"
-                      class="form-control"
-                      rows="3"
-                    ></textarea>
-                  </div>
-                </div>
-  
-                <div class="row">
-                  <!-- Image Upload -->
-                </div>
-  
-                <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                  <button
-                    type="submit"
-                    onclick="addorder()"
-                    class="btn btn-primary"
-                  >
-                    Submit
-                  </button>
-                </div>
-              </form>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-
+          
         <!-- Footer Start -->
         <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s">
             <div class="container py-5">

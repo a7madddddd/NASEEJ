@@ -24,6 +24,7 @@
     <link href="lib/animate/animate.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
     <!-- Customized Bootstrap Stylesheet -->
@@ -815,6 +816,64 @@
         </div>
     </div>
     <!-- FAQ End -->
+
+    <div class="modal fade" id="serviceModal" tabindex="-1" aria-labelledby="serviceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="serviceModalLabel">Service Form</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="addorder">
+                <!-- Hidden Field for Service ID -->
+                <input type="hidden" name="ServiceId" class="form-control" id="serviceId" />
+                <input type="hidden" name="UserId" class="form-control" id="Userid" />
+
+      
+                <!-- Full Name and Phone Number -->
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="FirstName" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="FullName" readonly />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="phonenumber" class="form-label">Phone Number</label>
+                    <input  type="tel" class="form-control" id="phonenumber" readonly />
+                  </div>
+                </div>
+      
+                <!-- Email and Service Name -->
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="Email" class="form-label">Email</label>
+                    <input  type="email" class="form-control" id="Email" readonly />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="serviceName" class="form-label">Service Name</label>
+                    <input  type="text" class="form-control" id="serviceName" readonly />
+                  </div>
+                </div>
+      
+                <!-- Description -->
+                <div class="row">
+                  <div class="col-md-12 mb-3">
+                    <label for="Description" class="form-label">Description</label>
+                    <textarea name="Description" class="form-control" id="Description" rows="3" placeholder="Enter your description"></textarea>
+                                          </div>
+                </div>
+      
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" onclick="addorder()" class="btn btn-primary">Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      
 
     <!-- Footer Start -->
     <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s">

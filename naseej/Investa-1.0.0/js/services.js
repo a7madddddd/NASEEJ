@@ -19,7 +19,10 @@ async function servicesuser() {
                                         class="fas fa-donate fa-2x me-2"></i>${product.serviceName}</a>
                                 <p class="mb-4">${product.serviceDescription}
                                 </p>
-                                <a class="btn btn-light rounded-pill py-2 px-4" href="#">apply</a>
+                                <p>Age: ${product.fromage}&nbsp;&nbsp;-&nbsp;&nbsp;${product.toage}</p>
+
+<a class="btn btn-light rounded-pill py-2 px-4" href="#" onclick="showServiceModal(${product.serviceId})"  data-bs-toggle="modal" >Apply</a>
+
                             </div>
                         </div>
                     </div>
@@ -32,3 +35,135 @@ async function servicesuser() {
   }
   
   servicesuser();
+  
+  
+  function parseJwt(token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace('-', '+').replace('_', '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    return JSON.parse(jsonPayload);
+}
+
+async function showServiceModal(serviceId) {
+  debugger
+  let token = sessionStorage.getItem("jwtToken"); 
+
+  if (!token) {
+    await Swal.fire({
+      icon: "warning",
+      title: "Login Required",
+      text: "You need to be logged in to submit a testimonial.",
+    });
+    return; 
+  }
+
+  let decodedToken = parseJwt(token);
+  
+  console.log("Decoded Token:", decodedToken);
+
+  let userId = decodedToken?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+
+  if (!userId) {
+    await Swal.fire({
+      icon: "warning",
+      title: "Invalid Token",
+      text: "Unable to extract user ID from token.",
+    });
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:25025/api/services/getinfouserandservices/${userId}/${serviceId}`
+    );
+    if (!response.ok) throw new Error("Failed to fetch user info");
+
+    const data = await response.json();
+
+    document.getElementById("FullName").value = data.user.fullname || '';
+    document.getElementById("Email").value = data.user.email || '';
+    document.getElementById("phonenumber").value = data.user.phoneNumber || '';
+    document.getElementById("Userid").value = data.user.userId || '';
+
+    document.getElementById("serviceId").value = serviceId;
+    document.getElementById("serviceName").value = data.service.serviceName || '';
+
+  } catch (error) {
+    console.error("Error fetching user info:", error);
+    await Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "We apologize, but your age does not meet the requirements for this service.",
+    });
+    return;
+  }
+
+  const serviceModal = new bootstrap.Modal(document.getElementById("serviceModal"), {
+    backdrop: 'static',
+    keyboard: false
+  });
+  serviceModal.show();
+}
+
+
+const urlorder = "http://localhost:25025/api/services/addnewrequest";
+
+async function addorder() {
+    debugger;
+    event.preventDefault(); 
+
+    let token = sessionStorage.getItem("jwtToken");
+
+    if (!token) {
+        await Swal.fire({
+            icon: "warning",
+            title: "Login Required",
+            text: "You need to be logged in to submit a testimonial.",
+        });
+        return;
+    }
+
+    let decodedToken = parseJwt(token);
+    const userId = decodedToken?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+    if (!userId) {
+        await Swal.fire({
+            icon: "warning",
+            title: "Invalid Token",
+            text: "Unable to extract user ID from token.",
+        });
+        return;
+    }
+    var form = document.getElementById("addorder");
+    var formData = new FormData(form);
+    formData.append("UserId", userId);
+    formData.append("ServiceId", document.getElementById("serviceId").value);
+    console.log(document.getElementById("serviceId").value);
+    var response = await fetch(urlorder, {
+        method: "POST",
+        body: formData,
+    });
+
+    if (response.ok) {
+        Swal.fire({
+            title: "Success!",
+            text: "Registration completed successfully",
+            icon: "success",
+            confirmButtonText: "OK",
+            timer: 3000, 
+            timerProgressBar: true, 
+        });
+
+        setTimeout(() => {
+            window.location.href = "service.html";
+        }, 2000);
+    } else {
+        Swal.fire({
+            title: "Error!",
+            text: "Registration failed",
+            icon: "error",
+            confirmButtonText: "OK",
+        });
+    }
+}
