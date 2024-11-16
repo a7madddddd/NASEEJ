@@ -72,75 +72,83 @@ document.addEventListener('DOMContentLoaded', loadEmployeeData);
 
 
 
-// Optional: Add visual indicators for Super Admin only features
-document.addEventListener("DOMContentLoaded", function () {
-    const jwt = sessionStorage.getItem('Token');
-    if (jwt) {
-        try {
-            const decodedJWT = JSON.parse(atob(jwt.split('.')[1]));
-            if (!decodedJWT.isAdmin) {
-                // Hide or disable admin-only UI elements
-                const adminOnlyElements = document.querySelectorAll('.admin-only');
-                adminOnlyElements.forEach(element => {
-                    element.style.display = 'none';
-                });
+    // Optional: Add visual indicators for Super Admin only features
+    document.addEventListener("DOMContentLoaded", function () {
+        const jwt = sessionStorage.getItem('Token');
+        if (jwt) {
+            try {
+                const decodedJWT = JSON.parse(atob(jwt.split('.')[1]));
+                if (!decodedJWT.isAdmin) {
+                    // Hide or disable admin-only UI elements
+                    const adminOnlyElements = document.querySelectorAll('.admin-only');
+                    adminOnlyElements.forEach(element => {
+                        element.style.display = 'none';
+                    });
+                }
+            } catch (error) {
+                console.error("Error checking admin status:", error);
             }
-        } catch (error) {
-            console.error("Error checking admin status:", error);
         }
-    }
-});
+    });
 
 
 
 
 
-
-
-
-
-
-// Function to fetch and display contact messages
 async function displayContactMessages() {
     try {
         // Fetch data from the API
         const response = await fetch('http://localhost:25025/api/Contact/GetAllMessage');
-        if (!response.ok) throw new Error('Network response was not ok');
-        const data = await response.json();
+        if (!response.ok) {
+            throw new Error('Error fetching contact messages');
+        }
+        const messages = await response.json();
 
-        // Get the last 3 contacts in reverse order (newest first)
-        const lastThreeContacts = data.slice(-3).reverse();
+        // Get the last 3 messages in reverse order (newest first)
+        const lastThreeMessages = messages.slice(-3).reverse();
 
-        // Get the dropdown menu container directly
+        // Get the dropdown menu container
         const dropdownMenu = document.querySelector('.nav-item .dropdown-menu');
-
         if (!dropdownMenu) {
             console.error('Dropdown menu not found');
             return;
         }
 
-        // Get all dropdown items excluding the "See all message" link
-        const dropdownItems = dropdownMenu.querySelectorAll('.dropdown-item:not(:last-child)');
+        // Clear existing dropdown items
+        dropdownMenu.innerHTML = '';
 
-        // Update each dropdown item with contact data
-        lastThreeContacts.forEach((contact, index) => {
-            if (dropdownItems[index]) {
-                const messageDiv = dropdownItems[index].querySelector('.ms-2');
-                if (messageDiv) {
-                    // Update the message content
-                    const header = messageDiv.querySelector('h6');
-                    const timestamp = messageDiv.querySelector('small');
+        // Add new dropdown items
+        lastThreeMessages.forEach((message) => {
+            const dropdownItem = document.createElement('a');
+            dropdownItem.classList.add('dropdown-item');
+            dropdownItem.href = 'ContactsMessages.html';
 
-                    if (header) {
-                        header.textContent = `${contact.name} - ${contact.subject}`;
-                    }
-                    if (timestamp) {
-                        // Truncate message if it's too long
-                        timestamp.textContent = contact.message.substring(0, 30) +
-                            (contact.message.length > 30 ? '...' : '');
-                    }
-                }
-            }
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('d-flex', 'align-items-center');
+
+            const avatarImg = document.createElement('img');
+            avatarImg.classList.add('rounded-circle');
+            avatarImg.src = 'img/user.jpg';
+            avatarImg.alt = '';
+            avatarImg.style.width = '40px';
+            avatarImg.style.height = '40px';
+
+            const messageContentDiv = document.createElement('div');
+            messageContentDiv.classList.add('ms-2');
+
+            const messageHeader = document.createElement('h6');
+            messageHeader.classList.add('fw-normal', 'mb-0');
+            messageHeader.textContent = `${message.name ? message.name : 'Anonymous'} - ${message.email ? message.email : 'No email available'}`;
+
+            const messageTimestamp = document.createElement('small');
+            messageTimestamp.textContent = message.message ? message.message.substring(0, 30) + (message.message.length > 30 ? '...' : '') : 'No message available';
+
+            messageContentDiv.appendChild(messageHeader);
+            messageContentDiv.appendChild(messageTimestamp);
+            messageDiv.appendChild(avatarImg);
+            messageDiv.appendChild(messageContentDiv);
+            dropdownItem.appendChild(messageDiv);
+            dropdownMenu.appendChild(dropdownItem);
         });
 
         // Update the messages link
@@ -151,7 +159,6 @@ async function displayContactMessages() {
                 window.location.href = 'ContactsMessages.html';
             });
         }
-
     } catch (error) {
         console.error('Error fetching contact messages:', error);
     }
@@ -159,6 +166,7 @@ async function displayContactMessages() {
 
 // Call the function when the page loads
 document.addEventListener('DOMContentLoaded', displayContactMessages);
+
 
 
 
