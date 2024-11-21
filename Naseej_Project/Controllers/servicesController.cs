@@ -37,33 +37,26 @@ namespace Naseej_Project.Controllers
 
             };
 
-            // التأكد من وجود ملف الصورة
             if (product.ServiceImage != null && product.ServiceImage.Length > 0)
             {
                 try
                 {
-                    // تحديد مسار المجلد في wwwroot
                     var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
 
-                    // التأكد من وجود المجلد، وإذا لم يكن موجودًا يتم إنشاؤه
                     if (!Directory.Exists(uploadsFolderPath))
                     {
                         Directory.CreateDirectory(uploadsFolderPath);
                     }
 
-                    // اسم الملف الفريد لتجنب التعارض
                     var fileName = Guid.NewGuid().ToString() + Path.GetExtension(product.ServiceImage.FileName);
 
-                    // المسار الكامل للملف داخل wwwroot
                     var filePath = Path.Combine(uploadsFolderPath, fileName);
 
-                    // حفظ الملف في المجلد المحدد
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         product.ServiceImage.CopyTo(stream);
                     }
 
-                    // حفظ المسار النسبي للصورة في قاعدة البيانات
                     service.ServiceImage = $"{fileName}";
                 }
                 catch (Exception ex)
@@ -72,7 +65,6 @@ namespace Naseej_Project.Controllers
                 }
             }
 
-            // حفظ الخدمة في قاعدة البيانات
             _Db.Services.Add(service);
             _Db.SaveChanges();
 
@@ -83,7 +75,6 @@ namespace Naseej_Project.Controllers
         [HttpPut("editservices/{id}")]
         public IActionResult UpdateService(int id, [FromForm] addservicesDTO obj)
         {
-            // البحث عن الخدمة في قاعدة البيانات
             var service = _Db.Services.Find(id);
             if (service == null)
             {
@@ -92,41 +83,32 @@ namespace Naseej_Project.Controllers
             
             try
             {
-                // تحديث اسم الخدمة والوصف إذا تم تقديمهما
                 service.ServiceName = obj.ServiceName ?? service.ServiceName;
                 service.ServiceDescription = obj.ServiceDescription ?? service.ServiceDescription;
                 service.Fromage=obj.Fromage ?? service.Fromage;
                 service.Toage = obj.Toage ?? service.Toage;
 
-                // تحديد مسار المجلد لحفظ الصور في wwwroot
                 var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
 
-                // التأكد من وجود المجلد، وإذا لم يكن موجودًا يتم إنشاؤه
                 if (!Directory.Exists(uploadsFolderPath))
                 {
                     Directory.CreateDirectory(uploadsFolderPath);
                 }
 
-                // تحديث الصورة إذا تم رفعها
                 if (obj.ServiceImage != null && obj.ServiceImage.Length > 0)
                 {
-                    // اسم الملف الفريد لتجنب التعارض
                     var fileName = Guid.NewGuid().ToString() + Path.GetExtension(obj.ServiceImage.FileName);
 
-                    // المسار الكامل للملف داخل wwwroot
                     var filePath = Path.Combine(uploadsFolderPath, fileName);
 
-                    // حفظ الملف في المجلد المحدد
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         obj.ServiceImage.CopyTo(stream);
                     }
 
-                    // حفظ المسار النسبي للصورة في قاعدة البيانات
                     service.ServiceImage = $"{fileName}";
                 }
 
-                // حفظ التغييرات في قاعدة البيانات
                 _Db.Services.Update(service);
                 _Db.SaveChanges();
 
