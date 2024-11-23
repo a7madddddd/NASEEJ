@@ -621,6 +621,9 @@
     position: relative;
     overflow: hidden;
     border-radius: 10px;
+    width: 40em;
+    height: 50vh !important;
+
 }
 
 .project .project-carousel .project-item .project-img::after {
@@ -714,6 +717,41 @@
     height: 30px;
     border-radius: 40px;
     border: 8px solid var(--bs-primary);
+}
+
+
+.project .project-content {
+
+    width: 90% !important;
+    height: 45vh !important;
+}
+
+.project .project-content .h4 {
+
+    display: block;
+    /* Ensure the link behaves as a block element */
+    word-wrap: break-word;
+    /* Force breaking long words */
+    overflow-wrap: break-word;
+    /* Same for cross-browser support */
+    text-overflow: ellipsis;
+    /* Optional: Add ellipsis for very long text */
+    width: 100%;
+    /* Ensure it takes the full width of the container */
+}
+
+.project .project-content .text-dark {
+
+    display: block;
+    /* Ensure the link behaves as a block element */
+    word-wrap: break-word;
+    /* Force breaking long words */
+    overflow-wrap: break-word;
+    /* Same for cross-browser support */
+    text-overflow: ellipsis;
+    /* Optional: Add ellipsis for very long text */
+    width: 100%;
+    /* Ensure it takes the full width of the container */
 }
 
 /*** Project End ***/

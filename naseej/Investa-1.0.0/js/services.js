@@ -171,3 +171,49 @@ async function addorder() {
         });
     }
 }
+
+
+
+
+
+
+async function servicehome() {
+  debugger
+  let url = "http://localhost:25025/api/services/getservicesAcceptedlastthree";
+  const response = await fetch(url);
+  let data = await response.json();
+
+  let card = document.getElementById("service");
+
+  data.forEach((product) => {
+    card.innerHTML += `
+          <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.3s">
+                  <div class="service-item bg-light rounded">
+                      <div class="service-img">
+                          <img src="http://localhost:25025/Uploads/${product.serviceImage}" class="img-fluid w-100 rounded-top" alt="">
+                      </div>
+                      <div class="service-content text-center p-4">
+                          <div class="service-content-inner">
+                              <a href="#" class="h4 mb-6 d-inline-flex text-start"><i
+                                      class="fas fa-donate fa-2x me-2"></i>${product.serviceName}</a>
+                              <p class="mb-6">${product.serviceDescription}
+                              </p>
+                              <p>Age: ${product.fromage}&nbsp;&nbsp;-&nbsp;&nbsp;${product.toage}</p>
+
+<a class="btn btn-light rounded-pill py-2 px-4" href="#" onclick="showServiceModal(${product.serviceId})"  data-bs-toggle="modal" >Apply</a>
+
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+
+
+           
+        `;
+  });
+
+
+}
+servicehome()
