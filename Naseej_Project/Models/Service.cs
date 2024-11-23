@@ -19,6 +19,10 @@ public partial class Service
 
     public string? IsAccept { get; set; }
 
+    public int? Fromage { get; set; }
+
+    public int? Toage { get; set; }
+
     public virtual Employee? Employee { get; set; }
 
     public virtual ICollection<Request> Requests { get; set; } = new List<Request>();
