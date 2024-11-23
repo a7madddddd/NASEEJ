@@ -621,6 +621,9 @@
     position: relative;
     overflow: hidden;
     border-radius: 10px;
+    width: 40em;
+    height: 50vh !important;
+
 }
 
 .project .project-carousel .project-item .project-img::after {
