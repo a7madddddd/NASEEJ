@@ -27,7 +27,7 @@ function parseJwt(token) {
   
   
   async function fetchCardData() {
-    const url = "http://localhost:25025/api/project/allproject";
+    const url = "http://localhost:25025/api/Projects";
     const response = await fetch(url);
     const data = await response.json();
   
@@ -48,17 +48,17 @@ function parseJwt(token) {
         cardContainer.innerHTML += `
             <div class="col-xl-4 col-md-6 mb-4">
                 <div class="card service-card shadow h-100">
-                    <img src="http://localhost:25025/project/${product.projectImage}" class="card-img-top" alt="Service Image">
+                    <img src="http://localhost:25025/${product.projectImage}" class="card-img-top" alt="Service Image">
                     <div class="card-body">
                         <h5 class="card-title">${product.projectName}</h5>
                         <p class="card-text"><strong>Description:</strong> ${product.projectDescription}</p>
-                     
-                    </div>
-                    <div class="card-footer text-center">
-                <select onchange="editstatus(${product.projectId})" id="status-${product.projectId}" class="form-select bg-custom text-dark form-select-sm">
-      <option value="Pinding" class="text-info" ${product.isAccept === 'Pinding' ? 'selected' : ''}>Pinding</option>
-      <option value="Accept" class="text-success" ${product.isAccept === 'Accept' ? 'selected' : ''}>Accept</option>
-  </select>
+                                
+                                </div>
+                                <div class="card-footer text-center">
+                            <select onchange="editstatus(${product.projectId})" id="status-${product.projectId}" class="form-select bg-custom text-dark form-select-sm">
+                  <option value="Pinding" class="text-info" ${product.isAccept === 'Pinding' ? 'selected' : ''}>Pinding</option>
+                  <option value="Accept" class="text-success" ${product.isAccept === 'Accept' ? 'selected' : ''}>Accept</option>
+              </select>
   
                     </div>
                     <div class="card-footer text-center">
@@ -76,7 +76,7 @@ function parseJwt(token) {
   fetchCardData();
   
     
-  const url = "http://localhost:25025/api/project/addnewproject";
+const url = "http://localhost:25025/api/Projects";
   async function addservice() {
     debugger
     event.preventDefault();
