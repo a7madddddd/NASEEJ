@@ -55,7 +55,7 @@ async function fetchCardData() {
                       <p class="card-text"><strong>Age:</strong> from ${product.fromage} to ${product.toage}</p>
                   </div>
                   <div class="card-footer text-center">
-              <select onchange="editstatus(${product.serviceId})" id="status-${product.serviceId}" class="form-select bg-custom text-dark form-select-sm">
+              <select onchange="editstatus(${product.serviceId})" id="status-${product.serviceId}" class="admin-only form-select bg-custom text-dark form-select-sm">
                   <option value="Pinding" class="text-info" ${product.isAccept === 'Pinding' ? 'selected' : ''}>Pinding</option>
                   <option value="Accept" class="text-success" ${product.isAccept === 'Accept' ? 'selected' : ''}>Accept</option>
               </select>
@@ -191,9 +191,7 @@ async function addservice() {
         method: "PUT",
         body: formData,
       });
-    
-      // console.log("Response Status:", response.status);
-      // console.log("Response OK:", response.ok);
+
     
       if (response.ok) {
         await Swal.fire({
