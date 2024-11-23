@@ -56,9 +56,9 @@ async function fetchCardData() {
                   </div>
                   <div class="card-footer text-center">
               <select onchange="editstatus(${product.serviceId})" id="status-${product.serviceId}" class="form-select bg-custom text-dark form-select-sm">
-    <option value="Pinding" class="text-info" ${product.isAccept === 'Pinding' ? 'selected' : ''}>Pinding</option>
-    <option value="Accept" class="text-success" ${product.isAccept === 'Accept' ? 'selected' : ''}>Accept</option>
-</select>
+                  <option value="Pinding" class="text-info" ${product.isAccept === 'Pinding' ? 'selected' : ''}>Pinding</option>
+                  <option value="Accept" class="text-success" ${product.isAccept === 'Accept' ? 'selected' : ''}>Accept</option>
+              </select>
 
                   </div>
                   <div class="card-footer text-center">
