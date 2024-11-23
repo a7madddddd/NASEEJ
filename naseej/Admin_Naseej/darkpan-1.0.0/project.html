@@ -226,51 +226,94 @@
       </nav>
       <!-- Navbar End -->
 
-      <br />
-      <button style="margin-left: 15px" class="btn btn-primary mb-4" data-bs-toggle="modal"
-        data-bs-target="#addServiceModal">
-        Add New Service
-      </button>
-      <!-- Table Start -->
-      <div class="container">
-        <div class="row" id="container"></div>
-      </div>
-      <!-- Table End -->
-      <div class="modal fade" id="addServiceModal" tabindex="-1" aria-labelledby="addServiceModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="addServiceModalLabel">
-                Add New Service
-              </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form id="addservice">
-                <div class="mb-3">
-                  <label for="serviceName" class="form-label">Service Name</label>
-                  <input name="ProjectName" type="text" class="form-control" id="serviceName"
-                    placeholder="Enter service name" required />
-                </div>
-                <div class="mb-3">
-                  <label for="img" class="form-label">Service Image</label>
-                  <input name="ProjectImage" type="file" class="form-control" id="img" placeholder="uplode image"
-                    required />
-                </div>
-                <div class="mb-3">
-                  <label for="serviceDescription" class="form-label">Service Description</label>
-                  <textarea name="ProjectDescription" class="form-control" id="serviceDescription" rows="3"
-                    placeholder="Enter service description" required></textarea>
-                </div>
-                <div class="mb-3">
-                  <input name="EmployeeId" type="hidden" class="form-control" id="EmployeeId"
-                    placeholder="Enter Employee id" readonly />
-                </div>
-                <div class="mb-3 row">
+        <br />
+        <button
+          style="margin-left: 15px"
+          class="btn btn-primary mb-4"
+          data-bs-toggle="modal"
+          data-bs-target="#addServiceModal"
+        >
+          Add New project
+        </button>
+        <!-- Table Start -->
+        <div class="container">
+          <div class="row" id="container"></div>
+        </div>
+        <!-- Table End -->
+        <div
+          class="modal fade"
+          id="addServiceModal"
+          tabindex="-1"
+          aria-labelledby="addServiceModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="addServiceModalLabel">
+                  Add New project
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <form id="addservice">
+                  <div class="mb-3">
+                    <label for="serviceName" class="form-label"
+                      >project Name</label
+                    >
+                    <input
+                      name="ProjectName"
+                      type="text"
+                      class="form-control"
+                      id="serviceName"
+                      placeholder="Enter service name"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="img" class="form-label">project Image</label>
+                    <input
+                      name="ProjectImage"
+                      type="file"
+                      class="form-control"
+                      id="img"
+                      placeholder="uplode image"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="serviceDescription" class="form-label"
+                      >project Description</label
+                    >
+                    <textarea
+                      name="ProjectDescription"
+                      class="form-control"
+                      id="serviceDescription"
+                      rows="3"
+                      placeholder="Enter service description"
+                      required
+                    ></textarea>
+                  </div>
+                  <div class="mb-3">
+                    <input
+                      name="EmployeeId"
+                      type="hidden"
+                      class="form-control"
+                      id="EmployeeId"
+                      placeholder="Enter Employee id"
+                      readonly
 
-                </div>
-
+                    />
+                  </div>
+                  <div class="mb-3 row">
+                  
+                  </div>
+                  
 
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
