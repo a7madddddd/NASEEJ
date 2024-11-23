@@ -14,7 +14,7 @@ async function displayProjects() {
                     ${projects.map(project => `
                         <div class="project-item h-100 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="project-img">
-                                <img src="http://localhost:25025/${project.projectImage}" class="img-fluid w-100 rounded" alt="${project.projectName}">
+                                <img src="http://localhost:25025/project/${project.projectImage}" class="img-fluid w-100 rounded" alt="${project.projectName}">
                             </div>
                             <div class="project-content bg-light rounded p-4">
                                 <div class="project-content-inner">
