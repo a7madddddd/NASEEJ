@@ -52,13 +52,13 @@ function parseJwt(token) {
                     <div class="card-body">
                         <h5 class="card-title">${product.projectName}</h5>
                         <p class="card-text"><strong>Description:</strong> ${product.projectDescription}</p>
-                     
-                    </div>
-                    <div class="card-footer text-center">
-                <select onchange="editstatus(${product.projectId})" id="status-${product.projectId}" class="form-select bg-custom text-dark form-select-sm">
-      <option value="Pinding" class="text-info" ${product.isAccept === 'Pinding' ? 'selected' : ''}>Pinding</option>
-      <option value="Accept" class="text-success" ${product.isAccept === 'Accept' ? 'selected' : ''}>Accept</option>
-  </select>
+                                
+                                </div>
+                                <div class="card-footer text-center">
+                            <select onchange="editstatus(${product.projectId})" id="status-${product.projectId}" class="form-select bg-custom text-dark form-select-sm">
+                  <option value="Pinding" class="text-info" ${product.isAccept === 'Pinding' ? 'selected' : ''}>Pinding</option>
+                  <option value="Accept" class="text-success" ${product.isAccept === 'Accept' ? 'selected' : ''}>Accept</option>
+              </select>
   
                     </div>
                     <div class="card-footer text-center">
@@ -76,7 +76,7 @@ function parseJwt(token) {
   fetchCardData();
   
     
-  const url = "http://localhost:25025/api/project/addnewproject";
+const url = "http://localhost:25025/api/project/addnewproject";
   async function addservice() {
     debugger
     event.preventDefault();
