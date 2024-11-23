@@ -15,9 +15,9 @@ async function servicesuser() {
                         </div>
                         <div class="service-content text-center p-4">
                             <div class="service-content-inner">
-                                <a href="#" class="h4 mb-4 d-inline-flex text-start"><i
+                                <a href="#" class="h4 mb-6 d-inline-flex text-start"><i
                                         class="fas fa-donate fa-2x me-2"></i>${product.serviceName}</a>
-                                <p class="mb-4">${product.serviceDescription}
+                                <p class="mb-6">${product.serviceDescription}
                                 </p>
                                 <p>Age: ${product.fromage}&nbsp;&nbsp;-&nbsp;&nbsp;${product.toage}</p>
 
@@ -27,6 +27,10 @@ async function servicesuser() {
                         </div>
                     </div>
                 </div>
+
+
+
+
              
           `;
     });
