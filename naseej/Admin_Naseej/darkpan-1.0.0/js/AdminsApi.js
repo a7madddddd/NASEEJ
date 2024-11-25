@@ -130,6 +130,9 @@ document
           title: "Admin added successfully!",
           text: "The new admin has been added successfully.",
           confirmButtonText: "OK",
+        }).then(() => {
+          // Refresh the page after the user clicks "OK"
+          location.reload();
         });
         document.getElementById("addAdminForm").reset();
       })
@@ -246,6 +249,9 @@ document.addEventListener("DOMContentLoaded", function () {
           title: "Employee updated successfully!",
           text: "The employee details have been updated.",
           confirmButtonText: "OK",
+        }).then(() => {
+          // Refresh the page after the user clicks "OK"
+          location.reload();
         });
         form.reset();
       })
@@ -262,7 +268,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // end edit admins function
-
 // Handle Delete Button Click
 document.getElementById("deleteButton").addEventListener("click", async () => {
   const employeeId = document.getElementById("adminDropdown").value;
@@ -283,17 +288,44 @@ document.getElementById("deleteButton").addEventListener("click", async () => {
   }).then(async (result) => {
     if (result.isConfirmed) {
       try {
-        await fetch(`${employeeId}`, {
+        const response = await fetch(`http://localhost:25025/api/Empolyees/${employeeId}`, {
           method: "DELETE",
+          headers: {
+            'Content-Type': 'application/json'
+          }
         });
-        Swal.fire("Deleted!", "The employee has been deleted.", "success");
-        populateEmployeeDropdowns(); // Refresh dropdowns
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        await Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: "The employee has been deleted successfully.",
+          confirmButtonText: "OK"
+        }).then(() => {
+          // Refresh the page after the user clicks "OK"
+          location.reload();
+        });
+        // Close the modal if it's open
+        const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteAdminModal'));
+        if (deleteModal) {
+          deleteModal.hide();
+        }
+
+        // Refresh the dropdowns
+        populateEmployeeDropdowns();
+
       } catch (error) {
         console.error("Error deleting Admin:", error);
-        Swal.fire("Error", "Failed to delete the Admin.", "error");
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "Failed to delete the Admin. Please try again.",
+          confirmButtonText: "OK"
+        });
       }
     }
   });
 });
-
-

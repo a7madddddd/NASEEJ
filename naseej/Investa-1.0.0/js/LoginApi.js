@@ -115,8 +115,11 @@ async function loginUser() {
                 text: 'You have successfully logged in!',
                 confirmButtonText: 'OK'
             }).then(() => {
-                window.location.href = 'index.html';
-            });
+                if (document.referrer) {
+                    window.location.href = document.referrer;
+                } else {
+                    window.location.href = 'index.html';
+                }            });
         } else {
             const error = await response.json();
             console.log('Error response:', error); // Debug log

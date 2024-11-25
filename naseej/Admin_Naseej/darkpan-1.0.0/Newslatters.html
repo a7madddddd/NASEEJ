@@ -66,16 +66,16 @@
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
-                    <a href="index.html" class="nav-item nav-link"><i
+                    <a href="index.html" class="nav-item nav-link "><i
                             class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                     <a href="Admins.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Admins</a>
                     <a href="Users.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Users</a>
                     <a href="Testimonials.html" class="nav-item nav-link"><i
                             class="fa fa-keyboard me-2"></i>Testimonials</a>
                     <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Charts</a>
-                    <a href="ContactsMessages.html" class="nav-item nav-link active"><i
+                    <a href="ContactsMessages.html" class="nav-item nav-link"><i
                             class="fa fa-keyboard me-2"></i>Contacts</a>
-                    <a href="Newslatters.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>News
+                    <a href="Newslatters.html" class="nav-item nav-link active"><i class="fa fa-keyboard me-2"></i>News
                         Latters</a>
 
 
@@ -146,62 +146,24 @@
             </nav>
             <!-- Navbar End -->
 
-
-            <!-- Table Start -->
-
-            <!-- Table Start -->
-            <!-- Modal for Replying to Messages -->
-            <!-- Reply to Message Modal Form -->
-            <div class="modal fade" id="replyModal" tabindex="-1" aria-labelledby="replyModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content bg-secondary rounded p-4">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="replyModalLabel">Reply to Message</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="Reply-form">
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email address</label>
-                                    <input type="email" class="form-control bg-dark " id="email"
-                                        aria-describedby="emailHelp" disabled>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="subject" class="form-label">Subject</label>
-                                    <input type="text" class="form-control bg-dark" id="subject" name="subject"
-                                        disabled>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="replayMessage" class="form-label">Reply Message</label>
-                                    <textarea class="form-control" id="replayMessage" rows="4"
-                                        name="messageReply"></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Send Reply</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Your Table for Displaying Contact Messages -->
+            <!-- Newsletter Table -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                    <div class="col-sm-12 col-xl-12">
+                    <div class="col-12">
                         <div class="bg-secondary rounded h-100 p-4">
-                            <h6 class="mb-4">Basic Table</h6>
-                            <table class="table" id="contactTable">
+                            <h6 class="mb-4">Newsletter Subscriptions</h6>
+                            <table class="table">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Name</th>
                                         <th scope="col">Email</th>
-                                        <th scope="col">Subject</th>
-                                        <th scope="col">Message</th>
-                                        <th scope="col">Action</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <!-- Rows will be dynamically inserted here -->
+                                <tbody id="newsletterTableBody">
+                                    <!-- Data will be populated here -->
                                 </tbody>
                             </table>
                         </div>
@@ -209,15 +171,108 @@
                 </div>
             </div>
 
-            <!-- Table End -->
+            <!-- Modal HTML -->
+            <!-- Modal HTML -->
+            <!-- Button to open Reply All modal - place this above your table -->
+            <div class="mb-3 d-flex justify-content-end">
+                <button class="btn btn-primary admin-only" onclick="openReplyAllModal()">
+                    <i class="fas fa-reply-all"></i> News To All Subscribers
+                </button>
+            </div>
+
+            <div class="modal fade" id="replyAllModal" tabindex="-1" aria-labelledby="replyAllModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-xl"> <!-- Changed to modal-xl for wider view -->
+                    <div class="modal-content bg-secondary">
+                        <div class="modal-header admin-only">
+                            <h5 class="modal-title" id="replyAllModalLabel">Reply to All Pending Subscribers</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="replyAllForm">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="replyAllMessage" class="form-label">Message</label>
+                                            <textarea class="form-control" id="replyAllMessage" rows="5" required
+                                                placeholder="Enter your message here..."></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="pendingCount" class="form-label">Total Pending</label>
+                                            <input type="text" class="form-control" id="pendingCount" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="table-responsive" style="max-height: 400px;">
+                                            <table class="table table-dark table-hover">
+                                                <thead class="sticky-top">
+                                                    <tr>
+                                                        <th scope="col" style="width: 50px">#</th>
+                                                        <th scope="col">Email</th>
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Status</th>
+                                                        <th scope="col" style="width: 80px">Select</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="newslettersList">
+                                                    <!-- Newsletters will be listed here -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="me-auto">
+                                <button type="button" class="btn btn-info" onclick="toggleAllNewsletters()">
+                                    <i class="fas fa-check-square"></i> Toggle All
+                                </button>
+                            </div>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="sendReplyAll()">
+                                <i class="fas fa-paper-plane"></i> Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
 
 
-
-
-
-
+            <!-- Reply Modal -->
+            <div class="modal fade" id="replyOneModal" tabindex="-1" aria-labelledby="replyOneModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content bg-secondary">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="replyOneModalLabel">Reply to Subscriber</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="replyOneForm" onsubmit="event.preventDefault(); sendReplyToNewsletter();">
+                                <input type="hidden" id="subscriberId">
+                                <div class="mb-3">
+                                    <label for="subscriberEmail" class="form-label">Subscriber Email</label>
+                                    <input type="email" class="form-control" id="subscriberEmail" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="replyMessage" class="form-label">Message</label>
+                                    <textarea class="form-control" id="replyMessage" rows="5" required
+                                        placeholder="Enter your reply message here..."></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" form="replyOneForm" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i> Send News
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
             <!-- Footer Start -->
@@ -254,13 +309,12 @@
     <script src="lib/tempusdominus/js/moment.min.js"></script>
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- my js  -->
-    <script src="js/ContactApi.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.1/dist/sweetalert2.all.min.js"></script>
+
     <!-- Template Javascript -->
+    <script src="js/newslatters.js"></script>
     <script src="js/main.js"></script>
     <script src="js/Shared.js"></script>
-
 
 </body>
 

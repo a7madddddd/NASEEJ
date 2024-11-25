@@ -127,12 +127,12 @@ namespace Naseej_Project.Controllers
         {
             if (id <= 0)
             {
-                return BadRequest();
+                return BadRequest("Enter Your Id");
             }
             var Servic = _Db.Services.FirstOrDefault(c => c.ServiceId == id);
             if (Servic == null)
             {
-                return NotFound();
+                return NotFound("No Service");
             }
 
             _Db.Services.Remove(Servic);
@@ -146,17 +146,19 @@ namespace Naseej_Project.Controllers
             return Ok(x);
         }
 
-
         [HttpGet("getservicesbyid/{id}")]
-        public IActionResult getusersid(int id)
+        public IActionResult GetServicesByUserId(int id)
         {
-            var user = _Db.Services.Find(id);
+            // Fetch services by user id
+            var services = _Db.Services.Where(s => s.EmployeeId == id).ToList();
 
+            if (services == null || services.Count == 0)
+            {
+                return NotFound("No services found for this user.");
+            }
 
-
-            return Ok(user);
+            return Ok(services);
         }
-
 
 
         [HttpPut("editorder/{id}")]
@@ -302,6 +304,30 @@ namespace Naseej_Project.Controllers
         }
 
 
+
+
+        [HttpGet("serviceById/{id}")]
+        public async Task<ActionResult<Service>> GetServiceById(int id)
+        {
+            var service = await _Db.Services.FindAsync(id);
+
+            if (service == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(new
+            {
+                serviceId = service.ServiceId,
+                serviceName = service.ServiceName,
+                serviceDescription = service.ServiceDescription,
+                serviceImage = service.ServiceImage,
+                employeeId = service.EmployeeId,
+                fromAge = service.Fromage,
+                toAge = service.Toage,
+                isAccept = service.IsAccept
+            });
+        }
 
 
 

@@ -25,8 +25,9 @@ async function handleTestimonialSubmit(event) {
       icon: 'warning',
       title: 'Authentication Required',
       text: 'Please log in to submit a testimonial'
+    }).then(() => {
+      window.location = 'login.html';
     });
-    return;
   }
 
   try {
@@ -93,7 +94,7 @@ function populateUserDataFromToken() {
     return;
   }
 
-  try {
+ 
     const claims = getClaimsFromToken(token);
 
     // Populate and disable form fields
@@ -106,15 +107,9 @@ function populateUserDataFromToken() {
     document.getElementById('email').value = claims.email;
     document.getElementById('email').disabled = true;
 
-  } catch (error) {
-    console.error("Error populating form:", error);
-    Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: 'Failed to load user information'
-    });
-  }
-}
+  } 
+  
+
 
 // Initialize everything when document loads
 document.addEventListener('DOMContentLoaded', () => {
@@ -145,6 +140,31 @@ function testTokenParsing() {
     console.log("No token found in sessionStorage");
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
