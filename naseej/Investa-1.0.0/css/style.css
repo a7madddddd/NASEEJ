@@ -621,6 +621,9 @@
     position: relative;
     overflow: hidden;
     border-radius: 10px;
+    width: 40em;
+    height: 50vh !important;
+
 }
 
 .project .project-carousel .project-item .project-img::after {
@@ -714,6 +717,41 @@
     height: 30px;
     border-radius: 40px;
     border: 8px solid var(--bs-primary);
+}
+
+
+.project .project-content {
+
+    width: 90% !important;
+    height: 45vh !important;
+}
+
+.project .project-content .h4 {
+
+    display: block;
+    /* Ensure the link behaves as a block element */
+    word-wrap: break-word;
+    /* Force breaking long words */
+    overflow-wrap: break-word;
+    /* Same for cross-browser support */
+    text-overflow: ellipsis;
+    /* Optional: Add ellipsis for very long text */
+    width: 100%;
+    /* Ensure it takes the full width of the container */
+}
+
+.project .project-content .text-dark {
+
+    display: block;
+    /* Ensure the link behaves as a block element */
+    word-wrap: break-word;
+    /* Force breaking long words */
+    overflow-wrap: break-word;
+    /* Same for cross-browser support */
+    text-overflow: ellipsis;
+    /* Optional: Add ellipsis for very long text */
+    width: 100%;
+    /* Ensure it takes the full width of the container */
 }
 
 /*** Project End ***/
@@ -1027,4 +1065,87 @@
     /* Adjust this value as needed */
     overflow: hidden;
     /* Optional: hides overflowed text */
+}
+
+
+
+
+
+
+
+
+
+/* Service Container Styling */
+.service-item {
+    width: 300px;
+    /* Fixed width for all service items */
+    height: 450px;
+    /* Fixed height for all service items */
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Service Image Styling */
+.service-img img {
+    width: 100%;
+    height: 180px;
+    /* Fixed height for images */
+    object-fit: cover;
+    /* Prevents stretching */
+}
+
+/* Service Content Styling */
+.service-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.service-content .text-start {
+    padding: 1%;
+    overflow: visible;
+
+}
+
+
+
+/* Consistent Paragraph Style */
+.service-content p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    max-width: 250px;
+    /* Limit line width for improved readability */
+    height: 69px;
+    /* Fixed height */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 10px;
+    text-align: start;
+}
+
+/* Title and Icon Alignment */
+/* Title Styling with Wrapping */
+.service-content-inner .h4 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    max-width: 250px;
+    /* Set a max-width for controlled wrapping */
+    white-space: normal;
+    /* Allows text to wrap */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    line-height: 1.3;
+    /* Adjust line height for readability */
+}
+
+/* Button Styling */
+.service-content a.btn {
+    align-self: center;
+    margin-top: auto;
+    width: 80%;
 }

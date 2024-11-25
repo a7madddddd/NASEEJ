@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Naseej_Project.DTOs;
 using Naseej_Project.Models;
+using NuGet.Protocol.Core.Types;
 
 namespace Naseej_Project.Controllers
 {
@@ -29,87 +31,93 @@ namespace Naseej_Project.Controllers
                 ServiceName = product.ServiceName,
                 ServiceDescription = product.ServiceDescription,
                 EmployeeId = product.EmployeeId,
-                ServiceDate = DateTime.Now
+                ServiceDate = DateTime.Now,
+                Fromage=product.Fromage,
+                Toage=product.Toage,
+
             };
 
-            // التأكد من وجود ملف الصورة
             if (product.ServiceImage != null && product.ServiceImage.Length > 0)
             {
-                // المسار المخصص الذي تريد حفظ الملف فيه
-                var customFolderPath = @"C:\Users\Lenovo\source\repos\Naseej\naseej\Admin_Naseej\darkpan-1.0.0\Uploads";
-
-                // التأكد من وجود المجلد، وإذا لم يكن موجودًا يتم إنشاؤه
-                if (!Directory.Exists(customFolderPath))
+                try
                 {
-                    Directory.CreateDirectory(customFolderPath);
+                    var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
+
+                    if (!Directory.Exists(uploadsFolderPath))
+                    {
+                        Directory.CreateDirectory(uploadsFolderPath);
+                    }
+
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(product.ServiceImage.FileName);
+
+                    var filePath = Path.Combine(uploadsFolderPath, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        product.ServiceImage.CopyTo(stream);
+                    }
+
+                    service.ServiceImage = $"{fileName}";
                 }
-
-                // اسم الملف الفريد لتجنب التعارض
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(product.ServiceImage.FileName);
-
-                // المسار الكامل للملف
-                var filePath = Path.Combine(customFolderPath, fileName);
-
-                // حفظ الملف في المسار المحدد
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                catch (Exception ex)
                 {
-                    product.ServiceImage.CopyTo(stream);
+                    return StatusCode(500, $"خطأ أثناء رفع الصورة: {ex.Message}");
                 }
-
-                // حفظ اسم الملف فقط في قاعدة البيانات
-                service.ServiceImage = fileName;
             }
 
-            // حفظ الخدمة في قاعدة البيانات
             _Db.Services.Add(service);
             _Db.SaveChanges();
 
             return Ok(service);
         }
+
+
         [HttpPut("editservices/{id}")]
-        public IActionResult updatecategory(int id, [FromForm] addservicesDTO obj)
+        public IActionResult UpdateService(int id, [FromForm] addservicesDTO obj)
         {
-            // البحث عن الخدمة في قاعدة البيانات
             var service = _Db.Services.Find(id);
             if (service == null)
             {
                 return NotFound("Service not found.");
             }
-
-            // تحديد المسار لحفظ الصور
-            var uploadImageFolder = @"C:\Users\Lenovo\source\repos\Naseej\naseej\Admin_Naseej\darkpan-1.0.0\Uploads";
-
-            // التأكد من وجود المجلد، وإن لم يكن موجودًا يتم إنشاؤه
-            if (!Directory.Exists(uploadImageFolder))
+            
+            try
             {
-                Directory.CreateDirectory(uploadImageFolder);
-            }
+                service.ServiceName = obj.ServiceName ?? service.ServiceName;
+                service.ServiceDescription = obj.ServiceDescription ?? service.ServiceDescription;
+                service.Fromage=obj.Fromage ?? service.Fromage;
+                service.Toage = obj.Toage ?? service.Toage;
 
-            // حفظ الصورة إذا تم رفعها
-            if (obj.ServiceImage != null && obj.ServiceImage.Length > 0)
-            {
-                // إنشاء المسار الكامل للصورة
-                var imageFilePath = Path.Combine(uploadImageFolder, obj.ServiceImage.FileName);
+                var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
 
-                // حفظ الصورة في المجلد المحدد
-                using (var stream = new FileStream(imageFilePath, FileMode.Create))
+                if (!Directory.Exists(uploadsFolderPath))
                 {
-                    obj.ServiceImage.CopyTo(stream);
+                    Directory.CreateDirectory(uploadsFolderPath);
                 }
 
-                // تحديث اسم الصورة في قاعدة البيانات
-                service.ServiceImage = obj.ServiceImage.FileName;
+                if (obj.ServiceImage != null && obj.ServiceImage.Length > 0)
+                {
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(obj.ServiceImage.FileName);
+
+                    var filePath = Path.Combine(uploadsFolderPath, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        obj.ServiceImage.CopyTo(stream);
+                    }
+
+                    service.ServiceImage = $"{fileName}";
+                }
+
+                _Db.Services.Update(service);
+                _Db.SaveChanges();
+
+                return Ok("Service updated successfully.");
             }
-
-            // تحديث اسم الخدمة والوصف إذا تم تقديمهما
-            service.ServiceName = obj.ServiceName ?? service.ServiceName;
-            service.ServiceDescription = obj.ServiceDescription ?? service.ServiceDescription;
-
-            // حفظ التغييرات في قاعدة البيانات
-            _Db.Services.Update(service);
-            _Db.SaveChanges();
-
-            return Ok("Service updated successfully.");
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error while updating the service: {ex.Message}");
+            }
         }
 
 
@@ -162,6 +170,139 @@ namespace Naseej_Project.Controllers
        
             return Ok(edit);
         }
+
+
+        [HttpGet("getservicesAccepted")]
+        public IActionResult getservices()
+        {
+            var sercice = _Db.Services.Where(x=>x.IsAccept== "Accept").ToList();
+            return Ok(sercice);
+        }
+
+
+
+        [HttpGet("getservicesAcceptedlastthree")]
+        public IActionResult GetServices()
+        {
+            var services = _Db.Services
+                              .Where(x => x.IsAccept == "Accept")
+                              .OrderByDescending(x => x.ServiceId) 
+                              .Take(4)
+                              .ToList();
+
+            return Ok(services);
+        }
+
+
+
+
+        /////////////////////////////////request//////////
+
+        [HttpPost("addnewrequest")]
+        public IActionResult addnewrequest([FromForm] NewRequestDTO DTO)
+        {
+            var user = _Db.Users.FirstOrDefault(u => u.UserId == DTO.UserId);
+            var service = _Db.Services.FirstOrDefault(s => s.ServiceId == DTO.ServiceId);
+        
+            var request = new Request
+            {
+                UserId = DTO.UserId,
+                ServiceId = DTO.ServiceId,
+                RequestDate = DateTime.Now,
+                Description = DTO.Description,
+            };
+            
+            _Db.Requests.Add(request);
+            _Db.SaveChanges();
+            return Ok();
+        }
+
+
+        [HttpGet("getinfouserandservices/{userId}/{serviceId}")]
+        public IActionResult GetUserAndServiceInfo(int userId, int serviceId)
+        {
+            var user = _Db.Users.FirstOrDefault(u => u.UserId == userId);
+
+            var service = _Db.Services.FirstOrDefault(s => s.ServiceId == serviceId);
+
+
+            if (user.Age < service.Fromage || user.Age > service.Toage)
+            {
+                return BadRequest("User age is not within the allowed range for this service");
+            }
+            var result = new
+            {
+                User = new
+                {
+                    user.UserId,
+                Fullname= user.FirstName+" " + user.LastName,
+                    user.Email,
+                    user.Age,
+                    user.PhoneNumber,
+                },
+                Service = new
+                {
+                    service.ServiceId,
+                    service.ServiceName,
+                    service.ServiceDescription,
+                    service.Fromage,
+                    service.Toage
+                }
+            };
+
+            return Ok(result);
+        }
+
+
+
+        [HttpGet("GetAllRequest")]
+        public IActionResult GetAllRequest()
+        {
+            var requests = _Db.Requests
+                .Include(r => r.User)
+                .Include(r => r.Service)
+                .Select(r => new
+                {
+                    RequestId = r.RequestId,
+                    RequestDate = r.RequestDate,
+                    Description = r.Description,
+                    UserId = r.User.UserId,
+                    FullName = r.User.FirstName+" "+r.User.LastName,
+                    Email = r.User.Email,
+                    PhoneNumber = r.User.PhoneNumber,
+                    Age=r.User.Age,
+                    Nationality = r.User.Nationality,
+                    Degree=r.User.Degree,
+                    ServiceId = r.Service.ServiceId,
+                    ServiceName = r.Service.ServiceName,
+                    ServiceDescription = r.Service.ServiceDescription,
+                    fromage=r.Service.Fromage,
+                    toage=r.Service.Toage,
+                })
+                .ToList();
+
+            return Ok(requests);
+        }
+        [HttpDelete("deleteRequest/{id}")]
+        public IActionResult deleteRequest(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+            var Request = _Db.Requests.FirstOrDefault(c => c.RequestId == id);
+            if (Request == null)
+            {
+                return NotFound();
+            }
+
+            _Db.Requests.Remove(Request);
+            _Db.SaveChanges();
+            return NoContent();
+        }
+
+
+
 
 
 
