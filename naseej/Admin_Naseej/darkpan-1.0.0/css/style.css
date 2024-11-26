@@ -318,3 +318,257 @@
 .admin-view .admin-only {
     display: none;
 }
+
+
+.modal-content.bg-secondary {
+    border: none;
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal .table {
+    margin-bottom: 0;
+}
+
+.modal-dialog-centered {
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 1rem);
+}
+
+.badge {
+    font-size: 0.85em;
+    padding: 0.5em 1em;
+}
+
+.text-truncate {
+    max-width: 200px;
+    cursor: help;
+}
+
+
+
+
+
+
+
+
+.testimonial-item {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.3s;
+}
+
+.testimonial-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.testimonial-item h6 {
+    color: #fff;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.testimonial-message {
+    color: #adb5bd;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.testimonial-info {
+    color: #6c757d;
+    font-size: 0.75rem;
+}
+
+.view-all-link {
+    text-align: center;
+    padding: 10px;
+    color: var(--light);
+    ;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s;
+}
+
+.view-all-link:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #6c757d;
+}
+
+.testimonial-count {
+    background-color: #0d6efd;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Table Styling */
+#ad_ta .table {
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    margin-top: -8px;
+}
+
+#ad_ta .table thead th {
+    border: none;
+    background-color: #202426;
+    color: #fff;
+    font-weight: 600;
+    padding: 15px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#ad_ta .table tbody tr {
+    background-color: #202426;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#ad_ta .table tbody tr:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#ad_ta .table tbody td {
+    border: none;
+    padding: 15px;
+    vertical-align: middle;
+}
+
+/* Admin Image */
+#ad_ta .table .admin-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #6c757d;
+}
+
+/* Modal Styling */
+#ad_ta .modal-content.bg-secondary {
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+#ad_ta .modal-header {
+    border-bottom: 1px solid #404040;
+    padding: 1.5rem;
+}
+
+#ad_ta .modal-header .modal-title {
+    font-weight: 600;
+    color: #fff;
+}
+
+#ad_ta .modal-body {
+    padding: 1.5rem;
+}
+
+/* Form Controls */
+#ad_ta .form-control,
+#ad_ta .form-select {
+    background-color: #202426 !important;
+    border: 1px solid #404040;
+    color: #fff !important;
+    padding: 0.75rem 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#ad_ta .form-control:focus,
+#ad_ta .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+#ad_ta .form-label {
+    color: #e9ecef;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+/* Buttons */
+#ad_ta .action-buttons {
+    background-color: #202426;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#ad_ta .btn {
+    padding: 0.6rem 1.5rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+}
+
+#ad_ta .btn-primary {
+    background-color: #0d6efd;
+    border: none;
+}
+
+#ad_ta .btn-warning {
+    background-color: #ffc107;
+    border: none;
+    color: #000;
+}
+
+#ad_ta .btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+#ad_ta .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Card/Container Styling */
+#ad_ta .bg-secondary {
+    background-color: var(--secondary) !important;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .table thead th {
+        font-size: 0.8rem;
+        padding: 10px;
+    }
+
+    .table tbody td {
+        padding: 10px;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
