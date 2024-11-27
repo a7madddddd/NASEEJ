@@ -42,7 +42,6 @@ namespace Naseej_Project.Controllers
         {
             try
             {
-                // Input validation
                 if (string.IsNullOrWhiteSpace(EmpolyeesDTO?.Email))
                 {
                     return BadRequest("Email is required.");
@@ -55,7 +54,6 @@ namespace Naseej_Project.Controllers
 
                 var normalizedEmail = EmpolyeesDTO.Email.Trim().ToLower();
 
-                // Find employee
                 var employee = await _db.Employees
                     .FirstOrDefaultAsync(e => e.Email == normalizedEmail);
 
@@ -64,7 +62,6 @@ namespace Naseej_Project.Controllers
                     return Unauthorized(new { Message = "Invalid email ." });
                 }
 
-                // Verify password
                 bool isPasswordValid;
                 try
                 {
@@ -80,8 +77,7 @@ namespace Naseej_Project.Controllers
                     return StatusCode(500, new { Message = "An error occurred during login." });
                 }
 
-                // Generate token
-                var token = GenerateJwtToken(employee); // This should now work if the method is defined
+                var token = GenerateJwtToken(employee); 
 
                 return Ok(new
                 {
@@ -90,7 +86,7 @@ namespace Naseej_Project.Controllers
                     Email = employee.Email,
                     FullName = employee.FullName,
                     IsAdmin = employee.IsAdmin,
-                    Image = employee.Image, // Add image path to payload
+                    Image = employee.Image
 
                 });
 
@@ -121,7 +117,7 @@ namespace Naseej_Project.Controllers
                     new Claim(JwtRegisteredClaimNames.Email, employee.Email),
                     new Claim("fullName", employee.FullName),
                     new Claim("isAdmin", employee.IsAdmin.ToString()),
-                    new Claim("image", employee.Image) ,// Add the image path as a claim
+                    new Claim("image", employee.Image) ,
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 };
 
@@ -134,7 +130,7 @@ namespace Naseej_Project.Controllers
             );
 
             var writtenToken = new JwtSecurityTokenHandler().WriteToken(token);
-            _logger.LogInformation("Generated token: {Token}", writtenToken); // Log the token for debugging
+            _logger.LogInformation("Generated token: {Token}", writtenToken); 
 
             return writtenToken;
         }

@@ -70,21 +70,20 @@ namespace Naseej_Project.Controllers
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(employeesDto.PasswordHash))  // Changed from PasswordHash
+                if (string.IsNullOrWhiteSpace(employeesDto.PasswordHash))
                 {
                     return BadRequest("Password is required.");
                 }
 
-                // Hash the password using BCrypt
-                var passwordHash = BCrypt.Net.BCrypt.HashPassword(employeesDto.PasswordHash);  // Changed from PasswordHash
+                var passwordHash = BCrypt.Net.BCrypt.HashPassword(employeesDto.PasswordHash);
 
                 var employee = new Employee
                 {
                     FullName = employeesDto.FullName,
-                    Email = employeesDto.Email?.Trim().ToLower(),  // Normalize email
+                    Email = employeesDto.Email?.Trim().ToLower(),
                     PasswordHash = passwordHash,
                     Image = employeesDto.Image,
-                    IsAdmin = false,  // Set IsAdmin to false by default
+                    IsAdmin = false
                 };
 
                 if (imageFile != null && imageFile.Length > 0)
@@ -106,7 +105,6 @@ namespace Naseej_Project.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception details
                 return StatusCode(500, "Internal server error occurred while creating admin.");
             }
         }
@@ -136,7 +134,6 @@ namespace Naseej_Project.Controllers
                 return NotFound();
             }
 
-            // Update only if fields are provided
             if (!string.IsNullOrWhiteSpace(employeesDto.FullName))
             {
                 employee.FullName = employeesDto.FullName;
@@ -147,17 +144,14 @@ namespace Naseej_Project.Controllers
             }
             if (!string.IsNullOrWhiteSpace(employeesDto.PasswordHash))
             {
-                // Hash the new password before storing it
                 employee.PasswordHash = BCrypt.Net.BCrypt.HashPassword(employeesDto.PasswordHash);
             }
 
-            // Update image if a new one is provided
             if (imageFile != null && imageFile.Length > 0)
             {
                 var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "EmployeeImages");
                 Directory.CreateDirectory(uploadsFolderPath);
 
-                // Delete the old image if it exists
                 if (!string.IsNullOrEmpty(employee.Image))
                 {
                     var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", employee.Image);
