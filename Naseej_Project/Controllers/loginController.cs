@@ -48,7 +48,6 @@ namespace Naseej_Project.Controllers
                 return BadRequest("Password is required.");
             }
 
-            // Check if a user with the same phone number or email already exists
             var existingUserByPhone = _db.Users.FirstOrDefault(u => u.PhoneNumber == registerDto.PhoneNumber);
             if (existingUserByPhone != null)
             {
@@ -61,7 +60,6 @@ namespace Naseej_Project.Controllers
                 return Conflict(new { message = "Email is already used. Please use another one." });
             }
 
-            // Hash the password
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.PasswordHash);
 
             var newUser = new User

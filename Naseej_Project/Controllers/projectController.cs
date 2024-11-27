@@ -11,7 +11,7 @@ namespace Naseej_Project.Controllers
     public class projectController : ControllerBase
     {
         private readonly MyDbContext _Db;
-        public projectController(MyDbContext db) 
+        public projectController(MyDbContext db)
         {
             _Db = db;
         }
@@ -29,10 +29,10 @@ namespace Naseej_Project.Controllers
         {
             var project = new Project
             {
-              ProjectName=product.ProjectName,
-                ProjectDescription=product.ProjectDescription,
-                EmployeeId=product.EmployeeId,
-                IsAccept= product.IsAccept
+                ProjectName = product.ProjectName,
+                ProjectDescription = product.ProjectDescription,
+                EmployeeId = product.EmployeeId,
+                IsAccept = product.IsAccept
             };
 
             if (product.ProjectImage != null && product.ProjectImage.Length > 0)
@@ -85,8 +85,8 @@ namespace Naseej_Project.Controllers
             {
                 projects.ProjectName = obj.ProjectName ?? projects.ProjectName;
                 projects.ProjectDescription = obj.ProjectDescription ?? projects.ProjectDescription;
-                
-             
+
+
 
                 var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "project");
 

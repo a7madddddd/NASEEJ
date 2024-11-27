@@ -39,7 +39,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             -webkit-box-orient: vertical;
-            height: 50px !important; 
+            height: 50px !important;
 
 
         }
@@ -54,7 +54,7 @@
         .service-img {
             height: 250px;
             overflow: hidden;
-        
+
         }
 
         .service-img img {
@@ -111,10 +111,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4 text-center text-lg-end">
-                    <div class="d-flex align-items-center justify-content-end">
-                        <a href="https://www.facebook.com/NASEEJ.JO/"
-                            class="btn btn-primary btn-square rounded-circle nav-fill me-3"><i
-                                class="fab fa-facebook-f text-white"></i></a>
+                    <div class="d-flex align-items-center justify-content-end"><a href="https://www.facebook.com/share/18DcdVyUzd/"class="btn btn-primary btn-square rounded-circle nav-fill me-3"><i class="fab fa-facebook-f text-white"></i></a>
                         <a href="https://api.whatsapp.com/send/?phone=962786831111&text&type=phone_number&app_absent=0"
                             class="btn btn-primary btn-square rounded-circle nav-fill me-3"><i
                                 class="fab fa-whatsapp text-white"></i></a>
@@ -349,7 +346,9 @@
 
 
     <!-- Project Start -->
-    <div class="container-fluid project">
+    <div id="for_projects"></div>
+
+    <!-- <div class="container-fluid project">
         <div class="container">
             <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
                 <h4 class="text-primary">Our Projects</h4>
@@ -403,7 +402,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- Project End -->
 
 
@@ -605,7 +604,11 @@
 
 
     <!-- Testimonial Start -->
-    <div class="container-fluid testimonial bg-light py-5">
+    <!-- Testimonial Start -->
+    <div id="test"></div>
+    <!-- Testimonial End -->
+
+    <!-- <div class="container-fluid testimonial bg-light py-5">
         <div class="container py-5">
             <div class="row g-4 align-items-center">
                 <div class="col-xl-4 wow fadeInLeft" data-wow-delay="0.1s">
@@ -684,7 +687,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- Testimonial End -->
 
 
@@ -790,61 +793,62 @@
 
     <div class="modal fade" id="serviceModal" tabindex="-1" aria-labelledby="serviceModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="serviceModalLabel">Service Form</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form id="addorder">
-                <!-- Hidden Field for Service ID -->
-                <input type="hidden" name="ServiceId" class="form-control" id="serviceId" />
-                <input type="hidden" name="UserId" class="form-control" id="Userid" />
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="serviceModalLabel">Service Form</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addorder">
+                        <!-- Hidden Field for Service ID -->
+                        <input type="hidden" name="ServiceId" class="form-control" id="serviceId" />
+                        <input type="hidden" name="UserId" class="form-control" id="Userid" />
 
-      
-                <!-- Full Name and Phone Number -->
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="FirstName" class="form-label">Full Name</label>
-                    <input type="text" class="form-control" id="FullName" readonly />
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="phonenumber" class="form-label">Phone Number</label>
-                    <input  type="tel" class="form-control" id="phonenumber" readonly />
-                  </div>
+
+                        <!-- Full Name and Phone Number -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="FirstName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="FullName" readonly />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="phonenumber" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phonenumber" readonly />
+                            </div>
+                        </div>
+
+                        <!-- Email and Service Name -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="Email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="Email" readonly />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="serviceName" class="form-label">Service Name</label>
+                                <input type="text" class="form-control" id="serviceName" readonly />
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="Description" class="form-label">Description</label>
+                                <textarea name="Description" class="form-control" id="Description" rows="3"
+                                    placeholder="Enter your description"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" onclick="addorder()" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
                 </div>
-      
-                <!-- Email and Service Name -->
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="Email" class="form-label">Email</label>
-                    <input  type="email" class="form-control" id="Email" readonly />
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="serviceName" class="form-label">Service Name</label>
-                    <input  type="text" class="form-control" id="serviceName" readonly />
-                  </div>
-                </div>
-      
-                <!-- Description -->
-                <div class="row">
-                  <div class="col-md-12 mb-3">
-                    <label for="Description" class="form-label">Description</label>
-                    <textarea name="Description" class="form-control" id="Description" rows="3" placeholder="Enter your description"></textarea>
-                                          </div>
-                </div>
-      
-                <!-- Modal Footer -->
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="submit" onclick="addorder()" class="btn btn-primary">Submit</button>
-                </div>
-              </form>
             </div>
-          </div>
         </div>
-      </div>
-      
+    </div>
+
 
     
     <!-- Footer Start -->

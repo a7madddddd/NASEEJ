@@ -97,7 +97,6 @@ document.addEventListener('DOMContentLoaded', loadEmployeeData);
 
 async function displayContactMessages() {
     try {
-        // Fetch data from the API
         const response = await fetch('http://localhost:25025/api/Contact/GetAllMessage');
         if (!response.ok) {
             throw new Error('Error fetching contact messages');
@@ -108,65 +107,75 @@ async function displayContactMessages() {
         const lastThreeMessages = messages.slice(-3).reverse();
 
         // Get the dropdown menu container
-        const dropdownMenu = document.querySelector('.nav-item .dropdown-menu');
+        const dropdownMenu = document.getElementById('messagesDropdown');
         if (!dropdownMenu) {
-            console.error('Dropdown menu not found');
+            console.error('Messages dropdown not found');
             return;
         }
 
-        // Clear existing dropdown items
-        dropdownMenu.innerHTML = '';
-
-        // Add new dropdown items
-        lastThreeMessages.forEach((message) => {
-            const dropdownItem = document.createElement('a');
-            dropdownItem.classList.add('dropdown-item');
-            dropdownItem.href = 'ContactsMessages.html';
-
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('d-flex', 'align-items-center');
-
-            const avatarImg = document.createElement('img');
-            avatarImg.classList.add('rounded-circle');
-            avatarImg.src = 'img/user.jpg';
-            avatarImg.alt = '';
-            avatarImg.style.width = '40px';
-            avatarImg.style.height = '40px';
-
-            const messageContentDiv = document.createElement('div');
-            messageContentDiv.classList.add('ms-2');
-
-            const messageHeader = document.createElement('h6');
-            messageHeader.classList.add('fw-normal', 'mb-0');
-            messageHeader.textContent = `${message.name ? message.name : 'Anonymous'} - ${message.email ? message.email : 'No email available'}`;
-
-            const messageTimestamp = document.createElement('small');
-            messageTimestamp.textContent = message.message ? message.message.substring(0, 30) + (message.message.length > 30 ? '...' : '') : 'No message available';
-
-            messageContentDiv.appendChild(messageHeader);
-            messageContentDiv.appendChild(messageTimestamp);
-            messageDiv.appendChild(avatarImg);
-            messageDiv.appendChild(messageContentDiv);
-            dropdownItem.appendChild(messageDiv);
-            dropdownMenu.appendChild(dropdownItem);
+        let content = '';
+        lastThreeMessages.forEach((message, index) => {
+            content += `
+                <a href="ContactsMessages.html" class="dropdown-item">
+                    <div class="d-flex align-items-center">
+                        <img class="rounded-circle" src="img/user.jpg" alt=""
+                            style="width: 40px; height: 40px;">
+                        <div class="ms-2">
+                            <h6 class="fw-normal mb-0">"${message.name}"   sent you a message</h6>
+                            <small>${message.message || 'No subject'}</small>
+                        </div>
+                    </div>
+                </a>
+                ${index < lastThreeMessages.length - 1 ? '<hr class="dropdown-divider">' : ''}
+            `;
         });
 
-        // Update the messages link
-        const messagesLink = document.querySelector('a[href="ContactsMessages.html"]');
-        if (messagesLink) {
-            messagesLink.addEventListener('click', (e) => {
+        content += `
+            <hr class="dropdown-divider">
+            <a href="ContactsMessages.html" class="dropdown-item text-center">See all message</a>
+        `;
+
+        dropdownMenu.innerHTML = content;
+
+        // Update message count badge
+        const messageCountBadge = document.querySelector('.message-count');
+        if (messageCountBadge && messages.length > 0) {
+            messageCountBadge.textContent = messages.length;
+            messageCountBadge.style.display = 'block';
+        }
+
+        // Add click handlers
+        const allLinks = dropdownMenu.querySelectorAll('a[href="ContactsMessages.html"]');
+        allLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
                 e.preventDefault();
                 window.location.href = 'ContactsMessages.html';
             });
-        }
+        });
+
     } catch (error) {
         console.error('Error fetching contact messages:', error);
+        const dropdownMenu = document.getElementById('messagesDropdown');
+        if (dropdownMenu) {
+            dropdownMenu.innerHTML = `
+                <a href="#" class="dropdown-item">
+                    <div class="d-flex align-items-center">
+                        <div class="ms-2">
+                            <h6 class="fw-normal mb-0">Error loading messages</h6>
+                            <small>Please try again later</small>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
     }
 }
 
-// Call the function when the page loads
-document.addEventListener('DOMContentLoaded', displayContactMessages);
+// Auto refresh messages every minute
+setInterval(displayContactMessages, 60000);
 
+// Initial load
+document.addEventListener('DOMContentLoaded', displayContactMessages);
 
 
 
@@ -194,3 +203,106 @@ function handleLogout(event) {
     // Redirect to login page
     window.location.href = 'signin.html'; // Change this to your login page URL
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Function to load testimonials
+async function loadTestimonials() {
+    try {
+        const response = await fetch('http://localhost:25025/api/Testimonials/GetAllTestimonials');
+        if (!response.ok) throw new Error('Failed to fetch testimonials');
+
+        const testimonials = await response.json();
+
+        // Sort testimonials by ID (assuming newer testimonials have higher IDs)
+        const sortedTestimonials = testimonials
+            .sort((a, b) => b.id - a.id)
+            .slice(0, 3); // Get only the last 3
+
+        const dropdownMenu = document.getElementById('testimonialDropdown');
+        dropdownMenu.innerHTML = ''; // Clear existing content
+
+        // Add testimonial items
+        sortedTestimonials.forEach(testimonial => {
+            const testimonialElement = document.createElement('div');
+            testimonialElement.className = 'testimonial-item';
+            testimonialElement.innerHTML = `
+                <h6 class="fw-normal mb-0">${testimonial.firstname} ${testimonial.lastname}</h6>
+                <p class="testimonial-message">${testimonial.theTestimonials}</p>
+                <small class="testimonial-info">${testimonial.email}</small>
+            `;
+            dropdownMenu.appendChild(testimonialElement);
+
+            // Add divider except for the last item
+            if (testimonial !== sortedTestimonials[sortedTestimonials.length - 1]) {
+                const divider = document.createElement('hr');
+                divider.className = 'dropdown-divider m-0';
+                dropdownMenu.appendChild(divider);
+            }
+        });
+
+        // Add "View All" link
+        const viewAllLink = document.createElement('a');
+        viewAllLink.href = 'Testimonials.html';
+        viewAllLink.className = 'view-all-link';
+        viewAllLink.textContent = 'View All Testimonials';
+        dropdownMenu.appendChild(viewAllLink);
+
+        // Update badge count
+        const badge = document.querySelector('.testimonial-count');
+        badge.textContent = testimonials.length;
+        badge.style.display = testimonials.length > 0 ? 'block' : 'none';
+
+    } catch (error) {
+        console.error('Error loading testimonials:', error);
+    }
+}
+
+// Load testimonials when the page loads
+document.addEventListener('DOMContentLoaded', loadTestimonials);
+
+// Refresh testimonials every 5 minutes (300000 milliseconds)
+setInterval(loadTestimonials, 300000);
+
+
+
+
+
+
+
+
+
+
+
+
+// Function to check token and redirect
+function checkTokenAndRedirect() {
+    const token = sessionStorage.getItem('Token');
+    const currentPath = window.location.pathname;
+    const loginPath = 'signin.html'; 
+    if (!token && !currentPath.includes(loginPath)) {
+        sessionStorage.setItem('redirectUrl', currentPath);
+
+        window.location.href = loginPath;
+    }
+}
+
+checkTokenAndRedirect();
+
+const tokenCheckInterval = setInterval(checkTokenAndRedirect, 1000);
+
+window.addEventListener('unload', () => {
+    clearInterval(tokenCheckInterval);
+});

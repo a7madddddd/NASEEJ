@@ -1,6 +1,6 @@
 async function displayProjects() {
     try {
-        const response = await fetch('http://localhost:25025/api/Projects');
+        const response = await fetch('http://localhost:25025/api/project/getprojectAccepted');
         const projects = await response.json();
 
         const projectContainer = `
