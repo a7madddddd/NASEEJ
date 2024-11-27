@@ -4,10 +4,12 @@ const loginLogoutBtn = document.getElementById('loginLogoutBtn');
 
 if (jwtToken) {
     loginLogoutBtn.textContent = 'Logout';
-    loginLogoutBtn.href = '#'; 
+    loginLogoutBtn.href = 'index.html'; 
     loginLogoutBtn.addEventListener('click', function () {
         
         sessionStorage.removeItem('jwtToken');
         window.location.reload();
     });
 }
+
+
