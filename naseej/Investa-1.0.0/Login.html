@@ -386,28 +386,11 @@
     <script src="js/"></script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-    <script src="js/newslatters.js"></script>
-
+    <script src="js/Shared.js"></script>
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 
-    <script>
-        // Check if jwtToken exists in sessionStorage
-        const jwtToken = sessionStorage.getItem('jwtToken');
-
-        // Get the login/logout button element
-        const loginLogoutBtn = document.getElementById('loginLogoutBtn');
-
-        // If jwtToken exists, change button to "Logout"
-        if (jwtToken) {
-            loginLogoutBtn.textContent = 'Logout';
-            loginLogoutBtn.href = '#'; // Set href to '#' to prevent redirection when logged in
-            loginLogoutBtn.addEventListener('click', function () {
-                // Remove the token from sessionStorage and reload page on logout
-                sessionStorage.removeItem('jwtToken');
-                window.location.reload(); // Reload the page to reflect changes
-            });
-        }
+   
 
     </script>
 </body>
