@@ -29,6 +29,28 @@
 
         <!-- Template Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
+        <style>
+           .project-item {
+    height: auto; /* يسمح بتمدد العنصر بناءً على المحتوى */
+    min-height: 150px; /* وضع الحد الأدنى للارتفاع */
+}
+
+.project-content {
+    height: auto; /* يجعل المحتوى الداخلي يتكيف مع حجم النص */
+    padding: 1.5rem; /* يوفر مساحة داخلية للنص */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* يضمن توزيع العناصر الداخلية بشكل متناسق */
+}
+
+.project-content-inner {
+    word-wrap: break-word; /* يسمح بكسر الكلمات الطويلة */
+    overflow-wrap: break-word; /* يدعم كسر الكلمات */
+    white-space: normal; /* النص سيظهر بشكل طبيعي مع انتقال للأسطر الجديدة */
+}
+
+
+        </style>
     </head>
 
     <body>
