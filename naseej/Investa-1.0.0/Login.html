@@ -32,11 +32,11 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-    
-    
+
+
     <link rel="stylesheet" type="text/css" href="slide navbar style.css">
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
-    
+
     <!-- sweet alert style  -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     <link href="css/Login.css" rel="stylesheet">
@@ -52,8 +52,8 @@
         </div>
     </div>
     <!-- Spinner End -->
-    
-    
+
+
     <!-- Topbar Start -->
     <div class="container-fluid topbar px-0 d-none d-lg-block">
         <div class="container px-0">
@@ -64,12 +64,12 @@
                         <a href="https://maps.app.goo.gl/tNJF9eHuZexexCsy7" target="_blank" class="text-muted me-4">
                             <i class="fas fa-map-marker-alt text-primary me-2"></i>Find A Location
                         </a>
-    
+
                         <!-- Phone Link -->
                         <a href="tel:+270786831111" class="text-muted me-4">
                             <i class="fas fa-phone-alt text-primary me-2"></i>07 8683 1111
                         </a>
-    
+
                         <!-- Email Link -->
                         <a href="mailto:naseej.jordan@gmail.com" class="text-muted me-0">
                             <i class="fas fa-envelope text-primary me-2"></i>naseej.jordan@gmail.com
@@ -96,8 +96,8 @@
         </div>
     </div>
     <!-- Topbar End -->
-    
-    
+
+
     <!-- Navbar & Hero Start -->
     <div class="container-fluid sticky-top px-0">
         <div class="position-absolute bg-dark" style="left: 0; top: 0; width: 100%; height: 100%;">
@@ -107,7 +107,7 @@
                 <a href="index.html" class="navbar-brand p-0">
                     <h1 class="text-primary m-0"><img src="../WhatsApp_Image_2024-11-06_at_17.51.49_8309486c.jpg" alt=""
                             width="70" height="55"></i> Naseej</h1>
-    
+
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars"></span>
@@ -141,7 +141,7 @@
         </div>
     </div>
     <!-- Navbar & Hero End -->
-    
+
     <!-- Modal Search Start -->
     <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
@@ -164,98 +164,102 @@
 
 
 
-<!-- login form start -->
-<div class="loginContainer">
-    <div class="main">
-        <input type="checkbox" id="chk" aria-hidden="true">
+    <!-- login form start -->
+    <div class="loginContainer">
+        <div class="main">
+            <input type="checkbox" id="chk" aria-hidden="true">
             <div class="dark-overlay"></div>
 
-        <!-- Sign Up Form -->
-        <div class="signup">
-            <form id="signupForm">
-                <label for="chk" aria-hidden="true">Sign up</label>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="firstName" placeholder="First name" required>
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="lastName" placeholder="Last Name" required>
-                    </div>
-                    <div class="col-6">
-                        <input type="tel" class="form-control" name="phoneNumber" placeholder="Phone Number" required>
-                    </div>
-                    <div class="col-6">
-                        <input type="email" class="form-control" name="email" placeholder="email" required>
-                    </div>
-                    <div class="col-6">
-                        <input type="number" class="form-control" name="age" placeholder="Age" required min="18" max="100"
-                            title="Age must be between 18 and 10" id="age">
-                    </div>
+            <!-- Sign Up Form -->
+            <div class="signup">
+                <form id="signupForm">
+                    <label for="chk" aria-hidden="true">Sign up</label>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="firstName" placeholder="First name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="lastName" placeholder="Last Name" required>
+                        </div>
+                        <div class="col-6">
+                            <input type="tel" class="form-control" name="phoneNumber" placeholder="Phone Number"
+                                required>
+                        </div>
+                        <div class="col-6">
+                            <input type="email" class="form-control" name="email" placeholder="email" required>
+                        </div>
+                        <div class="col-6">
+                            <input type="number" class="form-control" name="age" placeholder="Age" required min="18"
+                                max="100" title="Age must be between 18 and 10" id="age">
+                        </div>
 
-                    <div class="col-6">
-                        <input type="text" class="form-control" name="nationality" placeholder="Nationality" required>
-                    </div>
-                    <div class="col-6">
-                        <select class="form-control" name="degree" required>
-                            <option value="" disabled selected>Select Educational Level</option>
-                            <option value="High School">High School</option>
-                            <option value="Associate Degree">Associate Degree</option>
-                            <option value="Bachelor's Degree">Bachelor's Degree</option>
-                            <option value="Master's Degree">Master's Degree</option>
-                            <option value="Doctorate">Doctorate</option>
-                            
-                        </select>
-                    </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control" name="nationality" placeholder="Nationality"
+                                required>
+                        </div>
+                        <div class="col-6">
+                            <select class="form-control" name="degree" required>
+                                <option value="" disabled selected>Select Educational Level</option>
+                                <option value="High School">High School</option>
+                                <option value="Associate Degree">Associate Degree</option>
+                                <option value="Bachelor's Degree">Bachelor's Degree</option>
+                                <option value="Master's Degree">Master's Degree</option>
+                                <option value="Doctorate">Doctorate</option>
 
-                    <div class="col-6">
-                        <select class="form-control" name="governorate" required>
-                            <option value="" disabled selected>Select Governorate</option>
-                            <option value="Ajloun">Ajloun</option>
-                            <option value="Amman">Amman</option>
-                            <option value="Irbid">Irbid</option>
-                            <option value="Zarqa">Zarqa</option>
-                            <option value="Aqaba">Aqaba</option>
-                            <option value="Mafraq">Mafraq</option>
-                            <option value="Ma'an">Ma'an</option>
-                            <option value="Balqa">Balqa</option>
-                            <option value="Karak">Karak</option>
-                            <option value="Jerash">Jerash</option>
-                            <option value="Madaba">Madaba</option>
-                            <option value="Tafilah">Tafilah</option>
-                            <option value="Bani Kinanah">Bani Kinanah</option>
-                            <option value="Al-Karak">Al-Karak</option>
-                            <option value="Al-Balqa">Al-Balqa</option>
-                        </select>
-                    </div>
+                            </select>
+                        </div>
 
-                    <div class="col-6" id="login-form">
-                        <input type="password" class="form-control" name="password" placeholder="Password" required>
-                    </div><div class="col-6">
-                        <input type="password" class="form-control" name="Confirm_password" placeholder="Confirm password" required>
+                        <div class="col-6">
+                            <select class="form-control" name="governorate" required>
+                                <option value="" disabled selected>Select Governorate</option>
+                                <option value="Ajloun">Ajloun</option>
+                                <option value="Amman">Amman</option>
+                                <option value="Irbid">Irbid</option>
+                                <option value="Zarqa">Zarqa</option>
+                                <option value="Aqaba">Aqaba</option>
+                                <option value="Mafraq">Mafraq</option>
+                                <option value="Ma'an">Ma'an</option>
+                                <option value="Balqa">Balqa</option>
+                                <option value="Karak">Karak</option>
+                                <option value="Jerash">Jerash</option>
+                                <option value="Madaba">Madaba</option>
+                                <option value="Tafilah">Tafilah</option>
+                                <option value="Bani Kinanah">Bani Kinanah</option>
+                                <option value="Al-Karak">Al-Karak</option>
+                                <option value="Al-Balqa">Al-Balqa</option>
+                            </select>
+                        </div>
+
+                        <div class="col-6" id="login-form">
+                            <input type="password" class="form-control" name="password" placeholder="Password" required>
+                        </div>
+                        <div class="col-6">
+                            <input type="password" class="form-control" name="Confirm_password"
+                                placeholder="Confirm password" required>
+                        </div>
                     </div>
-                </div>
-                <button type="button" onclick="registerUser()" class="btn btn-primary-10">Sign up</button>
-            </form>
-        </div>
-        <br>
-        <!-- Login Form -->
-        <div class="login mt-5">
-            <form id="loginForm">
-                <label for="chk" aria-hidden="true">Login</label>
-                <div class="row mb-4">
-                    <div class="col-md-12">
-                        <input type="email" class="form-control" name="email" placeholder="Email" required>
+                    <button type="button" onclick="registerUser()" class="btn btn-primary-10">Sign up</button>
+                </form>
+            </div>
+            <br>
+            <!-- Login Form -->
+            <div class="login mt-5">
+                <form id="loginForm">
+                    <label for="chk" aria-hidden="true">Login</label>
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <input type="email" class="form-control" name="email" placeholder="Email" required>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="password" class="form-control" name="password" placeholder="Password" required>
+                        </div>
                     </div>
-                    <div class="col-md-12">
-                        <input type="password" class="form-control" name="password" placeholder="Password" required>
-                    </div>
-                </div>
-                <button type="button" onclick="loginUser()" class="btn btn-primary-10">Login</button>
-            </form>
+                    <button type="button" onclick="loginUser()" class="btn btn-primary-10">Login</button>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-<!-- login form end here -->
+    <!-- login form end here -->
 
 
 
@@ -264,7 +268,7 @@
 
 
 
-    
+
 
 
 
@@ -274,70 +278,82 @@
     <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s">
         <div class="container py-5">
             <div class="row g-5">
-            <div class="col-md-6 col-lg-6 col-xl-3">
-                <div class="footer-item d-flex flex-column">
-                    <div class="footer-item">
-                        <h4 class="text-white mb-4">Newsletter</h4>
-                        <p class="mb-3">Stay updated with our latest news and updates. Subscribe to our newsletter!</p>
-                        <div class="position-relative mx-auto">
-                            <input class="form-control rounded-pill w-100 py-3 ps-4 pe-5" type="email"
-                                placeholder="Enter your email" id="userEmail" aria-label="Newsletter subscription email">
-                            <button type="button" class="btn btn-primary rounded-pill position-absolute top-0 end-0 py-2 mt-2 me-2"
-                                onclick="subscribe()" id="subscribeButton">
-                                Subscribe
-                            </button>
-                        </div>
-                        <div class="mt-2 text-white-50 small">
-                            We respect your privacy and will never share your email.
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <div class="footer-item">
+                            <h4 class="text-white mb-4">Newsletter</h4>
+                            <p class="mb-3">Stay updated with our latest news and updates. Subscribe to our newsletter!
+                            </p>
+                            <div class="position-relative mx-auto">
+                                <input class="form-control rounded-pill w-100 py-3 ps-4 pe-5" type="email"
+                                    placeholder="Enter your email" id="userEmail"
+                                    aria-label="Newsletter subscription email">
+                                <button type="button"
+                                    class="btn btn-primary rounded-pill position-absolute top-0 end-0 py-2 mt-2 me-2"
+                                    onclick="subscribe()" id="subscribeButton">
+                                    Subscribe
+                                </button>
+                            </div>
+                            <div class="mt-2 text-white-50 small">
+                                We respect your privacy and will never share your email.
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
                 <div class="col-md-6 col-lg-6 col-xl-3">
                     <div class="footer-item d-flex flex-column">
                         <h4 class="text-white mb-4">Explore</h4>
-                        <a href="#"><i class="fas fa-angle-right me-2"></i> Home</a>
-                        <a href="#"><i class="fas fa-angle-right me-2"></i> Services</a>
-                        <a href="#"><i class="fas fa-angle-right me-2"></i> About Us</a>
-                        <a href="#"><i class="fas fa-angle-right me-2"></i> Latest Projects</a>
-                        <a href="#"><i class="fas fa-angle-right me-2"></i> testimonial</a>
-                        <a href="#"><i class="fas fa-angle-right me-2"></i> Our Team</a>
-                        <a href="#"><i class="fas fa-angle-right me-2"></i> Contact Us</a>
+                        <a href="index.html"><i class="fas fa-angle-right me-2"></i> Home</a>
+                        <a href="service.html"><i class="fas fa-angle-right me-2"></i> Services</a>
+                        <a href="about.html"><i class="fas fa-angle-right me-2"></i> About Us</a>
+                        <a href="project.html"><i class="fas fa-angle-right me-2"></i> Latest Projects</a>
+                        <a href="testimonial.html"><i class="fas fa-angle-right me-2"></i> testimonial</a>
+                        <a href="team.html"><i class="fas fa-angle-right me-2"></i> Our Team</a>
+                        <a href="contact.html"><i class="fas fa-angle-right me-2"></i> Contact Us</a>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-6 col-xl-3">
                     <div class="footer-item d-flex flex-column">
                         <h4 class="text-white mb-4">Contact Info</h4>
-                        <a href=""><i class="fa fa-map-marker-alt me-2"></i> Ajloun, jordan</a>
-                        <a href=""><i class="fas fa-envelope me-2"></i> Naseej.jordan@gmail.com</a>
-                        <a href=""><i class="fas fa-envelope me-2"></i> Naseej.jordan@gmail.com</a>
-                        <a href=""><i class="fas fa-phone me-2"></i> +962 7 8683 1111</a>
-                        <a href="" class="mb-3"><i class="fas fa-print me-2"></i> +962 7 8683 1111</a>
+                        <a href="https://maps.app.goo.gl/aLxRJoeGQe1szUNd8" target="_blank"><i
+                                class="fa fa-map-marker-alt me-2"></i> Ajloun, jordan</a>
+                        <a href="mailto:naseej.jordan@gmail.com"><i class="fas fa-envelope me-2"></i>
+                            Naseej.jordan@gmail.com</a>
+                        <a href="mailto:naseej.jordan@gmail.com"><i class="fas fa-envelope me-2"></i>
+                            Naseej.jordan@gmail.com</a>
+                        <a href="tel:+270786831111"><i class="fas fa-phone me-2"></i> +962 7 8683 1111</a>
+                        <a href="tel:+270786831111" class="mb-3"><i class="fas fa-print me-2"></i> +962 7 8683 1111</a>
                         <div class="d-flex align-items-center">
-                            <a class="btn btn-light btn-md-square me-2" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-light btn-md-square me-2" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-light btn-md-square me-2" href=""><i class="fab fa-instagram"></i></a>
-                            <a class="btn btn-light btn-md-square me-0" href=""><i class="fab fa-linkedin-in"></i></a>
+                            <a class="btn btn-light btn-md-square me-2"
+                                href="https://www.facebook.com/share/18DcdVyUzd/"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-light btn-md-square me-2"
+                                href="https://api.whatsapp.com/send/?phone=962786831111&text&type=phone_number&app_absent=0"><i
+                                    class="fab fa-whatsapp"></i></a>
+                            <a class="btn btn-light btn-md-square me-2" href="https://www.instagram.com/naseej.jo1/#"><i
+                                    class="fab fa-instagram"></i></a>
+                            <a class="btn btn-light btn-md-square me-0" href="https://www.linkedin.com/in/naseej/"><i
+                                    class="fab fa-linkedin-in"></i></a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-6 col-xl-3">
                     <div class="footer-item-post d-flex flex-column">
-                        <h4 class="text-white mb-4">Popular Post</h4>
+                        <h4 class="text-white mb-4">Sustainable Development</h4>
                         <div class="d-flex flex-column mb-3">
-                            <p class="text-uppercase text-primary mb-2">Investment</p>
-                            <a href="#" class="text-body">Revisiting Your Investment & Distribution Goals</a>
+                            <p class="text-uppercase text-primary mb-2">Sustainability</p>
+                            <a href="#" class="text-body">Building a Greener Future: Steps Towards Sustainability</a>
                         </div>
                         <div class="d-flex flex-column mb-3">
-                            <p class="text-uppercase text-primary mb-2">Business</p>
-                            <a href="#" class="text-body">Dimensional Fund Advisors Interview with Director</a>
+                            <p class="text-uppercase text-primary mb-2">Community</p>
+                            <a href="#" class="text-body">Empowering Local Communities for Sustainable Growth</a>
                         </div>
                         <div class="footer-btn text-start">
-                            <a href="#" class="btn btn-light rounded-pill px-4">View All Post <i
+                            <a href="project.html" class="btn btn-light rounded-pill px-4">View All Posts <i
                                     class="fa fa-arrow-right ms-1"></i></a>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -350,12 +366,12 @@
             <div class="row g-4 align-items-center">
                 <div class="col-md-6 text-center text-md-start mb-md-0">
                     <span class="text-body"><a href="#" class="border-bottom text-primary"><i
-                                class="fas fa-copyright text-light me-2"></i>Your Site Name</a>, All right
+                                class="fas fa-copyright text-light me-2"></i>NASEEJ Foundation for Sustainable
+                            Development</a>, All right
                         reserved.</span>
                 </div>
                 <div class="col-md-6 text-center text-md-end text-body">
-                    Designed By <a class="border-bottom text-primary" href="https://htmlcodex.com">HTML Codex</a>
-                    Distributed By <a class="border-bottom text-primary" href="https://themewagon.com">ThemeWagon</a>
+                    Designed By <a class="border-bottom text-primary" href="">Naseej Team</a>
                 </div>
             </div>
         </div>
@@ -366,7 +382,7 @@
 
     <a href="#" class="btn btn-primary btn-lg-square back-to-top"><i class="fa fa-arrow-up"></i></a>
 
-    
+
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -388,7 +404,7 @@
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 
-   
+
 
     </script>
 </body>

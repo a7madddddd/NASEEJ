@@ -32,59 +32,7 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-    <style>
-        .service-content p {
-            word-wrap: break-word;
-            white-space: normal;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            -webkit-box-orient: vertical;
-            height: 50px !important;
 
-
-        }
-
-        .service-item {
-            height: 400px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .service-img {
-            height: 250px;
-            overflow: hidden;
-
-        }
-
-        .service-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: initial !important;
-        }
-
-        .service-content {
-            flex-grow: 1;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .service-content-inner {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-        }
-
-        .team-icon-share {
-            display: none;
-            transition: all 0.3s;
-        }
-
-        .team-icon:hover .team-icon-share {
-            display: block;
-        }
-    </style>
 </head>
 
 <body>
@@ -785,7 +733,7 @@
                 </div>
             </div>
         </div>
-
+    </div>
 
 
         <!-- Footer Start -->
@@ -902,70 +850,12 @@
 
 
         <!-- Template Javascript -->
+         <script src="js/Projects.js"></script>
+         <script src="js/services.js"></script>
+         <script src="js/Shared.js"></script>
+         <script src="js/home.js"></script>
         <script src="js/main.js"></script>
-        <script>
-
-             function createEmployeeCard(employee) {
-                    return `
-                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="team-item rounded">
-                        <div class="team-img">
-                            <img src="http://localhost:25025/${employee.image}" class="img-fluid w-100 rounded-top" alt="${employee.fullName}">
-                            ${employee.isAdmin ? `
-                            <div class="team-icon">
-                                <a class="btn btn-primary btn-sm-square text-white rounded-circle mb-3" href=""><i
-                                        class="fas fa-share-alt"></i></a>
-                                <div class="team-icon-share">
-                                    <a class="btn btn-primary btn-sm-square text-white rounded-circle mb-3" href=""><i
-                                            class="fab fa-facebook-f"></i></a>
-                                    <a class="btn btn-primary btn-sm-square text-white rounded-circle mb-3" href=""><i
-                                            class="fab fa-twitter"></i></a>
-                                    <a class="btn btn-primary btn-sm-square text-white rounded-circle mb-0" href=""><i
-                                            class="fab fa-instagram"></i></a>
-                                </div>
-                            </div>
-                            ` : ''}
-                        </div>
-                        <div class="team-content bg-dark text-center rounded-bottom p-4">
-                            <div class="team-content-inner rounded-bottom">
-                                <h4 class="text-white">${employee.fullName}</h4>
-                                <p class="text-muted mb-0">${employee.isAdmin ? 'Owner' : 'Team Member'}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-                }
-
-                // Fetch and display employees
-                async function fetchAndDisplayEmployees() {
-                    try {
-                        const response = await fetch('http://localhost:25025/api/Empolyees');
-                        const employees = await response.json();
-
-                        const adminContainer = document.getElementById('adminContainer');
-                        const employeeContainer = document.getElementById('employeeContainer');
-
-                        // Clear existing content
-                        adminContainer.innerHTML = '';
-                        employeeContainer.innerHTML = '';
-
-                        // Separate and display employees
-                        employees.forEach(employee => {
-                            if (employee.isAdmin) {
-                                adminContainer.innerHTML += createEmployeeCard(employee);
-                            } else {
-                                employeeContainer.innerHTML += createEmployeeCard(employee);
-                            }
-                        });
-                    } catch (error) {
-                        console.error('Error fetching employees:', error);
-                    }
-                }
-
-                // Call the function when the page loads
-                document.addEventListener('DOMContentLoaded', fetchAndDisplayEmployees);
-        </script>
+       
 </body>
 
 </html>
