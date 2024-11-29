@@ -177,7 +177,7 @@
 @media screen and (max-width: 1200px) {
     .main {
         width: 90%;
-        max-height: 95vh !important;
+        max-height: 99vh !important;
     }
 
     .main label {
@@ -190,12 +190,12 @@
     }
 
     .main .login {
-        transform: translateY(-40%) !important;
+        transform: translateY(-42%) !important;
     }
 
     .main #chk:checked~.login {
         transform: translateY(-100%) !important;
-        max-height: 95vh !important;
+        max-height: 99vh !important;
     }
 }
 
@@ -215,7 +215,7 @@
     }
 
     .main .login {
-        transform: translateY(-33%) !important;
+        transform: translateY(-40%) !important;
     }
 
     .main #chk:checked~.login {
@@ -227,7 +227,7 @@
 @media screen and (max-width: 992px) {
     .main {
         width: 80%;
-        min-height: 80vh !important;
+        min-height: 100vh !important;
     }
 
     .main label {
@@ -240,12 +240,12 @@
     }
 
     .main .login {
-        transform: translateY(-33%) !important;
+        transform: translateY(-39%) !important;
     }
 
     .main #chk:checked~.login {
         transform: translateY(-100%) !important;
-        min-height: 80vh !important;
+        min-height: 104vh !important;
     }
 }
 
@@ -269,12 +269,12 @@
     }
 
     .main .login {
-        transform: translateY(-33%) !important;
+        transform: translateY(-37%) !important;
     }
 
     .main #chk:checked~.login {
         transform: translateY(-100%) !important;
-        min-height: 110vh !important;
+        min-height: 116vh !important;
     }
 
 }
@@ -335,12 +335,12 @@
     }
 
     .main .login {
-        transform: translateY(-23%) !important;
+        transform: translateY(-31%) !important;
         min-height: 100vh;
     }
 
     .main #chk:checked~.login {
         transform: translateY(-100%) !important;
-        min-height: 145vh !important;
+        min-height: 147vh !important;
     }
 }
