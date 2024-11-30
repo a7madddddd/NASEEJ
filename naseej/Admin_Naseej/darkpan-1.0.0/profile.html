@@ -150,26 +150,29 @@
 
 
             <!-- Action Buttons -->
-            <div class="container rounded mt-5 mb-5" id="Profile">
+        <div class="container-fluid mt-5 mb-5" id="Profile">
+            <div class="bg-secondary rounded-top p-4">
                 <div class="row">
                     <!-- Profile Image Section -->
                     <div class="col-md-5 mt-2 border-right">
                         <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                             <!-- Profile Image -->
                             <div class="position-relative">
-                                <img id="profile-img" class="rounded-circle" width="150px" height="170" src="" alt="Profile Image">
+                                <img id="profile-img" class="rounded-circle" width="150px" height="170" src=""
+                                    alt="Profile Image">
                                 <!-- Change Image Icon -->
-                                <label for="profile-image-input" class="position-absolute" style="bottom: 10px; right: 10px; cursor: pointer;">
-                                    <i class="fa fa-camera text-white bg-primary rounded-circle p-2" style="font-size: 20px;"></i>
+                                <label for="profile-image-input" class="position-absolute"
+                                    style="bottom: 10px; right: 10px; cursor: pointer;">
+                                    <i class="fa fa-camera text-white bg-primary rounded-circle p-2"
+                                        style="font-size: 20px;"></i>
                                 </label>
                             </div>
                             <input type="file" id="profile-image-input" class="d-none" accept="image/*">
                             <span id="profile-username" class="font-weight-bold"></span>
                             <span id="profile-email" class="text-50"></span>
                         </div>
-
                     </div>
-
+        
                     <!-- Profile Settings Section -->
                     <div class="col-md-6 border-right">
                         <div class="p-3 py-5">
@@ -177,8 +180,7 @@
                             <div class="row mt-2">
                                 <div class="col-md-6 mt-3">
                                     <label class="labels">Full Name</label>
-                                    <input id="username" type="text" class="form-control"
-                                        placeholder="Enter your full name">
+                                    <input id="username" type="text" class="form-control" placeholder="Enter your full name">
                                 </div>
                                 <div class="col-md-6 mt-3">
                                     <label class="labels">Email</label>
@@ -186,7 +188,6 @@
                                 </div>
                             </div>
                             <div class="row mt-2">
-
                                 <div class="col-md-6 mt-3">
                                     <label class="labels">Password</label>
                                     <input id="password" type="password" class="form-control"
@@ -194,8 +195,8 @@
                                 </div>
                                 <div class="col-md-6 mt-3">
                                     <label class="labels">Confirm Password</label>
-                                        <input id="confirm-password" type="password" class="form-control" placeholder="Confirm your password">
-
+                                    <input id="confirm-password" type="password" class="form-control"
+                                        placeholder="Confirm your password">
                                 </div>
                             </div>
                             <div class="mt-5 text-center">
@@ -209,6 +210,8 @@
                     </div>
                 </div>
             </div>
+        </div>
+
 
 
 
