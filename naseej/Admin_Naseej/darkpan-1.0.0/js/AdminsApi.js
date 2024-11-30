@@ -55,9 +55,7 @@ fetch("http://localhost:25025/api/Empolyees")
 // end function display all admins
 
 // function to add admins
-document
-  .getElementById("addAdminForm")
-  .addEventListener("submit", async function (event) {
+document.getElementById("addAdminForm").addEventListener("submit", async function (event) {
     event.preventDefault();
 
     const email = document

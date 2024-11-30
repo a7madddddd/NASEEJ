@@ -66,7 +66,7 @@ namespace Naseej_Project.Controllers
         /// <returns></returns>
         // POST: api/Employees
         [HttpPost]
-        public async Task<ActionResult> CreateAdmin([FromForm] EmpolyeesDTO employeesDto, [FromForm] IFormFile imageFile)
+        public async Task<ActionResult> CreateAdmin([FromForm] EmpolyeesDTO employeesDto, [FromForm] IFormFile? imageFile = null)
         {
             try
             {
@@ -74,28 +74,30 @@ namespace Naseej_Project.Controllers
                 {
                     return BadRequest("Password is required.");
                 }
-
                 var passwordHash = BCrypt.Net.BCrypt.HashPassword(employeesDto.PasswordHash);
-
                 var employee = new Employee
                 {
                     FullName = employeesDto.FullName,
                     Email = employeesDto.Email?.Trim().ToLower(),
                     PasswordHash = passwordHash,
-                    Image = employeesDto.Image,
+                    Image = null, // Start with null image
                     IsAdmin = false
                 };
 
+                // Handle image upload only if an image is provided
                 if (imageFile != null && imageFile.Length > 0)
                 {
                     var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "EmployeeImages");
                     Directory.CreateDirectory(uploadsFolderPath);
+
                     var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
                     var filePath = Path.Combine(uploadsFolderPath, uniqueFileName);
+
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         await imageFile.CopyToAsync(fileStream);
                     }
+
                     employee.Image = Path.Combine("EmployeeImages", uniqueFileName);
                 }
 
@@ -108,7 +110,6 @@ namespace Naseej_Project.Controllers
                 return StatusCode(500, "Internal server error occurred while creating admin.");
             }
         }
-
 
 
 
