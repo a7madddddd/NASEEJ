@@ -1,71 +1,86 @@
 // registeration function start here 
 async function registerUser() {
-    const form = document.getElementById('signupForm');
-    const formData = new FormData(form);
+const form = document.getElementById('signupForm');
+const formData = new FormData(form);
 
-    // Create a JSON object from form data
-    const data = {
-        firstName: formData.get('firstName'),
-        lastName: formData.get('lastName'),
-        phoneNumber: formData.get('phoneNumber'),
-        age: formData.get('age'),
-        nationality: formData.get('nationality'),
-        degree: formData.get('degree'),
-        governorate: formData.get('governorate'),
-        passwordHash: formData.get('password'),
-        email: formData.get('email'),
-    };
+// Get password and confirmation password
+const password = formData.get('password');
+const confirmPassword = formData.get('Confirm_password');
 
-    // Validate that degree and governorate are selected
-    if (!data.degree || !data.governorate) {
+// Check if passwords match
+if (password !== confirmPassword) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Password Mismatch',
+        text: 'Passwords do not match. Please ensure both password fields are the same.',
+        confirmButtonText: 'OK'
+    });
+    return; // Exit the function if passwords don't match
+}
+
+// Create a JSON object from form data
+const data = {
+    firstName: formData.get('firstName'),
+    lastName: formData.get('lastName'),
+    phoneNumber: formData.get('phoneNumber'),
+    age: formData.get('age'),
+    nationality: formData.get('nationality'),
+    degree: formData.get('degree'),
+    governorate: formData.get('governorate'),
+    passwordHash: password, // Use the password after validation
+    email: formData.get('email'),
+};
+
+// Validate that degree and governorate are selected
+if (!data.degree || !data.governorate) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Validation Failed',
+        text: 'Please select both educational level and governorate.',
+        confirmButtonText: 'OK'
+    });
+    return; // Exit if validation fails
+}
+
+try {
+    const response = await fetch('http://localhost:25025/api/login/Register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+
+    if (response.ok) {
+        const result = await response.json();
+        // Show success message using SweetAlert
+        Swal.fire({
+            icon: 'success',
+            title: 'Registration Successful',
+            text: result.message || 'You have successfully registered.',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            // Automatically check the checkbox to navigate to the login form
+            document.getElementById('chk').checked = true;
+        });
+    } else {
+        const error = await response.json();
+        // Show error message using SweetAlert
         Swal.fire({
             icon: 'error',
-            title: 'Validation Failed',
-            text: 'Please select both educational level and governorate.',
-            confirmButtonText: 'OK'
-        });
-        return; // Exit if validation fails
-    }
-
-    try {
-        const response = await fetch('http://localhost:25025/api/login/Register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            // Show success message using SweetAlert
-            Swal.fire({
-                icon: 'success',
-                title: 'Registration Successful',
-                text: result.message || 'You have successfully registered.',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                // Automatically check the checkbox to navigate to the login form
-                document.getElementById('chk').checked = true; // This triggers the switch to the login form
-            });
-        } else {
-            const error = await response.json();
-            // Show error message using SweetAlert
-            Swal.fire({
-                icon: 'error',
-                title: 'Registration Failed',
-                text: error.message || 'There was an issue with your registration.',
-                confirmButtonText: 'Try Again'
-            });
-        }
-    } catch (error) {
-        console.error("Error registering user:", error);
-        // Show error message for unexpected issues
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'An unexpected error occurred. Please try again later.',
-            confirmButtonText: 'OK'
+            title: 'Registration Failed',
+            text: error.message || 'There was an issue with your registration.',
+            confirmButtonText: 'Try Again'
         });
     }
+} catch (error) {
+    console.error("Error registering user:", error);
+    // Show error message for unexpected issues
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An unexpected error occurred. Please try again later.',
+        confirmButtonText: 'OK'
+    });
+}
 }
 // registration function end here 
 
