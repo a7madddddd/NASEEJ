@@ -15,7 +15,7 @@ async function handleLogin(event) {
         const response = await fetch("http://localhost:25025/api/EmpolyeeLogin/login", {
             method: "POST",
             headers: {
-                "accept": "application/json", // Set to application/json to expect JSON response
+                "accept": "application/json", 
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -27,7 +27,7 @@ async function handleLogin(event) {
         const responseText = await response.text();
         let data = null;
 
-        // Try to parse the response as JSON
+        
         try {
             data = JSON.parse(responseText);
             console.log("Parsed data:", data); // Log the parsed data
