@@ -66,7 +66,7 @@ namespace Naseej_Project.Controllers
         /// <returns></returns>
         // POST: api/Employees
         [HttpPost]
-        public async Task<ActionResult> CreateAdmin([FromForm] EmpolyeesDTO employeesDto, [FromForm] IFormFile imageFile)
+        public async Task<ActionResult> CreateAdmin([FromForm] EmpolyeesDTO employeesDto, [FromForm] IFormFile? imageFile = null)
         {
             try
             {
@@ -74,9 +74,7 @@ namespace Naseej_Project.Controllers
                 {
                     return BadRequest("Password is required.");
                 }
-
                 var passwordHash = BCrypt.Net.BCrypt.HashPassword(employeesDto.PasswordHash);
-
                 var employee = new Employee
                 {
                     FullName = employeesDto.FullName,
@@ -105,11 +103,10 @@ namespace Naseej_Project.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error occurred while creating admin.");
+                // Log the actual exception
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-
-
 
 
 

@@ -18,8 +18,8 @@ function loadEmployeeData() {
             const employeeName = decodedJWT.fullName;
             const isSuperAdmin = isTrue(decodedJWT.isAdmin);
             const employeeRole = isSuperAdmin ? 'Super Admin' : 'Admin';
-            const employeeImagePath = decodedJWT.image;
-
+            const employeeImagePath = decodedJWT.image ?? "/EmployeeImages/user.jfif";
+            // http://localhost:25025/EmployeeImages/user.jfif
             // Format image URL
             const imageUrl = `http://localhost:25025/${employeeImagePath.replace(/\\/g, "/")}`;
 

@@ -42,12 +42,17 @@ namespace Naseej_Project.Controllers
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(EmpolyeesDTO?.Email))
+                if (EmpolyeesDTO == null)
+                {
+                    return BadRequest("Invalid login data.");
+                }
+
+                if (string.IsNullOrWhiteSpace(EmpolyeesDTO.Email))
                 {
                     return BadRequest("Email is required.");
                 }
 
-                if (string.IsNullOrWhiteSpace(EmpolyeesDTO?.PasswordHash))
+                if (string.IsNullOrWhiteSpace(EmpolyeesDTO.PasswordHash))
                 {
                     return BadRequest("Password is required.");
                 }
@@ -59,13 +64,20 @@ namespace Naseej_Project.Controllers
 
                 if (employee == null)
                 {
-                    return Unauthorized(new { Message = "Invalid email ." });
+                    return Unauthorized(new { Message = "Invalid email." });
                 }
 
-                bool isPasswordValid;
+                // Explicit null checks
+                if (string.IsNullOrWhiteSpace(employee.PasswordHash))
+                {
+                    return Unauthorized(new { Message = "Employee password is not set." });
+                }
+
+                bool isPasswordValid = false;
                 try
                 {
                     isPasswordValid = BCrypt.Net.BCrypt.Verify(EmpolyeesDTO.PasswordHash, employee.PasswordHash);
+
                     if (!isPasswordValid)
                     {
                         return Unauthorized(new { Message = "Invalid password." });
@@ -73,12 +85,20 @@ namespace Naseej_Project.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error during password verification");
-                    return StatusCode(500, new { Message = "An error occurred during login." });
+                    // Detailed logging
+                    Console.WriteLine($"Login error: {ex.Message}");
+                    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+                    return StatusCode(500, new
+                    {
+                        Message = "An error occurred during login.",
+                        DetailedError = ex.Message
+                    });
                 }
 
-                var token = GenerateJwtToken(employee); 
+                var token = GenerateJwtToken(employee);
 
+                // Handle potential null image
                 return Ok(new
                 {
                     Token = token,
@@ -86,15 +106,20 @@ namespace Naseej_Project.Controllers
                     Email = employee.Email,
                     FullName = employee.FullName,
                     IsAdmin = employee.IsAdmin,
-                    Image = employee.Image
-
+                    Image = employee.Image ?? string.Empty // Provide empty string if null
                 });
-
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Unhandled error during login");
-                return StatusCode(500, new { Message = "An error occurred during login." });
+                // Outer exception logging
+                Console.WriteLine($"Outer login error: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+                return StatusCode(500, new
+                {
+                    Message = "An error occurred during login.",
+                    DetailedError = ex.Message
+                });
             }
         }
 
@@ -111,15 +136,20 @@ namespace Naseej_Project.Controllers
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
+            var claims = new List<Claim>
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, employee.EmployeeId.ToString()),
+        new Claim(JwtRegisteredClaimNames.Email, employee.Email),
+        new Claim("fullName", employee.FullName),
+        new Claim("isAdmin", employee.IsAdmin.ToString()),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+    };
+
+            // Only add image claim if it's not null
+            if (!string.IsNullOrWhiteSpace(employee.Image))
             {
-                    new Claim(JwtRegisteredClaimNames.Sub, employee.EmployeeId.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Email, employee.Email),
-                    new Claim("fullName", employee.FullName),
-                    new Claim("isAdmin", employee.IsAdmin.ToString()),
-                    new Claim("image", employee.Image) ,
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                };
+                claims.Add(new Claim("image", employee.Image));
+            }
 
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
@@ -130,11 +160,10 @@ namespace Naseej_Project.Controllers
             );
 
             var writtenToken = new JwtSecurityTokenHandler().WriteToken(token);
-            _logger.LogInformation("Generated token: {Token}", writtenToken); 
+            _logger.LogInformation("Generated token: {Token}", writtenToken);
 
             return writtenToken;
         }
-
     }
 
 
