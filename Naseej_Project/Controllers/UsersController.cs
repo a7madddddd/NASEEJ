@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Naseej_Project.DTOs;
+using Naseej_Project.Interfaces;
 using Naseej_Project.Models;
 
 namespace Naseej_Project.Controllers
@@ -41,39 +43,7 @@ namespace Naseej_Project.Controllers
             return user;
         }
 
-        // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutUser(int id, User user)
-        //{
-        //    if (id != user.UserId)
-        //    {
-        //        return BadRequest();
-        //    }
 
-        //    _context.Entry(user).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!UserExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
-        // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
@@ -110,16 +80,7 @@ namespace Naseej_Project.Controllers
 
 
 
-        // DTO for search results
-        public class RequestSearchResultDto
-        {
-            public int RequestId { get; set; }
-            public string UserName { get; set; }
-            public string UserEmail { get; set; }
-            public string ServiceName { get; set; }
-            public DateTime RequestDate { get; set; }
-            public string Description { get; set; }
-        }
+
 
         // Controller endpoint
         [HttpGet("search")]
@@ -173,14 +134,6 @@ namespace Naseej_Project.Controllers
                     Message = "An error occurred while searching requests"
                 });
             }
-        }
-
-
-        public class ApiResponse<T>
-        {
-            public bool Success { get; set; }
-            public string Message { get; set; }
-            public T Data { get; set; }
         }
 
 
@@ -249,14 +202,6 @@ namespace Naseej_Project.Controllers
             }
         }
 
-        // Paged result class
-        public class PagedResult<T>
-        {
-            public List<T> Data { get; set; }
-            public int TotalItems { get; set; }
-            public int PageSize { get; set; }
-            public int CurrentPage { get; set; }
-            public int TotalPages { get; set; }
-        }
+
     }
 }
