@@ -846,6 +846,7 @@
 .team .team-item .team-img {
     position: relative;
     overflow: hidden;
+    height: 50vh !important;
 }
 
 .team .team-item .team-img::after {
