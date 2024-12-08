@@ -244,3 +244,53 @@ document.addEventListener('DOMContentLoaded', function () {
     // Call the function to fetch and display services
     fetchUnacceptedServices();
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const servicesResponse = await fetch("http://localhost:25025/api/services/getallservices");
+        const services = await servicesResponse.json();
+
+        const requestsResponse = await fetch("http://localhost:25025/api/services/GetAllRequest");
+        const requests = await requestsResponse.json();
+
+        const totalServices = services.length;
+        const totalRequests = requests.length;
+
+        const servicePopularity = {};
+        requests.forEach(request => {
+            servicePopularity[request.serviceName] = (servicePopularity[request.serviceName] || 0) + 1;
+        });
+        const popularService = Object.keys(servicePopularity).reduce((a, b) =>
+            servicePopularity[a] > servicePopularity[b] ? a : b, "N/A");
+
+        const ageGroups = {};
+        requests.forEach(request => {
+            const group = `${Math.floor(request.age / 10) * 10}-${Math.floor(request.age / 10) * 10 + 9}`;
+            ageGroups[group] = (ageGroups[group] || 0) + 1;
+        });
+        const topAgeGroup = Object.keys(ageGroups).reduce((a, b) => ageGroups[a] > ageGroups[b] ? a : b, "N/A");
+
+        // تحديث واجهة المستخدم
+        document.getElementById("total-services").textContent = totalServices;
+        document.getElementById("total-requests").textContent = totalRequests;
+        document.getElementById("popular-service").textContent = popularService;
+        document.getElementById("top-age-group").textContent = topAgeGroup;
+
+    } catch (error) {
+        console.error("Error fetching or processing data:", error);
+    }
+});
