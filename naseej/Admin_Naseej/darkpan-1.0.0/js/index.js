@@ -2,7 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     // Fetch and populate requests
-    fetch('')
+    fetch('http://localhost:25025/api/services/GetAllRequest')
         .then(response => response.json())
         .then(requests => {
             const tableBody = document.getElementById('requestsTableBody');
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             // Fetch services and employees concurrently
             const [servicesResponse, employeesResponse] = await Promise.all([
-                fetch(''),
+                fetch('http://localhost:25025/api/services/getallservices'),
                 fetch('http://localhost:25025/api/Empolyees')
             ]);
 
