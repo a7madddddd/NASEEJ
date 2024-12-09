@@ -1118,7 +1118,7 @@
 .service-content p {
     font-size: 0.9rem;
     line-height: 1.5;
-    max-width: 250px;
+    max-width: 100%;
     /* Limit line width for improved readability */
     height: 69px;
     /* Fixed height */
@@ -1166,6 +1166,7 @@
 }
 
 .service-item {
+    width: 100%;
     height: 500px;
     display: flex;
     flex-direction: column;
