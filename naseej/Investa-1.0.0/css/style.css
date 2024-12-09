@@ -286,6 +286,8 @@
 .header-carousel .header-carousel-item-img-3 {
     position: relative;
     overflow: hidden;
+    
+
 }
 
 .header-carousel .header-carousel-item-img-1::before,
