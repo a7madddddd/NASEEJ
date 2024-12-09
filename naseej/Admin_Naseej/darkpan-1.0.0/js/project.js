@@ -47,10 +47,10 @@ function parseJwt(token) {
     data.forEach((product) => {
         cardContainer.innerHTML += `
             <div class="col-xl-4 col-md-6 mb-4">
-                <div class="card service-card shadow h-100">
+                <div class="card service-card shadow h-100" style="background-color:#191c24">
                     <img src="http://localhost:25025/project/${product.projectImage}" class="card-img-top" alt="Service Image">
                     <div class="card-body">
-                        <h5 class="card-title">${product.projectName}</h5>
+                        <h5 class="card-title" style="color:#fff">${product.projectName}</h5>
                         <p class="card-text"><strong>Description:</strong> ${product.projectDescription}</p>
                                 
                                 </div>

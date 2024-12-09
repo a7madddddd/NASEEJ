@@ -100,10 +100,10 @@ async function fetchCardData() {
 
       cardsHtml += `
         <div class="col-xl-4 col-md-6 mb-4">
-          <div class="card service-card shadow h-100">
+          <div class="card service-card shadow h-100 " style="background-color:#191c24">
             <img src="http://localhost:25025/Uploads/${product.serviceImage}" class="card-img-top" alt="Service Image">
             <div class="card-body">
-              <h5 class="card-title">${product.serviceName}</h5>
+              <h5 class="card-title" style="color:#fff">${product.serviceName}</h5>
               <p class="card-text"><strong>Description:</strong> ${product.serviceDescription}</p>
               <p class="card-text"><strong>Age:</strong> from ${product.fromage} to ${product.toage}</p>
               ${isAdmin ? `
