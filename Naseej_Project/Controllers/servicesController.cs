@@ -189,7 +189,7 @@ namespace Naseej_Project.Controllers
             var services = _Db.Services
                               .Where(x => x.IsAccept == "Accept")
                               .OrderByDescending(x => x.ServiceId) 
-                              .Take(4)
+                              .Take(3)
                               .ToList();
 
             return Ok(services);

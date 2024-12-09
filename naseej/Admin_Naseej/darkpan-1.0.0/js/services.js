@@ -1,219 +1,536 @@
-async function servicesuser() {
-  debugger
-  let url = "http://localhost:25025/api/services/getservicesAccepted";
-  const response = await fetch(url);
-  let data = await response.json();
-
-  let card = document.getElementById("contener");
-
-  data.forEach((product) => {
-    card.innerHTML += `
-            <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="service-item bg-light rounded">
-                        <div class="service-img">
-                            <img src="http://localhost:25025/Uploads/${product.serviceImage}" class="img-fluid w-100 rounded-top" alt="">
-                        </div>
-                        <div class="service-content text-center p-4">
-                            <div class="service-content-inner">
-                                <a href="#" class="h4 mb-6 d-inline-flex text-start"><i
-                                        class="fas fa-donate fa-2x me-2"></i>${product.serviceName}</a>
-                                <p class="mb-6">${product.serviceDescription}
-                                </p>
-                                <p>Age: ${product.fromage}&nbsp;&nbsp;-&nbsp;&nbsp;${product.toage}</p>
-
-<a class="btn btn-light rounded-pill py-2 px-4" href="#" onclick="showServiceModal(${product.serviceId})"  data-bs-toggle="modal" >Apply</a>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
-             
-          `;
-  });
-
-
-}
-
-servicesuser();
-
-
+// Function to parse JWT and extract payload
 function parseJwt(token) {
-  var base64Url = token.split('.')[1];
-  var base64 = base64Url.replace('-', '+').replace('_', '/');
-  var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-  }).join(''));
-  return JSON.parse(jsonPayload);
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
+      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+    ).join(''));
+    const payload = JSON.parse(jsonPayload);
+    console.log("Parsed JWT payload:", payload);
+    return payload;
+  } catch (error) {
+    console.error("Error parsing JWT:", error);
+    return null;
+  }
 }
 
-async function showServiceModal(serviceId) {
-  debugger
-  let token = sessionStorage.getItem("jwtToken");
+// Function to check if user is admin
+function isUserAdmin() {
+  const token = sessionStorage.getItem("Token");
+  if (!token) return false;
 
-  if (!token) {
-    await Swal.fire({
-      icon: "warning",
-      title: "Login Required",
-      text: "You need to be logged in to submit a testimonial.",
-    });
-    return;
-  }
+  const payload = parseJwt(token);
+  return payload?.isAdmin === "True";
+}
 
-  let decodedToken = parseJwt(token);
+// Function to get current user's full name
+function getCurrentUserFullName() {
+  const token = sessionStorage.getItem("Token");
+  if (!token) return null;
 
-  console.log("Decoded Token:", decodedToken);
+  const payload = parseJwt(token);
+  return payload?.fullName;
+}
 
-  let userId = decodedToken?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+// Function to retrieve employeeId from token
+function getEmployeeIdFromToken() {
+  const token = sessionStorage.getItem("Token");
+  if (!token) return null;
 
-  if (!userId) {
-    await Swal.fire({
-      icon: "warning",
-      title: "Invalid Token",
-      text: "Unable to extract user ID from token.",
-    });
-    return;
-  }
+  const payload = parseJwt(token);
+  return payload?.sub;
+}
 
+// Fetch all services and display them
+// Fetch all services and display them
+async function fetchCardData() {
   try {
-    const response = await fetch(
-      `http://localhost:25025/api/services/getinfouserandservices/${userId}/${serviceId}`
-    );
-    if (!response.ok) throw new Error("Failed to fetch user info");
-
+    const url = "http://localhost:25025/api/services/getallservices";
+    const response = await fetch(url);
     const data = await response.json();
 
-    document.getElementById("FullName").value = data.user.fullname || '';
-    document.getElementById("Email").value = data.user.email || '';
-    document.getElementById("phonenumber").value = data.user.phoneNumber || '';
-    document.getElementById("Userid").value = data.user.userId || '';
+    const employeeId = getEmployeeIdFromToken();
+    const isAdmin = isUserAdmin();
+    const currentUserFullName = getCurrentUserFullName();
 
-    document.getElementById("serviceId").value = serviceId;
-    document.getElementById("serviceName").value = data.service.serviceName || '';
-
-  } catch (error) {
-    console.error("Error fetching user info:", error);
-    await Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: "We apologize, but your age does not meet the requirements for this service.",
+    console.log({
+      employeeId,
+      isAdmin,
+      currentUserFullName,
+      tokenPayload: parseJwt(sessionStorage.getItem("Token"))
     });
-    return;
-  }
 
-  const serviceModal = new bootstrap.Modal(document.getElementById("serviceModal"), {
-    backdrop: 'static',
-    keyboard: false
-  });
-  serviceModal.show();
+    if (employeeId) {
+      document.getElementById("EmployeeId").value = employeeId;
+    }
+
+    const cardContainer = document.getElementById("container");
+    let cardsHtml = "";
+
+    // Get creator names for all services
+    const creatorNames = new Map();
+    for (const product of data) {
+      try {
+        const creatorResponse = await fetch(`http://localhost:25025/api/Empolyees/${product.employeeId}`);
+        if (creatorResponse.ok) {
+          const creatorData = await creatorResponse.json();
+          creatorNames.set(product.employeeId, creatorData.fullName);
+        }
+      } catch (err) {
+        console.error(`Failed to fetch creator name for service ${product.serviceId}:`, err);
+      }
+    }
+
+    data.forEach((product) => {
+      const productEmployeeId = String(product.employeeId);
+      const loggedInEmployeeId = String(employeeId);
+      const canEdit = isAdmin || productEmployeeId === loggedInEmployeeId;
+      const creatorName = creatorNames.get(product.employeeId) || 'Unknown';
+
+      let editButton = '';
+      let deleteButton = '';
+
+      if (canEdit) {
+        editButton = `<a href="#" class="btn btn-success mx-1" onclick="editservice(${product.serviceId})">
+          <i class="fas fa-edit"></i> Edit</a>`;
+        deleteButton = `<a href="#" class="btn btn-danger mx-1" onclick="confirmDelete(${product.serviceId})">
+          <i class="fas fa-trash"></i> Delete</a>`;
+      }
+
+      cardsHtml += `
+        <div class="col-xl-4 col-md-6 mb-4">
+          <div class="card service-card shadow h-100">
+            <img src="http://localhost:25025/Uploads/${product.serviceImage}" class="card-img-top" alt="Service Image">
+            <div class="card-body">
+              <h5 class="card-title">${product.serviceName}</h5>
+              <p class="card-text"><strong>Description:</strong> ${product.serviceDescription}</p>
+              <p class="card-text"><strong>Age:</strong> from ${product.fromage} to ${product.toage}</p>
+              ${isAdmin ? `
+                <p class="card-text">
+                  <small class="text-muted fw-bold">Created by:<strong> ${creatorName} </strong></small>
+                </p>` : ''}
+            </div>
+            <div class="card-footer text-center">
+              <select onchange="editstatus(${product.serviceId})" id="status-${product.serviceId}" 
+                      class="admin-only form-select bg-custom text-dark form-select-sm mb-3"
+                      ${!canEdit ? 'disabled' : ''}>
+                <option value="Pinding" class="text-info" ${product.isAccept === 'Pinding' ? 'selected' : ''}>Pinding</option>
+                <option value="Accept" class="text-success" ${product.isAccept === 'Accept' ? 'selected' : ''}>Accept</option>
+              </select>
+            </div>
+            <div class="card-footer text-center">
+              ${editButton}
+              ${deleteButton}
+              ${isAdmin ? `
+                <div class="mt-2">
+                </div>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    cardContainer.innerHTML = cardsHtml;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    await Swal.fire({
+      title: 'Error!',
+      text: 'Failed to load services.',
+      icon: 'error'
+    });
+  }
 }
 
+// Remove duplicate event listener
+document.addEventListener('DOMContentLoaded', () => {
+  fetchCardData();
 
-const urlorder = "http://localhost:25025/api/services/addnewrequest";
-
-async function addorder() {
-  debugger;
-  event.preventDefault();
-
-  let token = sessionStorage.getItem("jwtToken");
-
-  if (!token) {
-    await Swal.fire({
-      icon: "warning",
-      title: "Login Required",
-      text: "You need to be logged in to submit a testimonial.",
+  const token = sessionStorage.getItem("Token");
+  if (token) {
+    const payload = parseJwt(token);
+    console.log("Initial token check:", {
+      payload,
+      isAdmin: payload?.isAdmin,
+      employeeId: payload?.sub,
+      fullName: payload?.fullName
     });
-    return;
   }
+});
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', () => {
+  fetchCardData();
 
-  let decodedToken = parseJwt(token);
-  const userId = decodedToken?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-  if (!userId) {
-    await Swal.fire({
-      icon: "warning",
-      title: "Invalid Token",
-      text: "Unable to extract user ID from token.",
+  // Debug check - remove in production
+  const token = sessionStorage.getItem("Token");
+  if (token) {
+    const payload = parseJwt(token);
+    console.log("Initial token check:", {
+      payload,
+      isAdmin: payload?.isAdmin,
+      employeeId: payload?.sub
     });
-    return;
   }
-  var form = document.getElementById("addorder");
-  var formData = new FormData(form);
-  formData.append("UserId", userId);
-  formData.append("ServiceId", document.getElementById("serviceId").value);
-  console.log(document.getElementById("serviceId").value);
-  var response = await fetch(urlorder, {
-    method: "POST",
+});
+// Rest of your code remains the same...  
+
+// Modify the edit check in editservice function
+async function editservice(id) {
+  try {
+    var urll1 = `http://localhost:25025/api/services/serviceById/${id}`;
+    var response = await fetch(urll1);
+    var service = await response.json();
+
+    // Check if user is admin or owner
+    const employeeId = getEmployeeIdFromToken();
+    const isAdmin = isUserAdmin();
+
+    if (!isAdmin && String(service.employeeId) !== String(employeeId)) {
+      await Swal.fire({
+        title: "Unauthorized",
+        text: "You can only edit your own services",
+        icon: "error"
+      });
+      return;
+    }
+
+    document.getElementById("editEmployeeId").value = service.serviceId;
+    document.getElementById("ServiceName").value = service.serviceName;
+    document.getElementById("ServiceDescription").value = service.serviceDescription;
+    document.getElementById("batool").src = `http://localhost:25025/Uploads/${service.serviceImage}`;
+
+    $("#editEmployeeModal").modal("show");
+  } catch (error) {
+    console.error('Error:', error);
+    await Swal.fire({
+      title: 'Error!',
+      text: 'Failed to load service details.',
+      icon: 'error'
+    });
+  }
+}
+
+// Modify the delete check in deleteservices function
+async function deleteservices(id) {
+  try {
+    const checkResponse = await fetch(`http://localhost:25025/api/services/getservicesbyid/${id}`);
+    const service = await checkResponse.json();
+
+    const employeeId = getEmployeeIdFromToken();
+    const isAdmin = isUserAdmin();
+
+    if (!isAdmin && String(service.employeeId) !== String(employeeId)) {
+      await Swal.fire({
+        title: "Unauthorized",
+        text: "You can only delete your own services",
+        icon: "error"
+      });
+      return;
+    }
+
+    const deleteUrl = `http://localhost:25025/api/services/deleteservices/${id}`;
+    const deleteResponse = await fetch(deleteUrl, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (deleteResponse.ok) {
+      await Swal.fire({
+        title: 'Deleted!',
+        text: 'Service has been deleted.',
+        icon: 'success'
+      });
+      location.reload();
+    } else {
+      throw new Error(`HTTP error! status: ${deleteResponse.status}`);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    await Swal.fire({
+      title: 'Error!',
+      text: 'Failed to delete the service.',
+      icon: 'error'
+    });
+  }
+}
+
+// Edit service function
+async function editservice(id) {
+  var urll1 = `http://localhost:25025/api/services/serviceById/${id}`;
+  var response = await fetch(urll1);
+  var employee = await response.json();
+
+  document.getElementById("editEmployeeId").value = employee.serviceId;
+  document.getElementById("ServiceName").value = employee.serviceName;
+  document.getElementById("ServiceDescription").value =
+    employee.serviceDescription;
+  document.getElementById("batool").src = `http://localhost:25025/Uploads/${employee.serviceImage}`;
+
+  $("#editEmployeeModal").modal("show");
+}
+
+async function updateservice() {
+  var id = document.getElementById("editEmployeeId").value;
+  var url2 = `http://localhost:25025/api/services/editservices/${id}`;
+  var formData = new FormData(document.getElementById("serviceEditForm"));
+
+  // طباعة بيانات النموذج
+
+  var response = await fetch(url2, {
+    method: "PUT",
     body: formData,
   });
 
+
   if (response.ok) {
-    Swal.fire({
+    await Swal.fire({
       title: "Success!",
-      text: "Registration completed successfully",
+      text: "service updated successfully.",
       icon: "success",
-      confirmButtonText: "OK",
-      timer: 3000,
-      timerProgressBar: true,
     });
 
+    $("#editEmployeeModal").modal("hide"); // إغلاق المودال بعد التحديث
+    // الانتظار قبل إعادة تحميل الصفحة
     setTimeout(() => {
-      window.location.href = "service.html";
-    }, 2000);
+      location.reload();
+    }, 1000); // الانتظار لمدة 1 ثانية قبل إعادة تحميل الصفحة
   } else {
-    Swal.fire({
+    const errorMessage = await response.text();
+    await Swal.fire({
       title: "Error!",
-      text: "Registration failed",
+      text: `Failed to update service: ${errorMessage}`,
       icon: "error",
-      confirmButtonText: "OK",
     });
   }
 }
 
-
-
-
-
-
-async function servicehome() {
-  debugger
-  let url = "http://localhost:25025/api/services/getservicesAcceptedlastthree";
-  const response = await fetch(url);
-  let data = await response.json();
-
-  let card = document.getElementById("service");
-
-  data.forEach((product) => {
-    card.innerHTML += `
-          <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.3s">
-                  <div class="service-item bg-light rounded">
-                      <div class="service-img">
-                          <img src="http://localhost:25025/Uploads/${product.serviceImage}" class="img-fluid w-100 rounded-top" alt="">
-                      </div>
-                      <div class="service-content text-center p-4">
-                          <div class="service-content-inner">
-                              <a href="#" class="h4 mb-6 d-inline-flex text-start"><i
-                                      class="fas fa-donate fa-2x me-2"></i>${product.serviceName}</a>
-                              <p class="mb-6">${product.serviceDescription}
-                              </p>
-                              <p>Age: ${product.fromage}&nbsp;&nbsp;-&nbsp;&nbsp;${product.toage}</p>
-
-                              <a class="btn btn-light rounded-pill py-2 px-4" href="#" onclick="showServiceModal(${product.serviceId})"  data-bs-toggle="modal" >Apply</a>
-
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-
-
-           
-        `;
+// Confirm delete function
+async function confirmDelete(id) {
+  const result = await Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, delete it!'
   });
 
-
+  if (result.isConfirmed) {
+    await deleteservices(id);
+  }
 }
-servicehome()
+
+// Delete service function
+async function deleteservices(id) {
+  try {
+    // First check if user owns the service
+    const checkResponse = await fetch(`http://localhost:25025/api/services/getservicesbyid/${id}`);
+    const service = await checkResponse.json();
+
+    const employeeId = getEmployeeIdFromToken();
+    if (String(service.employeeId) !== String(employeeId)) {
+      await Swal.fire({
+        title: "Unauthorized",
+        text: "You can only delete your own services",
+        icon: "error"
+      });
+      return;
+    }
+
+    // Proceed with deletion
+    const deleteUrl = `http://localhost:25025/api/services/deleteservices/${id}`;
+    const deleteResponse = await fetch(deleteUrl, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (deleteResponse.ok) {
+      await Swal.fire({
+        title: 'Deleted!',
+        text: 'Your service has been deleted.',
+        icon: 'success'
+      });
+      // Refresh the page to show updated list
+      location.reload();
+    } else {
+      throw new Error(`HTTP error! status: ${deleteResponse.status}`);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    await Swal.fire({
+      title: 'Error!',
+      text: 'Failed to delete the service.',
+      icon: 'error'
+    });
+  }
+}
+
+// Initialize the page
+// Initialize the page
+fetchCardData();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const url = "http://localhost:25025/api/services";
+async function addservice() {
+  debugger
+  event.preventDefault();
+  
+  const employeeId = getEmployeeIdFromToken();
+  if (!employeeId) {
+      Swal.fire({
+          title: "Error!",
+          text: "Employee ID not found",
+          icon: "error",
+          confirmButtonText: "OK",
+      });
+      return;
+  }
+
+  document.getElementById("EmployeeId").value = employeeId;
+
+  const form = document.getElementById("addservice");
+  const formData = new FormData(form);
+  formData.append("EmployeeId", employeeId);
+
+  const response = await fetch(url, {
+      method: "POST",
+      body: formData,
+  });
+
+  if (response.ok) {
+      Swal.fire({
+          title: "Success!",
+          text: "Service has been added successfully",
+          icon: "success",
+          confirmButtonText: "OK",
+          timer: 3000,
+      });
+      setTimeout(() => {
+          window.location.href = "table.html";
+      }, 2000);
+  } else {
+      Swal.fire({
+          title: "Error!",
+          text: "Service has not been added",
+          icon: "error",
+          confirmButtonText: "OK",
+      });
+  }
+}
+
+  
+  async function deleteservices(id) {
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "This employee will be deleted!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!",
+      });
+    
+      if (result.isConfirmed) {
+        var delet = `http://localhost:25025/api/services/deleteservicesid/${id}`;
+        var response = await fetch(delet, {
+          method: "DELETE",
+        });
+    
+        // console.log("Response Status:", response.status);
+        // console.log("Response OK:", response.ok);
+    
+        if (response.ok) {
+          await Swal.fire(
+            "Deleted!",
+            "The employee has been deleted successfully.",
+            "success"
+          );
+          location.reload();
+        } else {
+          const errorMessage = await response.text();
+          await Swal.fire(
+            "Error!",
+            `There was an error deleting the employee: ${errorMessage}`,
+            "error"
+          );
+        }
+      }
+    }
+  
+  
+  
+    
+  
+    
+  
+  
+    async function editstatus(id) {
+      event.preventDefault();
+      debugger;
+      let urlm = `http://localhost:25025/api/services/editorder/${id}`;
+      let newStatus = document.getElementById(`status-${id}`).value;
+    
+      let response = await fetch(urlm, {
+        method: "PUT",
+        body: JSON.stringify({
+          isAccept: newStatus,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    
+      if (response.status == 200) {
+        Swal.fire({
+          title: "Success!",
+          text: "Status updated successfully",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+    
+        let order = allOrders.find((order) => order.serviceId === id);
+        if (order) {
+          order.isAccept = newStatus;
+        }
+    
+        displayOrders(allOrders);
+      } else {
+        Swal.fire({
+          title: "Error!",
+          text: "Error updating status",
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
+      }
+    }
+    
+  
+  
+  
+  
+  
+
+    
