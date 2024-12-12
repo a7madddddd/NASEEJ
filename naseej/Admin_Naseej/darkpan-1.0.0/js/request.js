@@ -32,12 +32,12 @@ async function fetchCardData() {
    <!-- Modal لكل طلب -->
 <div class="modal fade" id="performanceModal-${product.requestId}" tabindex="-1" aria-labelledby="performanceModalLabel-${product.requestId}" aria-hidden="true">
     <div class="modal-dialog modal-lg"> <!-- جعل المودال أكبر للحصول على مساحة إضافية -->
-        <div class="modal-content">
+        <div class="modal-content" style="background-color: #0c0e12;     margin-top: -20px;">
             <div class="modal-header">
                 <h5 class="modal-title" id="performanceModalLabel-${product.requestId}">
                     Request Details - ${product.serviceName}
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1);"></button>
             </div>
             <div class="modal-body">
                 
@@ -46,8 +46,8 @@ async function fetchCardData() {
                 <hr>
                 <div class="info-section">
                     <p><strong>Full Name:</strong> ${product.fullName}</p>
-                    <p><strong>Email:</strong> ${product.email}</p>
-                    <p><strong>Phone Number:</strong> ${product.phoneNumber}</p>
+                 <p><a href="mailto:${product.email}"><strong>Email:</strong> ${product.email}</a></p>
+                <a href="tel:${product.phoneNumber}"> <strong>Phone Number: </strong>${product.phoneNumber}</a>
                     <p><strong>Nationality:</strong> ${product.nationality}</p>
                     <p><strong>Degree:</strong> ${product.degree}</p>
                     <p><strong>Age:</strong> ${product.age}</p>

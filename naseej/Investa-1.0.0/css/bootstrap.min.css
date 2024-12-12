@@ -10055,7 +10055,7 @@ fieldset:disabled .btn {
     }
 
     .text-md-start {
-        text-align: left !important
+        /* text-align: left !important */
     }
 
     .text-md-end {
