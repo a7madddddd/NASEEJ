@@ -112,7 +112,7 @@ async function addservice() {
       timer: 3000,
     });
     setTimeout(() => {
-      window.location.href = "table.html";
+      window.location.href = "project.html";
     }, 2000);
   } else {
     Swal.fire({
@@ -238,7 +238,11 @@ async function editstatus(id) {
   });
 
   if (response.status == 200) {
-    alert("Status updated successfully");
+    await Swal.fire({
+      title: "Success!",
+      text: "status updated successfully.",
+      icon: "success",
+    });
 
     // تحديث الحالة في allOrders وتحديث الواجهة
     let order = allOrders.find((order) => order.projectId === id);
@@ -249,8 +253,11 @@ async function editstatus(id) {
     // عرض الطلبات من جديد بناءً على الحالة الجديدة
     displayOrders(allOrders);
   } else {
-    alert("Error updating status");
-  }
+ await Swal.fire({
+      title: "Error!",
+      text: `Failed to update status: ${errorMessage}`,
+      icon: "error",
+    });  }
 }
 
 
