@@ -115,7 +115,7 @@ async function fetchCardData() {
               <select onchange="editstatus(${product.serviceId})" id="status-${product.serviceId}" 
                       class="admin-only form-select bg-custom text-dark form-select-sm mb-3"
                       ${!canEdit ? 'disabled' : ''}>
-                <option value="Pending" class="text-info" ${product.isAccept === 'Pinding' ? 'selected' : ''}>Pinding</option>
+                <option value="Pinding" class="text-info" ${product.isAccept === 'Pinding' ? 'selected' : ''}>Pinding</option>
                 <option value="Accept" class="text-success" ${product.isAccept === 'Accept' ? 'selected' : ''}>Accept</option>
               </select>
             </div>
@@ -397,16 +397,16 @@ const url = "http://localhost:25025/api/services";
 async function addservice() {
   debugger
   event.preventDefault();
-  
+
   const employeeId = getEmployeeIdFromToken();
   if (!employeeId) {
-      Swal.fire({
-          title: "Error!",
-          text: "Employee ID not found",
-          icon: "error",
-          confirmButtonText: "OK",
-      });
-      return;
+    Swal.fire({
+      title: "Error!",
+      text: "Employee ID not found",
+      icon: "error",
+      confirmButtonText: "OK",
+    });
+    return;
   }
 
   document.getElementById("EmployeeId").value = employeeId;
@@ -416,121 +416,120 @@ async function addservice() {
   formData.append("EmployeeId", employeeId);
 
   const response = await fetch(url, {
-      method: "POST",
-      body: formData,
+    method: "POST",
+    body: formData,
   });
 
   if (response.ok) {
-      Swal.fire({
-          title: "Success!",
-          text: "Service has been added successfully",
-          icon: "success",
-          confirmButtonText: "OK",
-          timer: 3000,
-      });
-      setTimeout(() => {
-          window.location.href = "table.html";
-      }, 2000);
+    Swal.fire({
+      title: "Success!",
+      text: "Service has been added successfully",
+      icon: "success",
+      confirmButtonText: "OK",
+      timer: 3000,
+    });
+    setTimeout(() => {
+      window.location.href = "table.html";
+    }, 2000);
   } else {
-      Swal.fire({
-          title: "Error!",
-          text: "Service has not been added",
-          icon: "error",
-          confirmButtonText: "OK",
-      });
+    Swal.fire({
+      title: "Error!",
+      text: "Service has not been added",
+      icon: "error",
+      confirmButtonText: "OK",
+    });
   }
 }
 
-  
-  async function deleteservices(id) {
-      const result = await Swal.fire({
-        title: "Are you sure?",
-        text: "This employee will be deleted!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Yes, delete it!",
-      });
-    
-      if (result.isConfirmed) {
-        var delet = `http://localhost:25025/api/services/deleteservicesid/${id}`;
-        var response = await fetch(delet, {
-          method: "DELETE",
-        });
-    
-        // console.log("Response Status:", response.status);
-        // console.log("Response OK:", response.ok);
-    
-        if (response.ok) {
-          await Swal.fire(
-            "Deleted!",
-            "The employee has been deleted successfully.",
-            "success"
-          );
-          location.reload();
-        } else {
-          const errorMessage = await response.text();
-          await Swal.fire(
-            "Error!",
-            `There was an error deleting the employee: ${errorMessage}`,
-            "error"
-          );
-        }
-      }
-    }
-  
-  
-  
-    
-  
-    
-  
-  
-    async function editstatus(id) {
-      event.preventDefault();
-      debugger;
-      let urlm = `http://localhost:25025/api/services/editorder/${id}`;
-      let newStatus = document.getElementById(`status-${id}`).value;
-    
-      let response = await fetch(urlm, {
-        method: "PUT",
-        body: JSON.stringify({
-          isAccept: newStatus,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    
-      if (response.status == 200) {
-        Swal.fire({
-          title: "Success!",
-          text: "Status updated successfully",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-    
-        let order = allOrders.find((order) => order.serviceId === id);
-        if (order) {
-          order.isAccept = newStatus;
-        }
-    
-        displayOrders(allOrders);
-      } else {
-        Swal.fire({
-          title: "Error!",
-          text: "Error updating status",
-          icon: "error",
-          confirmButtonText: "Try Again",
-        });
-      }
-    }
-    
-  
-  
-  
-  
-  
 
-    
+async function deleteservices(id) {
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "This employee will be deleted!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Yes, delete it!",
+  });
+
+  if (result.isConfirmed) {
+    var delet = `http://localhost:25025/api/services/deleteservicesid/${id}`;
+    var response = await fetch(delet, {
+      method: "DELETE",
+    });
+
+    // console.log("Response Status:", response.status);
+    // console.log("Response OK:", response.ok);
+
+    if (response.ok) {
+      await Swal.fire(
+        "Deleted!",
+        "The employee has been deleted successfully.",
+        "success"
+      );
+      location.reload();
+    } else {
+      const errorMessage = await response.text();
+      await Swal.fire(
+        "Error!",
+        `There was an error deleting the employee: ${errorMessage}`,
+        "error"
+      );
+    }
+  }
+}
+
+
+
+
+
+
+
+
+async function editstatus(id) {
+  event.preventDefault();
+  debugger;
+  let urlm = `http://localhost:25025/api/services/editorder/${id}`;
+  let newStatus = document.getElementById(`status-${id}`).value;
+
+  let response = await fetch(urlm, {
+    method: "PUT",
+    body: JSON.stringify({
+      isAccept: newStatus,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (response.status == 200) {
+    Swal.fire({
+      title: "Success!",
+      text: "Status updated successfully",
+      icon: "success",
+      confirmButtonText: "OK",
+    });
+
+    let order = allOrders.find((order) => order.serviceId === id);
+    if (order) {
+      order.isAccept = newStatus;
+    }
+
+    displayOrders(allOrders);
+  } else {
+    Swal.fire({
+      title: "Error!",
+      text: "Error updating status",
+      icon: "error",
+      confirmButtonText: "Try Again",
+    });
+  }
+}
+
+
+
+
+
+
+
