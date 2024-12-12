@@ -22,7 +22,7 @@ async function displayProjects() {
                                     <p class="text-dark fs-5 mb-3">${project.projectName}</p>
                                     <a href="#" class="h4">${project.projectDescription}</a>
                                     <div class="pt-4">
-                                        <a class="btn btn-light rounded-pill py-3 px-5" href="project.html">Read More</a>
+                                        <a class="btn btn-light rounded-pill py-3 px-5" href="#">Read More</a>
                                     </div>
                                 </div>
                             </div>
