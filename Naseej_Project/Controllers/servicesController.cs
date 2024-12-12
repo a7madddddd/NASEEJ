@@ -32,8 +32,10 @@ namespace Naseej_Project.Controllers
                 ServiceDescription = product.ServiceDescription,
                 EmployeeId = product.EmployeeId,
                 ServiceDate = DateTime.Now,
-                Fromage=product.Fromage,
-                Toage=product.Toage,
+                Fromage = product.Fromage,
+                Toage = product.Toage,
+                IsAccept = string.IsNullOrEmpty(product.IsAccept) ? "Pending" : product.IsAccept
+
 
             };
 

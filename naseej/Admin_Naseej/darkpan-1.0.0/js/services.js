@@ -115,7 +115,7 @@ async function fetchCardData() {
               <select onchange="editstatus(${product.serviceId})" id="status-${product.serviceId}" 
                       class="admin-only form-select bg-custom text-dark form-select-sm mb-3"
                       ${!canEdit ? 'disabled' : ''}>
-                <option value="Pinding" class="text-info" ${product.isAccept === 'Pinding' ? 'selected' : ''}>Pinding</option>
+                <option value="Pending" class="text-info" ${product.isAccept === 'Pinding' ? 'selected' : ''}>Pinding</option>
                 <option value="Accept" class="text-success" ${product.isAccept === 'Accept' ? 'selected' : ''}>Accept</option>
               </select>
             </div>

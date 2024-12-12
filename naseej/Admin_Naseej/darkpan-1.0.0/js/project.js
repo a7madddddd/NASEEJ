@@ -112,7 +112,7 @@ const url = "http://localhost:25025/api/project/addnewproject";
             timer: 3000,
         });
         setTimeout(() => {
-            window.location.href = "table.html";
+          window.location.href = "project.html";
         }, 2000);
     } else {
         Swal.fire({

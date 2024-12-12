@@ -106,8 +106,8 @@ try {
 } catch (error) {
   console.error("Error fetching user info:", error);
   await Swal.fire({
-    icon: "error",
-    title: "Error",
+    icon: "info",
+    title: "info",
     text: "We apologize, but your age does not meet the requirements for this service.",
   });
   return;

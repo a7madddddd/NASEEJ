@@ -23,10 +23,18 @@ namespace Naseej_Project.Controllers
 
         // GET: api/Newslatter
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Newslatter>>> GetAllNewslatters()
+        public async Task<ActionResult<IEnumerable<Newslatter>>> GetAllNewslatters(int page = 1, int pageSize = 10)
         {
-            return Ok(await _context.Set<Newslatter>().ToListAsync());
+            var totalItems = await _context.Set<Newslatter>().CountAsync();
+            var newsletters = await _context.Set<Newslatter>()
+                                            .Skip((page - 1) * pageSize)
+                                            .Take(pageSize)
+                                            .ToListAsync();
+
+            
+            return Ok(new { newsletters, totalItems });
         }
+
 
         // GET: api/Newslatter/{id}
         [HttpGet("{id}")]
