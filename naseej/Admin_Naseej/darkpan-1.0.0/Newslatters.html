@@ -185,7 +185,7 @@
             <div class="modal-dialog modal-xl"> <!-- Changed to modal-xl for wider view -->
                 <div class="modal-content bg-secondary">
                     <div class="modal-header admin-only">
-                            <button type="button" class="btn-close d-flex justify-content-end" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close btn-close-white d-flex justify-content-end" data-bs-dismiss="modal" aria-label="Close"></button>
                             <h5 class="modal-title" id="replyAllModalLabel">Reply to All Pending Subscribers</h5>
                         </div>
                         <div class="modal-body">
@@ -199,7 +199,7 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="pendingCount" class="form-label">Total Pending</label>
-                                            <input type="text" class="form-control" id="pendingCount" readonly>
+                                            <input type="text" class="form-control bg-dark" id="pendingCount" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-7">
@@ -248,7 +248,7 @@
                     <div class="modal-content bg-secondary">
                         <div class="modal-header">
                             <h5 class="modal-title" id="replyOneModalLabel">Reply to Subscriber</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form id="replyOneForm" onsubmit="event.preventDefault(); sendReplyToNewsletter();">
