@@ -48,76 +48,76 @@ servicesuser();
 function parseJwt(token) {
   var base64Url = token.split('.')[1];
   var base64 = base64Url.replace('-', '+').replace('_', '/');
-  var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
   }).join(''));
   return JSON.parse(jsonPayload);
 }
 
 async function showServiceModal(serviceId) {
-debugger
-let token = sessionStorage.getItem("jwtToken"); 
+  debugger
+  let token = sessionStorage.getItem("jwtToken");
 
-if (!token) {
-  await Swal.fire({
-    icon: "warning",
-    title: "Login Required",
-    text: "You need to be logged in to submit a Service.",
-    
+  if (!token) {
+    await Swal.fire({
+      icon: "warning",
+      title: "Login Required",
+      text: "You need to be logged in to submit a Service.",
+
+    });
+    window.location.href = "Login.html";
+
+    return;
+
+  }
+
+
+  let decodedToken = parseJwt(token);
+
+  console.log("Decoded Token:", decodedToken);
+
+  let userId = decodedToken?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+
+  if (!userId) {
+    await Swal.fire({
+      icon: "warning",
+      title: "Invalid Token",
+      text: "Unable to extract user ID from token.",
+    });
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:25025/api/services/getinfouserandservices/${userId}/${serviceId}`
+    );
+    if (!response.ok) throw new Error("Failed to fetch user info");
+
+    const data = await response.json();
+
+    document.getElementById("FullName").value = data.user.fullname || '';
+    document.getElementById("Email").value = data.user.email || '';
+    document.getElementById("phonenumber").value = data.user.phoneNumber || '';
+    document.getElementById("Userid").value = data.user.userId || '';
+
+    document.getElementById("serviceId").value = serviceId;
+    document.getElementById("serviceName").value = data.service.serviceName || '';
+
+  } catch (error) {
+    console.error("Error fetching user info:", error);
+    await Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "We apologize, but your age does not meet the requirements for this service.",
+    });
+    return;
+  }
+
+  const serviceModal = new bootstrap.Modal(document.getElementById("serviceModal"), {
+    backdrop: 'static',
+    keyboard: false
   });
-  window.location.href = "Login.html";
-
-  return; 
-
-}
-
-
-let decodedToken = parseJwt(token);
-
-console.log("Decoded Token:", decodedToken);
-
-let userId = decodedToken?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-
-if (!userId) {
-  await Swal.fire({
-    icon: "warning",
-    title: "Invalid Token",
-    text: "Unable to extract user ID from token.",
-  });
-  return;
-}
-
-try {
-  const response = await fetch(
-    `http://localhost:25025/api/services/getinfouserandservices/${userId}/${serviceId}`
-  );
-  if (!response.ok) throw new Error("Failed to fetch user info");
-
-  const data = await response.json();
-
-  document.getElementById("FullName").value = data.user.fullname || '';
-  document.getElementById("Email").value = data.user.email || '';
-  document.getElementById("phonenumber").value = data.user.phoneNumber || '';
-  document.getElementById("Userid").value = data.user.userId || '';
-
-  document.getElementById("serviceId").value = serviceId;
-  document.getElementById("serviceName").value = data.service.serviceName || '';
-
-} catch (error) {
-  console.error("Error fetching user info:", error);
-  await Swal.fire({
-    icon: "error",
-    title: "Error",
-    text: "We apologize, but your age does not meet the requirements for this service.",
-  });
-  return;
-}
-
-const serviceModal = new bootstrap.Modal(document.getElementById("serviceModal"), {
-  backdrop: 'static',
-  keyboard: false
-});
-serviceModal.show();
+  serviceModal.show();
 }
 
 
@@ -125,28 +125,28 @@ const urlorder = "http://localhost:25025/api/services/addnewrequest";
 
 async function addorder() {
   debugger;
-  event.preventDefault(); 
+  event.preventDefault();
 
   let token = sessionStorage.getItem("jwtToken");
 
   if (!token) {
-      await Swal.fire({
-          icon: "warning",
-          title: "Login Required",
-          text: "You need to be logged in to submit a Services.",
-      });
-      return;
+    await Swal.fire({
+      icon: "warning",
+      title: "Login Required",
+      text: "You need to be logged in to submit a Services.",
+    });
+    return;
   }
 
   let decodedToken = parseJwt(token);
   const userId = decodedToken?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
   if (!userId) {
-      await Swal.fire({
-          icon: "warning",
-          title: "Invalid Token",
-          text: "Unable to extract user ID from token.",
-      });
-      return;
+    await Swal.fire({
+      icon: "warning",
+      title: "Invalid Token",
+      text: "Unable to extract user ID from token.",
+    });
+    return;
   }
   var form = document.getElementById("addorder");
   var formData = new FormData(form);
@@ -154,30 +154,30 @@ async function addorder() {
   formData.append("ServiceId", document.getElementById("serviceId").value);
   console.log(document.getElementById("serviceId").value);
   var response = await fetch(urlorder, {
-      method: "POST",
-      body: formData,
+    method: "POST",
+    body: formData,
   });
 
   if (response.ok) {
-      Swal.fire({
-          title: "Success!",
-          text: "Registration completed successfully",
-          icon: "success",
-          confirmButtonText: "OK",
-          timer: 3000, 
-          timerProgressBar: true, 
-      });
+    Swal.fire({
+      title: "Success!",
+      text: "Registration completed successfully",
+      icon: "success",
+      confirmButtonText: "OK",
+      timer: 3000,
+      timerProgressBar: true,
+    });
 
-      setTimeout(() => {
-          window.location.href = "service.html";
-      }, 2000);
+    setTimeout(() => {
+      window.location.href = "service.html";
+    }, 2000);
   } else {
-      Swal.fire({
-          title: "Error!",
-          text: "Registration failed",
-          icon: "error",
-          confirmButtonText: "OK",
-      });
+    Swal.fire({
+      title: "Error!",
+      text: "Registration failed",
+      icon: "error",
+      confirmButtonText: "OK",
+    });
   }
 }
 
@@ -187,15 +187,15 @@ async function addorder() {
 
 
 async function servicehome() {
-debugger
-let url = "http://localhost:25025/api/services/getservicesAcceptedlastthree";
-const response = await fetch(url);
-let data = await response.json();
+  debugger
+  let url = "http://localhost:25025/api/services/getservicesAcceptedlastthree";
+  const response = await fetch(url);
+  let data = await response.json();
 
-let card = document.getElementById("service");
+  let card = document.getElementById("service");
 
-data.forEach((product) => {
-  card.innerHTML += `
+  data.forEach((product) => {
+    card.innerHTML += `
 <div class="col-md-6 col-lg-4 col-xl-4 wow fadeInUp" data-wow-delay="0.3s">
   <div class="service-item bg-light rounded">
       <div class="service-img position-relative">
@@ -228,7 +228,7 @@ data.forEach((product) => {
 
          
       `;
-});
+  });
 
 
 }

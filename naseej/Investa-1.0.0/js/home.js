@@ -5,7 +5,7 @@
     <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
         <div class="team-item rounded">
             <div class="team-img">
-                <img src="http://localhost:25025/${employee.image}" class="img-fluid w-100 rounded-top" alt="${employee.fullName}">
+                <img src="http://localhost:25025/${employee.image}" class="img-fluid w-100 rounded-top" alt="${employee.fullName}" style="height: 100% !important;">
                     ${employee.isAdmin ? `
                             <div class="team-icon">
                                 <a class="btn btn-primary btn-sm-square text-white rounded-circle mb-3" href=""><i
@@ -24,7 +24,7 @@
             <div class="team-content bg-dark text-center rounded-bottom p-4">
                 <div class="team-content-inner rounded-bottom">
                     <h4 class="text-white">${employee.fullName}</h4>
-                    <p class="text-muted mb-0">${employee.isAdmin ? 'Owner' : 'Team Member'}</p>
+                    <p class="text-muted mb-0">${employee.isAdmin ? 'Owner' : 'Member'}</p>
                 </div>
             </div>
         </div>

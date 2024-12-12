@@ -1,16 +1,20 @@
-// Fetch and display all newsletters
-async function fetchNewsletters() {
+let currentPage = 1; // Set initial page to 1
+const pageSize = 10; // Set the number of items per page
+
+async function fetchNewsletters(page = 1) {
     try {
-        const response = await fetch('http://localhost:25025/api/NewsLatters');
+        // Fetch paginated data
+        const response = await fetch(`http://localhost:25025/api/NewsLatters?page=${page}&pageSize=${pageSize}`);
         const data = await response.json();
 
         const tableBody = document.getElementById('newsletterTableBody');
-        tableBody.innerHTML = '';
+        tableBody.innerHTML = ''; // Clear the table before adding new rows
 
-        data.forEach((item, index) => {
+        // Iterate over the newsletters data and populate the table
+        data.newsletters.forEach((item, index) => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <th scope="row">${index + 1}</th>
+                <th scope="row">${(page - 1) * pageSize + (index + 1)}</th>
                 <td>${item.userEmail}</td>
                 <td>${new Date(item.createdDate).toLocaleDateString()}</td>
                 <td>
@@ -29,6 +33,9 @@ async function fetchNewsletters() {
             `;
             tableBody.appendChild(row);
         });
+
+        // Update pagination
+        updatePagination(data.totalItems);
     } catch (error) {
         console.error('Error fetching newsletters:', error);
         await Swal.fire({
@@ -38,6 +45,32 @@ async function fetchNewsletters() {
         });
     }
 }
+
+// Update pagination buttons
+function updatePagination(totalItems) {
+    const paginationContainer = document.getElementById('paginationContainer');
+    paginationContainer.innerHTML = ''; // Clear previous pagination
+
+    const totalPages = Math.ceil(totalItems / pageSize);
+
+    // Create buttons for pagination
+    for (let i = 1; i <= totalPages; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.className = 'btn btn-sm btn-outline-primary mx-1';
+        pageButton.innerText = i;
+        pageButton.onclick = () => {
+            currentPage = i;
+            fetchNewsletters(i); // Fetch data for the selected page
+        };
+        paginationContainer.appendChild(pageButton);
+    }
+}
+
+// Initial call to load newsletters on page 1
+
+
+// Call fetchNewsletters initially
+fetchNewsletters(currentPage);
 
 // Function to open reply modal for a specific newsletter
 function openReplyModalForNewsletter(id, email) {
@@ -241,10 +274,14 @@ document.addEventListener('DOMContentLoaded', () => {
 // Function to open reply all modal with newsletters table
 async function openReplyAllModal() {
     try {
-        const response = await fetch('http://localhost:25025/api/NewsLatters');
-        const newsletters = await response.json();
+        // Fetch all newsletters (you might want to pass pagination parameters if needed)
+        const response = await fetch('http://localhost:25025/api/NewsLatters?page=1&pageSize=1000'); // Load a large page size or handle separately
+        const data = await response.json();
 
-        if (newsletters.length === 0) {
+        // Ensure you access the `newsletters` array from the response
+        const newsletters = data.newsletters;
+
+        if (!newsletters || newsletters.length === 0) {
             await Swal.fire({
                 title: 'Info',
                 text: 'There are no subscribers in the list.',
@@ -253,7 +290,7 @@ async function openReplyAllModal() {
             return;
         }
 
-        // Create table rows for all newsletters, without status check
+        // Create table rows for all newsletters
         const newslettersListHTML = newsletters.map((newsletter, index) => `
             <tr>
                 <td>${index + 1}</td>
@@ -295,6 +332,7 @@ async function openReplyAllModal() {
         });
     }
 }
+
 
 // Function to update selected count
 function updateSelectedCount() {

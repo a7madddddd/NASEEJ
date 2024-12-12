@@ -435,7 +435,7 @@
   position: relative;
   overflow: hidden;
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url(../img/DALL·E\ 2024-11-26\ 22.03.42\ -\ A\ vibrant\ and\ dynamic\ illustration\ representing\ sustainable\ development\ for\ an\ organization.\ The\ scene\ includes\ a\ group\ of\ diverse\ individuals\ working.webp);
+    url('../img/images\ \(7\).jpg');
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -1141,7 +1141,6 @@
     text-align: start;
   font-size: 0.9rem;
   line-height: 1.5;
-  max-width: 250px;
   /* Limit line width for improved readability */
   height: 69px;
   /* Fixed height */
@@ -1156,7 +1155,6 @@
 .service-content-inner .h4 {
   font-size: 1.2rem;
   font-weight: bold;
-  max-width: 250px;
   /* Set a max-width for controlled wrapping */
   white-space: normal;
   /* Allows text to wrap */

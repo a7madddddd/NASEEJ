@@ -54,13 +54,17 @@ async function viewDetails(id) {
         Swal.fire({
             title: 'Testimonial Details',
             html: `
-        <strong>Full Name:</strong> ${testimonial.firstname} ${testimonial.lastname}<br>
-        <strong>Email:</strong> ${testimonial.email}<br>
-        <strong>Message:</strong> <p style="text-align: justify;">${testimonial.theTestimonials}</p>
+        <div style="direction: ltr;">
+            <strong>Full Name:</strong> ${testimonial.firstname} ${testimonial.lastname}<br>
+            <strong>Email:</strong> ${testimonial.email}<br>
+            <strong>Message:</strong> <p style="text-align: justify;">${testimonial.theTestimonials}</p>
+            <strong>Accepted:</strong> <p style="text-align: justify;">${testimonial.isaccepted ? 'Accepted' : 'Not Accepted'}</p>
+        </div>
     `,
             icon: 'info',
             confirmButtonText: 'Close'
         });
+
 
     } catch (error) {
         console.error('Error fetching testimonial details:', error);

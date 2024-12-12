@@ -32,8 +32,8 @@ namespace Naseej_Project.Controllers
                 ServiceDescription = product.ServiceDescription,
                 EmployeeId = product.EmployeeId,
                 ServiceDate = DateTime.Now,
-                Fromage=product.Fromage,
-                Toage=product.Toage,
+                Fromage = product.Fromage,
+                Toage = product.Toage,
 
             };
 
@@ -80,12 +80,12 @@ namespace Naseej_Project.Controllers
             {
                 return NotFound("Service not found.");
             }
-            
+
             try
             {
                 service.ServiceName = obj.ServiceName ?? service.ServiceName;
                 service.ServiceDescription = obj.ServiceDescription ?? service.ServiceDescription;
-                service.Fromage=obj.Fromage ?? service.Fromage;
+                service.Fromage = obj.Fromage ?? service.Fromage;
                 service.Toage = obj.Toage ?? service.Toage;
 
                 var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
@@ -142,7 +142,8 @@ namespace Naseej_Project.Controllers
 
         [HttpGet("getallemployeebyid/{id}")]
         public IActionResult getallemployee(int id)
-        {var x = _Db.Employees.Where(x=>x.EmployeeId==id);
+        {
+            var x = _Db.Employees.Where(x => x.EmployeeId == id);
             return Ok(x);
         }
 
@@ -169,7 +170,7 @@ namespace Naseej_Project.Controllers
             _Db.Services.Update(edit);
             _Db.SaveChanges();
 
-       
+
             return Ok(edit);
         }
 
@@ -177,7 +178,7 @@ namespace Naseej_Project.Controllers
         [HttpGet("getservicesAccepted")]
         public IActionResult getservices()
         {
-            var sercice = _Db.Services.Where(x=>x.IsAccept== "Accept").ToList();
+            var sercice = _Db.Services.Where(x => x.IsAccept == "Accept").ToList();
             return Ok(sercice);
         }
 
@@ -188,7 +189,7 @@ namespace Naseej_Project.Controllers
         {
             var services = _Db.Services
                               .Where(x => x.IsAccept == "Accept")
-                              .OrderByDescending(x => x.ServiceId) 
+                              .OrderByDescending(x => x.ServiceId)
                               .Take(3)
                               .ToList();
 
@@ -205,7 +206,7 @@ namespace Naseej_Project.Controllers
         {
             var user = _Db.Users.FirstOrDefault(u => u.UserId == DTO.UserId);
             var service = _Db.Services.FirstOrDefault(s => s.ServiceId == DTO.ServiceId);
-        
+
             var request = new Request
             {
                 UserId = DTO.UserId,
@@ -213,7 +214,7 @@ namespace Naseej_Project.Controllers
                 RequestDate = DateTime.Now,
                 Description = DTO.Description,
             };
-            
+
             _Db.Requests.Add(request);
             _Db.SaveChanges();
             return Ok();
@@ -237,7 +238,7 @@ namespace Naseej_Project.Controllers
                 User = new
                 {
                     user.UserId,
-                Fullname= user.FirstName+" " + user.LastName,
+                    Fullname = user.FirstName + " " + user.LastName,
                     user.Email,
                     user.Age,
                     user.PhoneNumber,
@@ -269,17 +270,17 @@ namespace Naseej_Project.Controllers
                     RequestDate = r.RequestDate,
                     Description = r.Description,
                     UserId = r.User.UserId,
-                    FullName = r.User.FirstName+" "+r.User.LastName,
+                    FullName = r.User.FirstName + " " + r.User.LastName,
                     Email = r.User.Email,
                     PhoneNumber = r.User.PhoneNumber,
-                    Age=r.User.Age,
+                    Age = r.User.Age,
                     Nationality = r.User.Nationality,
-                    Degree=r.User.Degree,
+                    Degree = r.User.Degree,
                     ServiceId = r.Service.ServiceId,
                     ServiceName = r.Service.ServiceName,
                     ServiceDescription = r.Service.ServiceDescription,
-                    fromage=r.Service.Fromage,
-                    toage=r.Service.Toage,
+                    fromage = r.Service.Fromage,
+                    toage = r.Service.Toage,
                 })
                 .ToList();
 

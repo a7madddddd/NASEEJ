@@ -143,7 +143,7 @@ namespace Naseej_Project.Controllers
             {
                 employee.PasswordHash = BCrypt.Net.BCrypt.HashPassword(employeesDto.PasswordHash);
             }
-            employee.IsAdmin = employeesDto.IsAdmin.HasValue && employeesDto.IsAdmin.Value;
+            //employee.IsAdmin = employeesDto.IsAdmin.HasValue && employeesDto.IsAdmin.Value;
 
 
             if (imageFile != null && imageFile.Length > 0)

@@ -97,7 +97,6 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
     `;
     document.body.insertAdjacentHTML('beforeend', modalHtml);
-
     async function fetchUnacceptedServices() {
         try {
             // Fetch services and employees concurrently
@@ -113,16 +112,19 @@ document.addEventListener('DOMContentLoaded', function () {
             // Filter out unaccepted services
             const unacceptedServices = services.filter(service => service.isAccept !== "Accept");
 
+            // Display only the last 3 unaccepted services
+            const lastThreeUnacceptedServices = unacceptedServices.slice(-2);
+
             const unacceptedServicesList = document.getElementById('unacceptedServicesList');
             unacceptedServicesList.innerHTML = ''; // Clear previous content
 
             // If no unaccepted services
-            if (unacceptedServices.length === 0) {
+            if (lastThreeUnacceptedServices.length === 0) {
                 unacceptedServicesList.innerHTML = `
-                    <div class="text-center text-muted py-3">
-                        No pending services
-                    </div>
-                `;
+                <div class="text-center text-muted py-3">
+                    No pending services
+                </div>
+            `;
                 return;
             }
 
@@ -132,8 +134,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 return map;
             }, {});
 
-            // Iterate over unaccepted services and display them
-            unacceptedServices.forEach(service => {
+            // Iterate over the last 3 unaccepted services and display them
+            lastThreeUnacceptedServices.forEach(service => {
                 // Find employee details for the service
                 const employee = employeeMap[service.employeeId];
 
@@ -147,26 +149,26 @@ document.addEventListener('DOMContentLoaded', function () {
                     : 'path/to/default/image.jpg';
 
                 serviceElement.innerHTML = `
-                        <img class="rounded-circle flex-shrink-0" 
-                            src="${serviceImageUrl}" 
-                            alt="${service.serviceName}" 
-                            style="width: 60px; height: 60px; object-fit: cover;">
-                        <div class="w-100 ms-3">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-0">${service.serviceName.length > 30 ? service.serviceName.substring(0, 30) + '...' : service.serviceName}</h6>
-                                <small>${new Date(service.serviceDate).toLocaleDateString()}</small>
-                            </div>
-                            <span class="text-truncate d-block">${service.serviceDescription.length > 30 ? service.serviceDescription.substring(0, 30) + '...' : service.serviceDescription}</span>
-                            <div class="d-flex justify-content-between pt-2">
-                                <small>
-                                    Employee: ${employee.fullName ? employee.fullName : 'Not assigned'}
-                                </small>
-                                <button class="btn btn-sm btn-info" onclick="showServiceDetails(${service.serviceId})">
-                                    View Details
-                                </button>
-                            </div>
+                    <img class="rounded-circle flex-shrink-0" 
+                        src="${serviceImageUrl}" 
+                        alt="${service.serviceName}" 
+                        style="width: 60px; height: 60px; object-fit: cover;">
+                    <div class="w-100 ms-3">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-0">${service.serviceName.length > 30 ? service.serviceName.substring(0, 30) + '...' : service.serviceName}</h6>
+                            <small>${new Date(service.serviceDate).toLocaleDateString()}</small>
                         </div>
-                    `;
+                        <span class="text-truncate d-block">${service.serviceDescription.length > 30 ? service.serviceDescription.substring(0, 30) + '...' : service.serviceDescription}</span>
+                        <div class="d-flex justify-content-between pt-2">
+                            <small>
+                                Employee: ${employee.fullName ? employee.fullName : 'Not assigned'}
+                            </small>
+                            <button class="btn btn-sm btn-info" onclick="showServiceDetails(${service.serviceId})">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                `;
 
                 // Attach the full service data to the element for easy access
                 serviceElement.dataset.serviceDetails = JSON.stringify(service);
@@ -180,12 +182,13 @@ document.addEventListener('DOMContentLoaded', function () {
             // Display error message in the UI
             const unacceptedServicesList = document.getElementById('unacceptedServicesList');
             unacceptedServicesList.innerHTML = `
-                <div class="text-center text-danger py-3">
-                    Failed to load services. Please try again later.
-                </div>
-            `;
+            <div class="text-center text-danger py-3">
+                Failed to load services. Please try again later.
+            </div>
+        `;
         }
     }
+
 
     // Global function to show service details
     window.showServiceDetails = function (serviceId) {
@@ -285,8 +288,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const topAgeGroup = Object.keys(ageGroups).reduce((a, b) => ageGroups[a] > ageGroups[b] ? a : b, "N/A");
 
         // تحديث واجهة المستخدم
-        document.getElementById("total-services").textContent = totalServices;
-        document.getElementById("total-requests").textContent = totalRequests;
+        document.getElementById("total-services").textContent = `${totalServices} Service`;
+        document.getElementById("total-requests").textContent = `${totalRequests} Service`;
         document.getElementById("popular-service").textContent = popularService;
         document.getElementById("top-age-group").textContent = topAgeGroup;
 

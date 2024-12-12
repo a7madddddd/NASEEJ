@@ -118,7 +118,7 @@ async function displayContactMessages() {
             content += `
                 <a href="ContactsMessages.html" class="dropdown-item">
                     <div class="d-flex align-items-center">
-                        <img class="rounded-circle" src="img/user.jpg" alt=""
+                        <img class="rounded-circle" src="img/user.jfif" alt=""
                             style="width: 40px; height: 40px;">
                         <div class="ms-2">
                             <h6 class="fw-normal mb-0">"${message.name}"   sent you a message</h6>
