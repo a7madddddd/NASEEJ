@@ -31,7 +31,7 @@ namespace Naseej_Project.Controllers
                                             .Take(pageSize)
                                             .ToListAsync();
 
-            
+
             return Ok(new { newsletters, totalItems });
         }
 
@@ -144,18 +144,38 @@ namespace Naseej_Project.Controllers
             if (string.IsNullOrEmpty(email))
                 return BadRequest("Email is required.");
 
-            var newslatter = new Newslatter
+            try
             {
-                UserEmail = email,
-                Status = false,  // Not replied by default
-                CreatedDate = DateTime.Now  // Set the current timestamp
-            };
+                // Check if the email is already subscribed
+                var existingSubscription = await _context.Newslatters
+                    .FirstOrDefaultAsync(n => n.UserEmail == email);
 
-            _context.Newslatters.Add(newslatter);
-            await _context.SaveChangesAsync();
+                if (existingSubscription != null)
+                {
+                    // Return a 409 Conflict with a detailed error message
+                    return Conflict(new { message = "This email is already subscribed to the newsletter." });
+                }
 
-            return Ok("Subscribed successfully.");
+                var newslatter = new Newslatter
+                {
+                    UserEmail = email,
+                    Status = false,
+                    CreatedDate = DateTime.Now
+                };
+
+                _context.Newslatters.Add(newslatter);
+                await _context.SaveChangesAsync();
+
+                return Ok("Subscribed successfully.");
+            }
+            catch (DbUpdateException ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500, new { message = "An error occurred while processing your request. Please try again later." });
+            }
         }
+
+
 
         // PUT: api/Newslatter/reply/{id}
         // Backend Controller

@@ -35,7 +35,7 @@ async function subscribe() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(email)  // Send just the email string
+            body: JSON.stringify(email) // Changed this line
         });
 
         // Reset button state
@@ -53,19 +53,36 @@ async function subscribe() {
             // Clear the input field
             emailInput.value = '';
         } else {
-            const errorMessage = await response.text();
-            throw new Error(errorMessage);
+            const errorResponse = await response.json(); // Parse as JSON
+
+            // Log the error response for debugging
+            console.error('Error response from backend:', errorResponse);
+
+            let errorMessage = errorResponse.message || 'Failed to subscribe.';
+            let icon = 'error';
+
+            if (response.status === 409) {
+                // Handle 409 Conflict specifically
+                errorMessage = 'You are already subscribed to our newsletter.';
+                icon = 'info'; // Use info icon for already subscribed
+            }
+
+            // Show the appropriate error message
+            await Swal.fire({
+                title: icon === 'info' ? 'Already Subscribed' : 'Error!',
+                text: errorMessage,
+                icon: icon
+            });
         }
     } catch (error) {
         console.error('Subscription error:', error);
         await Swal.fire({
             title: 'Error!',
-            text: 'Failed to subscribe. Please try again later.',
+            text: error.message || 'Failed to subscribe. Please try again later.',
             icon: 'error'
         });
     }
 }
-
 // Add enter key support for the email input
 document.addEventListener('DOMContentLoaded', function () {
     const emailInput = document.getElementById('userEmail');
