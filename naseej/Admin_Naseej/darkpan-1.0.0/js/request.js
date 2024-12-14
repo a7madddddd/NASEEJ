@@ -19,14 +19,15 @@ async function fetchCardData() {
                 <td>${product.fullName}</td>
                 <td>${product.serviceName}</td>
                 <td>${product.description}</td>
-                <td>
-                    <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#performanceModal-${product.requestId}">
-                        View Details
-                    </button>
-                         <button  class="btn btn-danger btn-sm" onclick="deleteemployee(${
-                                  product.requestId
-                                })">Delete</button>
-                </td>
+             <td style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+    <button class="btn btn-info btn-sm" style="width: 100px; height: 40px;" data-bs-toggle="modal" data-bs-target="#performanceModal-${product.requestId}">
+        View Details
+    </button>
+    <button class="btn btn-danger btn-sm" style="width: 100px; height: 40px;" onclick="deleteemployee(${product.requestId})">
+        Delete
+    </button>
+</td>
+
             </tr>
 
    <!-- Modal لكل طلب -->
