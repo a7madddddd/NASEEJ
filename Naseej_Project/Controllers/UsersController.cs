@@ -104,8 +104,7 @@ namespace Naseej_Project.Controllers
                     .Include(r => r.User)
                     .Include(r => r.Service)
                     .Where(r => r.User != null &&
-                        (r.User.FirstName.ToLower().Contains(searchTerm) ||
-                         r.User.LastName.ToLower().Contains(searchTerm) ||
+                        (string.Concat(r.User.FirstName, " ", r.User.LastName).ToLower().Contains(searchTerm) ||
                          r.User.Email.ToLower().Contains(searchTerm)))
                     .Select(r => new RequestSearchResultDto
                     {

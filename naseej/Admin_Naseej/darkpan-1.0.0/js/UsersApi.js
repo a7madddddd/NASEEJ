@@ -51,8 +51,8 @@ function displayUsersPage(page) {
 
         const cells = [
             startIndex + index + 1,         // Row number
-            user.firstName || 'N/A',
-            user.lastName || 'N/A',
+            fullName = (user.firstName && user.lastName) ? user.firstName + ' ' + user.lastName : 'N/A',
+
             user.email || 'N/A',
             user.phoneNumber || 'N/A',
             user.nationality || 'N/A',

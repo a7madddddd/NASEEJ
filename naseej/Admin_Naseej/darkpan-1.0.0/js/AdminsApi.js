@@ -1,56 +1,123 @@
-// start display all admins function here
+let currentPage = 1;  // Start at the first page
+const pageSize = 5;  // Number of records per page
 
-fetch("http://localhost:25025/api/Empolyees")
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error("Failed to fetch admins");
-    }
-    return response.json();
-  })
-  .then((data) => {
-    const tableBody = document.getElementById("adminTableBody");
-    tableBody.innerHTML = ""; // Clear any existing rows
+// Function to fetch employees with pagination
+function fetchEmployees(page = currentPage, pageSize = 10) {
+  fetch(`http://localhost:25025/api/Empolyees/Pagination?page=${page}&pageSize=${pageSize}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch employees");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log('API Response:', data);  // Log the entire response to inspect it
+      const tableBody = document.getElementById("adminTableBody");
+      tableBody.innerHTML = ""; // Clear any existing rows
 
-    // Iterate over the data and create table rows
-    data.forEach((admin) => {
-      const row = document.createElement("tr");
+      // Use the correct property name `employees` (lowercase)
+      if (Array.isArray(data.employees)) {
+        data.employees.forEach((admin) => {
+          const row = document.createElement("tr");
+          const nameCell = document.createElement("td");
+          nameCell.textContent = admin.fullName;
 
-      const nameCell = document.createElement("td");
-      nameCell.textContent = admin.fullName;
+          const emailCell = document.createElement("td");
+          emailCell.textContent = admin.email;
 
-      const emailCell = document.createElement("td");
-      emailCell.textContent = admin.email;
+          const roleCell = document.createElement("td");
+          roleCell.textContent = admin.isAdmin ? "Super Admin" : "Admin";
 
-      const roleCell = document.createElement("td");
-      roleCell.textContent = admin.isAdmin ? "Super Admin" : "Admin";
+          const imageCell = document.createElement("td");
+          if (admin.image) {
+            const img = document.createElement("img");
+            img.src = `http://localhost:25025/${admin.image}`; // Full path to image
+            img.alt = admin.fullName;
+            img.style.width = "35px"; // Adjust image size as needed
+            img.style.height = "35px";
+            img.style.borderRadius = "50px";
+            imageCell.appendChild(img);
+          } else {
+            imageCell.textContent = "No image available";
+          }
 
-      const imageCell = document.createElement("td");
-      if (admin.image) {
-        const img = document.createElement("img");
-        img.src = `http://localhost:25025/${admin.image}`; // Full path to image
-        img.alt = admin.fullName;
-        img.style.width = "35px"; // Adjust image size as needed
-        img.style.height = "35px";
-        img.style.borderRadius = "50px";
-        imageCell.appendChild(img);
+          row.appendChild(nameCell);
+          row.appendChild(emailCell);
+          row.appendChild(imageCell);
+          row.appendChild(roleCell);
+          tableBody.appendChild(row);
+        });
       } else {
-        imageCell.textContent = "No image available";
+        console.error('Employees data is not an array:', data.employees);
       }
 
-      // Append cells to the row
-      row.appendChild(nameCell);
-      row.appendChild(emailCell);
-      row.appendChild(imageCell);
-      row.appendChild(roleCell);
-
-      // Append the row to the table body
-      tableBody.appendChild(row);
+      updatePaginationControls(data.totalCount, page, pageSize);  // Update pagination controls
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("There was an error fetching the employee data.");
     });
-  })
-  .catch((error) => {
-    console.error("Error:", error);
-    alert("There was an error fetching the admin data.");
-  });
+}
+
+// Function to update pagination controls
+// Function to update pagination controls
+function updatePaginationControls(totalCount, currentPage, pageSize) {
+  const totalPages = Math.ceil(totalCount / pageSize);
+  const paginationContainer = document.getElementById("paginationControls");
+  paginationContainer.innerHTML = "";  // Clear existing pagination controls
+
+  // Create the div to group buttons
+  const groupContainer = document.createElement('div');
+  groupContainer.className = 'btn-group'; // Apply the btn-group class for styling
+
+  // Create previous button
+  const prevButton = document.createElement('button');
+  prevButton.innerHTML = '&laquo;';
+  prevButton.className = 'btn btn-extra-small btn-outline-light'; // Apply the button styling
+  prevButton.disabled = currentPage <= 1;
+  prevButton.onclick = () => {
+    if (currentPage > 1) {
+      currentPage--;
+      fetchEmployees(currentPage, pageSize);
+      updatePaginationControls(totalCount, currentPage, pageSize);  // Re-render pagination
+    }
+  };
+  groupContainer.appendChild(prevButton);
+
+  // Create page number buttons
+  for (let i = 1; i <= totalPages; i++) {
+    const pageButton = document.createElement('button');
+    pageButton.textContent = i;
+    pageButton.className = `btn btn-extra-small ${currentPage === i ? 'btn-light' : 'btn-outline-light'}`; // Highlight the current page
+    pageButton.onclick = () => {
+      currentPage = i;
+      fetchEmployees(currentPage, pageSize);
+      updatePaginationControls(totalCount, currentPage, pageSize);  // Re-render pagination
+    };
+    groupContainer.appendChild(pageButton);
+  }
+
+  // Create next button
+  const nextButton = document.createElement('button');
+  nextButton.innerHTML = '&raquo;';
+  nextButton.className = 'btn btn-extra-small btn-outline-light'; // Apply the button styling
+  nextButton.disabled = currentPage >= totalPages;
+  nextButton.onclick = () => {
+    if (currentPage < totalPages) {
+      currentPage++;
+      fetchEmployees(currentPage, pageSize);
+      updatePaginationControls(totalCount, currentPage, pageSize);  // Re-render pagination
+    }
+  };
+  groupContainer.appendChild(nextButton);
+
+  // Append the pagination controls group to the container
+  paginationContainer.appendChild(groupContainer);
+}
+
+
+// Initialize the first page load
+fetchEmployees(currentPage, pageSize);
 
 // end function display all admins
 

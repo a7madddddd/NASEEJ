@@ -36,6 +36,47 @@ namespace Naseej_Project.Controllers
                 .ToListAsync();
         }
 
+
+
+        /// <summary>
+        /// //////////
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [HttpGet("Pagination")]
+        public async Task<ActionResult<IEnumerable<EmpolyeesDTO>>> GetEmployees([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            if (page <= 0 || pageSize <= 0)
+                return BadRequest("Page and pageSize must be greater than 0.");
+
+            var totalEmployees = await _db.Employees.CountAsync();
+            var employees = await _db.Employees
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(e => new EmpolyeesDTO
+                {
+                    EmployeeId = e.EmployeeId,
+                    FullName = e.FullName,
+                    Email = e.Email,
+                    Image = e.Image,
+                    PasswordHash = e.PasswordHash,
+                    IsAdmin = e.IsAdmin,
+                })
+                .ToListAsync();
+
+            return Ok(new
+            {
+                TotalCount = totalEmployees,
+                Page = page,
+                PageSize = pageSize,
+                Employees = employees
+            });
+        }
+
+
+
+
         // GET: api/Employees/5
         [HttpGet("{id}")]
         public async Task<ActionResult<EmpolyeesDTO>> GetEmployee(int id)
