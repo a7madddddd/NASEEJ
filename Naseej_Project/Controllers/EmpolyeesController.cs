@@ -53,6 +53,7 @@ namespace Naseej_Project.Controllers
                 Email = employee.Email,
                 Image = employee.Image,
                 PasswordHash = employee.PasswordHash,
+                IsAdmin = employee.IsAdmin,
             };
         }
 
@@ -81,7 +82,7 @@ namespace Naseej_Project.Controllers
                     Email = employeesDto.Email?.Trim().ToLower(),
                     PasswordHash = passwordHash,
                     Image = null,
-                    IsAdmin = false
+                    IsAdmin = employeesDto.IsAdmin
                 };
 
                 if (imageFile != null && imageFile.Length > 0)
@@ -143,7 +144,7 @@ namespace Naseej_Project.Controllers
             {
                 employee.PasswordHash = BCrypt.Net.BCrypt.HashPassword(employeesDto.PasswordHash);
             }
-            //employee.IsAdmin = employeesDto.IsAdmin.HasValue && employeesDto.IsAdmin.Value;
+            employee.IsAdmin = employeesDto.IsAdmin;
 
 
             if (imageFile != null && imageFile.Length > 0)
