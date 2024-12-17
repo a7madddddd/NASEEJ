@@ -173,36 +173,11 @@
 
 
 
-/* Responsive Breakpoints */
-@media screen and (max-width: 1200px) {
-    .loginContainer .main {
-        width: 90%;
-        max-height: 75vh !important;
-    }
-
-    .loginContainer .main label {
-        font-size: 2.2em;
-        margin: 30px;
-    }
-
-    .loginContainer .main .row {
-        width: 85%;
-    }
-
-    .loginContainer .main .login {
-        transform: translateY(-42%) !important;
-    }
-
-    .loginContainer .main #chk:checked~.login {
-        transform: translateY(-100%) !important;
-        max-height: 80vh !important;
-    }
-}
 
 @media screen and (max-width: 1024px) {
     .loginContainer .main {
         width: 80%;
-        max-height: 70vh !important;
+        min-height: auto;
     }
 
     .loginContainer .main label {
@@ -215,19 +190,19 @@
     }
 
     .loginContainer .main .login {
-        transform: translateY(-40%) !important;
+        transform: translateY(-40%);
     }
 
     .loginContainer .main #chk:checked~.login {
-        transform: translateY(-100%) !important;
-        max-height: 73vh !important;
+        transform: translateY(-100%);
+        max-height: 73vh;
     }
 }
 
 @media screen and (max-width: 992px) {
     .loginContainer .main {
         width: 80%;
-        min-height: 95vh !important;
+        min-height: 80vh;
     }
 
     .loginContainer .main label {
@@ -240,41 +215,41 @@
     }
 
     .loginContainer .main .login {
-        transform: translateY(-39%) !important;
+        transform: translateY(-45%) !important;
     }
 
     .loginContainer .main #chk:checked~.login {
-        transform: translateY(-100%) !important;
-        min-height: 100vh !important;
+        transform: translateY(-80%) !important;
+        min-height: 100vh;
     }
 }
 
 @media screen and (max-width: 768px) {
-    .main {
+    .loginContainer .main {
         width: 90%;
-        min-height: 100vh !important;
+        min-height: 90vh;
     }
 
-    .main label {
+    .loginContainer .main label {
         font-size: 1.8em;
         margin: 20px;
     }
 
-    .main .row {
+    .loginContainer .main .row {
         width: 95%;
     }
 
-    .col-md-6 {
+    .loginContainer .col-md-6 {
         width: 100%;
     }
 
-    .main .login {
-        transform: translateY(-37%) !important;
+    .loginContainer .main .login {
+        transform: translateY(-45%) !important;
     }
 
-    .main #chk:checked~.login {
-        transform: translateY(-100%) !important;
-        min-height: 105vh !important;
+    .loginContainer .main #chk:checked~.login {
+        transform: translateY(-100%);
+        min-height: 113vh;
     }
 
 }
@@ -282,65 +257,64 @@
 @media screen and (max-width: 576px) {
 
 
-    .main {
+    .loginContainer .main {
         width: 95%;
-        min-height: 125vh !important;
+        min-height: 110vh ;
     }
 
-    .main label {
+    .loginContainer .main label {
         font-size: 1.5em;
         margin: 15px;
     }
 
-    .main input,
-    .main select {
+    .loginContainer .main input,
+    .loginContainer .main select {
         height: 35px;
         padding: 8px;
     }
 
-    .main .col-6 {
+    .loginContainer .main .col-6 {
         width: 100%;
         padding: 0 5px;
     }
 
-    .main button {
+    .loginContainer .main button {
         width: 80%;
     }
 
-    .main .login {
-        transform: translateY(-35%) !important;
+    .loginContainer .main .login {
+        transform: translateY(-45%) !important;
 
     }
 
-    .main #chk:checked~.login {
-        transform: translateY(-100%) !important;
-        min-height: 132vh !important;
+    .loginContainer .main #chk:checked~.login {
+        transform: translateY(-100%);
+        min-height: 132vh;
     }
 
 }
 
 @media screen and (max-width: 480px) {
-    .main {
+    .loginContainer .main {
         width: 90%;
-        min-height: 145vh !important;
+        min-height: 120vh ;
     }
 
-    .main label {
+    .loginContainer .main label {
         font-size: 2.2em;
         margin: 30px;
     }
 
-    .main .row {
+    .loginContainer .main .row {
         width: 85%;
     }
 
-    .main .login {
-        transform: translateY(-31%) !important;
-        min-height: 100vh;
+    .loginContainer .main .login {
+        transform: translateY(-89%);
     }
 
-    .main #chk:checked~.login {
-        transform: translateY(-100%) !important;
-        min-height: 147vh !important;
+    .loginContainer .main #chk:checked~.login {
+        transform: translateY(-100%);
+        min-height: 147vh;
     }
 }

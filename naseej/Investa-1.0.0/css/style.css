@@ -1244,3 +1244,52 @@
 body {
   top: 0 !important;
 }
+
+
+.rtl-layout {
+    direction: rtl;
+    text-align: right;
+}
+
+.rtl-layout *:not([translate="no"]) {
+    direction: rtl !important;
+    text-align: right !important;
+}
+
+/* Optional: Ensure specific elements maintain LTR for emails, codes, etc. */
+.rtl-layout [translate="no"],
+.rtl-layout code,
+.rtl-layout pre,
+.rtl-layout .ltr {
+    direction: ltr;
+    text-align: left;
+}
+
+
+
+
+#searchResults .card {
+    transition: transform 0.3s ease;
+}
+
+#searchResults .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+#searchModal .modal-dialog {
+    max-height: 80vh;
+}
+
+#searchResults {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.view-details {
+    transition: all 0.3s ease;
+}
+
+.view-details:hover {
+    transform: scale(1.1);
+}
