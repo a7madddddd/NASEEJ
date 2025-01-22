@@ -127,3 +127,10 @@ function clearMessages() {
 // Clear messages when user starts typing
 document.getElementById('floatingInput').addEventListener('input', clearMessages);
 document.getElementById('floatingPassword').addEventListener('input', clearMessages);
+
+
+
+
+
+
+

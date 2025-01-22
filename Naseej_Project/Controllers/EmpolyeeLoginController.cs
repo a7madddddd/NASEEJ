@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Naseej_Project.Interfaces;
 namespace Naseej_Project.Controllers
 {
     [Route("api/[controller]")]
@@ -17,19 +18,16 @@ namespace Naseej_Project.Controllers
         private readonly IConfiguration _configuration;
         private readonly ILogger<EmpolyeeLoginController> _logger;
         private readonly MyDbContext _db;
+        private readonly IOtpService _otpService;
 
-        public EmpolyeeLoginController(IConfiguration configuration, ILogger<EmpolyeeLoginController> logger, MyDbContext db)
+
+        public EmpolyeeLoginController(IConfiguration configuration, ILogger<EmpolyeeLoginController> logger, MyDbContext db, IOtpService otpService)
         {
             _configuration = configuration;
             _logger = logger;
             _db = db;
+            _otpService = otpService;
         }
-
-
-
-
-
-
 
 
         /// <summary>
@@ -137,13 +135,13 @@ namespace Naseej_Project.Controllers
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
-    {
-        new Claim(JwtRegisteredClaimNames.Sub, employee.EmployeeId.ToString()),
-        new Claim(JwtRegisteredClaimNames.Email, employee.Email),
-        new Claim("fullName", employee.FullName),
-        new Claim("isAdmin", employee.IsAdmin.ToString()),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-    };
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, employee.EmployeeId.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Email, employee.Email),
+                    new Claim("fullName", employee.FullName),
+                    new Claim("isAdmin", employee.IsAdmin.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                };
 
             // Only add image claim if it's not null
             if (!string.IsNullOrWhiteSpace(employee.Image))
@@ -164,9 +162,69 @@ namespace Naseej_Project.Controllers
 
             return writtenToken;
         }
+
+
+        [HttpPost("send-otp")]
+        public async Task<IActionResult> SendOtp([FromBody] OtpRequestDto request)
+        {
+            var result = await _otpService.GenerateAndSendOtpAsync(request.Email);
+            if (!result)
+                return NotFound("Email not found");
+
+            return Ok("OTP sent successfully");
+        }
+
+
+
+        [HttpPost("verify-otp")]
+        public async Task<IActionResult> VerifyOtp([FromBody] OtpVerificationDto request)
+        {
+            var result = await _otpService.VerifyOtpAsync(request.Email, request.Otp);
+            if (!result)
+                return BadRequest("Invalid OTP");
+
+            return Ok("OTP verified successfully");
+        }
+
+
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO resetPasswordDto)
+        {
+            try
+            {
+                // Find the employee by email
+                var employee = await _db.Employees.FirstOrDefaultAsync(e => e.Email == resetPasswordDto.Email);
+                if (employee == null)
+                {
+                    return NotFound(new { message = "Employee not found" });
+                }
+
+                // Verify that OTP was recently verified (check IsUsed status)
+                if (employee.IsUsed != "true")
+                {
+                    return BadRequest(new { message = "OTP verification required before password reset" });
+                }
+
+                // Hash the new password
+                employee.PasswordHash = BCrypt.Net.BCrypt.HashPassword(resetPasswordDto.NewPassword);
+
+                // Clear the OTP fields after successful password reset
+                employee.Otp = null;
+                employee.IsUsed = null;
+
+                // Save changes
+                await _db.SaveChangesAsync();
+
+                return Ok(new { message = "Password reset successful" });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details here if you have logging configured
+                return StatusCode(500, new { message = "An error occurred while resetting the password" });
+            }
+        }
     }
-
-
 }
 
 

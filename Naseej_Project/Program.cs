@@ -4,6 +4,7 @@ using Naseej_Project.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Naseej_Project.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,6 +61,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<EmailServices>();
 
+//this is the new 
+builder.Services.AddScoped<IOtpService, OtpService>();
+builder.Services.AddScoped<IEmailService2, EmailService2>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

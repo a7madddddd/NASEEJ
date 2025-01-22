@@ -227,7 +227,7 @@ async function fetchAndDisplayTestimonials() {
               <p class="mb-0">${testimonial.email}</p>
             </div>
             <div class="bg-white rounded-circle ms-3">
-              <img src="../WhatsApp_Image_2024-11-06_at_17.51.49_8309486c.jpg"
+              <img src="img/WhatsApp Image 2024-11-06 at 5.51.49 PM.jpeg"
                    class="rounded-circle p-2"
                    style="width: 80px; height: 80px; border: 1px solid; border-color: var(--bs-primary);"
                    alt="${testimonial.firstname}">
